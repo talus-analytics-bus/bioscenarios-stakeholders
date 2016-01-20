@@ -1,17 +1,15 @@
-function App() {
-    $('.link-about').on('click', function() { hasher.setHash('about'); });
+var App = App || {};
 
-	this.initHome = function() {
-		
+(function() {
+	App.initialize = function() {
+
 	};
+	
+	App.initHome = function() {
 
-    // precompile all handlebars templates on startup so they don't have to be compiled on each page change.
-    // slightly slower startup, much faster afterwards
-    this.templates = {};
-    this.precompileTemplates = function () {
-    	var app = this;
-        $("script[type='text/x-handlebars-template']").each(function (i, e) {
-            app.templates[e.id.replace("-template", "")] = Handlebars.compile($(e).html());
-        });
-    };
-}
+	};
+	
+	App.initialize();
+	Routing.precompileTemplates();	
+	Routing.initializeRoutes();	
+})();
