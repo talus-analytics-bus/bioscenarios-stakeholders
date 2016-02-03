@@ -8,8 +8,4 @@ var App = App || {};
 	App.initHome = function() {
 
 	};
-	
-	App.initialize();
-	Routing.precompileTemplates();	
-	Routing.initializeRoutes();	
 })();
