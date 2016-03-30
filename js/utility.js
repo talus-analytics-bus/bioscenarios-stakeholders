@@ -7,5 +7,5 @@ Util.percentize = d3.format('%'); // divides by 100 and adds a percentage symbol
 // converts a number in string format into a float
 Util.strToFloat = function(str) {
 	if (typeof str !== 'string') return str;
-	return parseFloat(str.replace(/[^\d\.\-]/g, ""));
+	return parseFloat(str.replace(/[^\d\.\-]/g, ''));
 };

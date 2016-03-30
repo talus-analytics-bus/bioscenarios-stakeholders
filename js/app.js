@@ -4,8 +4,8 @@ var App = App || {};
 	App.initialize = function() {
 
 	};
-	
+
 	App.initHome = function() {
 
 	};
-})();
+}());
