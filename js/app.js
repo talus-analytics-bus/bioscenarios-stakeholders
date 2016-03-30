@@ -1,11 +1,11 @@
-var App = App || {};
+const App = {};
 
-(function() {
-	App.initialize = function() {
+(() => {
+	App.initialize = () => {
 
 	};
-	
-	App.initHome = function() {
+
+	App.initHome = () => {
 
 	};
 })();

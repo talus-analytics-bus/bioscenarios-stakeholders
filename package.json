@@ -18,6 +18,32 @@
     "gulp": "~3.9.0",
     "gulp-concat": "~2.6.0",
     "gulp-uglify": "~1.5.1",
-    "gulp-rename": "~1.2.2"
+    "gulp-rename": "~1.2.2",
+    "eslint-plugin-react": "~4.2.3",
+    "eslint-config-airbnb": "~6.2.0",
+    "eslint": "~2.5.3",
+    "gulp-babel": "~6.1.2"
+  },
+  "eslintConfig": {
+    "extends": "airbnb/base",
+    "env": {
+      "jquery": true
+    },
+    "globals": {
+      "App": true,
+      "Routing": true,
+      "Util": true,
+      "hasher": true,
+      "crossroads": true,
+      "Handlebars": true,
+      "d3": true
+    },
+    "rules": {
+      "indent": "off",
+      "no-use-before-define": [
+        "error",
+        "nofunc"
+      ]
+    }
   }
 }
