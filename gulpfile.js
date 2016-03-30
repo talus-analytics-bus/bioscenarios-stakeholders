@@ -6,7 +6,7 @@ const babel = require('gulp-babel');
 
 gulp.task('default', ['minify-js']);
 
-gulp.task('minify-js', () => {
+gulp.task('minify-js', function() {
 	gulp.src([
 		'./js/!(app)*.js',
 		'./js/pages/*.js',
@@ -19,7 +19,7 @@ gulp.task('minify-js', () => {
 		.pipe(gulp.dest('build'));
 });
 
-gulp.task('minify-css', () => {
+gulp.task('minify-css', function() {
 	gulp.src([
 		'./css/bootstrap.min.css',
 		'./css/!(main)*.css',
@@ -29,7 +29,7 @@ gulp.task('minify-css', () => {
 		.pipe(gulp.dest('build'));
 });
 
-gulp.task('minify-lib', () => {
+gulp.task('minify-lib', function() {
 	gulp.src([
 		'lib/jquery-2.2.0.min.js',
 		'lib/signals.min.js',
