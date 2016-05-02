@@ -1,16 +1,25 @@
-const gulp = require('gulp');
-const concat = require('gulp-concat');
-const uglify = require('gulp-uglify');
-const rename = require('gulp-rename');
-const babel = require('gulp-babel');
+var gulp = require('gulp'),
+		concat = require('gulp-concat'),
+		uglify = require('gulp-uglify'),
+		rename = require('gulp-rename'),
+		babel = require('gulp-babel'),
+		eslint = require('gulp-eslint');
 
-gulp.task('default', ['minify-js']);
+gulp.task('default', ['build-js']);
 
-gulp.task('minify-js', function() {
-	gulp.src([
-		'./js/!(app)*.js',
-		'./js/pages/*.js',
+gulp.task('lint', function() {
+	return gulp.src(['./js/**/*.js', '!node_modules/**'])
+		.pipe(eslint())
+		.pipe(eslint.format());
+});
+
+gulp.task('build-js', function() {
+	return gulp.src([
+		'./js/utility.js',
+		'./js/routing.js',
 		'./js/app.js',
+		'./js/**/*.js',
+		'./js/*.js',
 	])
 		.pipe(concat('bundle.js'))
 		.pipe(babel({ presets: ['es2015'] }))
@@ -19,8 +28,8 @@ gulp.task('minify-js', function() {
 		.pipe(gulp.dest('build'));
 });
 
-gulp.task('minify-css', function() {
-	gulp.src([
+gulp.task('build-css', function() {
+	return gulp.src([
 		'./css/bootstrap.min.css',
 		'./css/!(main)*.css',
 		'./css/main.css',
@@ -29,8 +38,8 @@ gulp.task('minify-css', function() {
 		.pipe(gulp.dest('build'));
 });
 
-gulp.task('minify-lib', function() {
-	gulp.src([
+gulp.task('build-lib', function() {
+	return gulp.src([
 		'lib/jquery-2.2.0.min.js',
 		'lib/signals.min.js',
 		'lib/*.js',
