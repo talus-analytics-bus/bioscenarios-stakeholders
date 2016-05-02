@@ -2,6 +2,7 @@
   "name": "framework",
   "version": "1.0.0",
   "description": "A web application framework used to begin projects",
+  "license": "MIT",
   "main": "gulpfile.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -40,11 +41,8 @@
       "d3": true
     },
     "rules": {
-      "indent": "off",
-      "no-use-before-define": [
-        "error",
-        "nofunc"
-      ]
+      "indent": ["error", "tab"],
+      "no-use-before-define": ["error", "nofunc"]
     }
   }
 }
