@@ -41,8 +41,14 @@
       "d3": true
     },
     "rules": {
-      "indent": ["error", "tab"],
-      "no-use-before-define": ["error", "nofunc"]
+      "indent": [
+        "error",
+        "tab"
+      ],
+      "no-use-before-define": [
+        "error",
+        "nofunc"
+      ]
     }
   }
 }
