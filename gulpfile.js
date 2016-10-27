@@ -8,7 +8,7 @@ var gulp = require('gulp'),
 gulp.task('default', ['build-js']);
 
 gulp.task('lint', function() {
-	return gulp.src(['./js/**/*.js', '!node_modules/**'])
+	return gulp.src(['./js/**/*.js'])
 		.pipe(eslint())
 		.pipe(eslint.format());
 });
