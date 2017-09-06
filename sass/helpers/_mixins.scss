@@ -91,3 +91,8 @@
   -webkit-transition: $value;
   transition: $value;
 }
+@mixin calc($property, $expression) {
+  #{$property}: -moz-calc(#{$expression});
+  #{$property}: -webkit-calc(#{$expression});
+  #{$property}: calc(#{$expression});
+}

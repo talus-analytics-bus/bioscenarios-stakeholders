@@ -1,56 +1,85 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta charset="utf-8">
-  <title>Framework</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta charset="utf-8">
+	<title>Talus Framework</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="icon" href="img/favicon.ico">
-    
-    <!-- ----- CSS Files ----- -->
- 	<link href='http://fonts.googleapis.com/css?family=Open+Sans:800,600,400,300' rel='stylesheet' type='text/css'>
-  <link href="css/bootstrap.min.css" rel="stylesheet">
- 	<link href="css/main.css" rel="stylesheet" type="text/css">
+		
+		<!-- Stylesheets -->
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:800,600,400,300' rel='stylesheet' type='text/css'>
+	<link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
+	<link href="css/main.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-  <div class="navbar navbar-default">
-    <div class="navbar-header">
-      <a class="navbar-brand" href="index.html">Framework</a>
-    </div>
-    <div class="navbar-collapse collapse navbar-responsive-collapse">
-      <ul class="nav navbar-nav navbar-right">
-        <li><a class="link-about">About</a></li>
-      </ul>
-    </div>
-  </div>
-  <div id="page-content"></div>
-    
-  <!-- ----------- TEMPLATES ------------- -->
-  <script id="home-template" type="text/x-handlebars-template">
-  	Framework
-  </script>
-    
-  <script id="about-template" type="text/x-handlebars-template">
+	<nav class="navbar navbar-default navbar-fixed-top">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-1" aria-expanded="false">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#">Talus Analytics</a>
+			</div>
+			<div class="collapse navbar-collapse" id="navbar-collapse-1">
+				<form class="navbar-form navbar-right">
+					<div class="form-group">
+						<input type="text" class="form-control" placeholder="Search">
+					</div>
+					<button type="submit" class="btn btn-default">Submit</button>
+				</form>
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="#">Home</a></li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Pages <span class="caret"></span></a>
+						<ul class="dropdown-menu">
+							<li><a href="#">Page #1</a></li>
+							<li><a href="#">Page #2</a></li>
+							<li role="separator" class="divider"></li>
+							<li><a href="#">Page #3</a></li>
+						</ul>
+					</li>
+					<li><a href="#about">About</a></li>
+				</ul>
+			</div><!-- /.navbar-collapse -->
+		</div><!-- /.container-fluid -->
+	</nav>
+	<div id="page-content"></div>
+	<div id="footer"></div>
+
+		
+	<!-- ----------- TEMPLATES ------------- -->
+	<script id="home-template" type="text/x-handlebars-template">
+		Framework
+	</script>
+		
+	<script id="about-template" type="text/x-handlebars-template">
 		About
 	</script>
 	
 	
 	<!-- General Libraries -->
-	<script src="lib/jquery-3.1.1.min.js"></script>
+	<script src="lib/jquery-3.2.1.slim.min.js"></script>
 	<script src="lib/d3.min.js"></script>
+	<script src="lib/popper.min.js"></script>
+	<script src="lib/bootstrap.min.js"></script>
 	
 	<!-- Routing Libraries -->
-  <script src="lib/signals.min.js"></script>
-  <script src="lib/crossroads.min.js"></script>
-  <script src="lib/hasher.min.js"></script>
+	<script src="lib/signals.min.js"></script>
+	<script src="lib/crossroads.min.js"></script>
+	<script src="lib/hasher.min.js"></script>
 	<script src="lib/handlebars-v3.0.0.js"></script>	
 	
 	<!--<script src="build/lib.min.js"></script>-->
-    
-  <!-- Project Specific Files -->
-  <script src="js/utility.js"></script>
-  <script src="js/routing.js"></script>
-  <script src="js/app.js"></script>
-  <script src="js/init.js"></script>
-  <!--<script src="build/bundle.min.js"></script>-->
+		
+	<!-- Project Specific Files -->
+	<script src="js/utility.js"></script>
+	<script src="js/routing.js"></script>
+	<script src="js/app.js"></script>
+	<script src="js/init.js"></script>
+
+	<!--<script src="build/bundle.min.js"></script>-->
 </body>
 </html>

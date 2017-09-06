@@ -1,4 +1,13 @@
+@import 'helpers/borders';
 @import 'helpers/classes';
+@import 'helpers/colors';
 @import 'helpers/mixins';
 
+@import 'components/footer';
+@import 'components/navbar';
+
+
 body { font-family: 'Open Sans', sans-serif; }
+#page-content {
+	min-height: 50vh;
+}
