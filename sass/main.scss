@@ -3,11 +3,15 @@
 @import 'helpers/colors';
 @import 'helpers/mixins';
 
+@import 'components/containers';
 @import 'components/footer';
 @import 'components/navbar';
+
+@import 'pages/home';
 
 
 body { font-family: 'Open Sans', sans-serif; }
 #page-content {
-	min-height: 50vh;
+	margin-top: 51px;
+	min-height: 100px;
 }
