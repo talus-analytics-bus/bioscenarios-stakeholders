@@ -36,6 +36,7 @@
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Components <span class="caret"></span></a>
 						<ul class="dropdown-menu">
+							<li><a href="#text">Text</a></li>
 							<li><a href="#map">Map</a></li>
 							<li><a href="#">Dropdowns</a></li>
 							<li role="separator" class="divider"></li>
@@ -57,16 +58,38 @@
 	<!-- ----------- TEMPLATES ------------- -->
 	<script id="home-template" type="text/x-handlebars-template">
 		<div class="home-container container">
-			<h2>Home - Header 2</h2>
-			<h3>Header 3</h3>
-			<h4>Header 4</h4>
-			<div>Normal Text - This container may contain graphics and such.</div>
+			<h3>Welcome!</h3>
+			<div class="description">
+				This is the framework for typical Talus Analytics web applications.
+				Check out the different components in the navigation bar up top.
+			</div>
 		</div>
 	</script>
+
+	<script id="text-template" type="text/x-handlebars-template">
+		<div class="text-page-container container container-text">
+			<h2>Big Header (h2)</h2>
+			<h3>Normal Header (h3)</h3>
+			<p class="description">
+				Use "normal headers" as a default. "Big headers" should be used sparingly and only if more emphasis is needed.
+			</p>
+			<p class="description">
+				This is <b>description text</b> (class="description"). It should be used to describe components or provide summaries. Note that the maximum width for both descriptions and instructions are 700 pixels. The default margin top for descriptions and instructions is 20 pixels, though you may want to adjust this to 10 or 15 pixels, depending on where it is placed.
+			</p>
+			<p class="instructions">
+				This is <b>instructions text</b> (class="instructions"). Use this when providing instructions or commands to the user.
+			</p>
+		</div>
+	</script>
+
 		
 	<script id="map-template" type="text/x-handlebars-template">
 		<div class="map-container container container-text">
-			<h3 class="map-title">Map (using LeafletJS)</h3>
+			<h3 class="map-title">Map</h3>
+			<div class="description">
+				This map uses Leaflet JS.
+				Check out options at <a href="http://leafletjs.com/reference-1.2.0.html" target="_blank">Leaflet Docs</a>.
+			</div>
 			<div id="map"></div>
 		</div>
 	</script>

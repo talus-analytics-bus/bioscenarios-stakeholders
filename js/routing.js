@@ -17,6 +17,10 @@ const Routing = {};
 			App.initHome();
 			window.scrollTo(0, 0);
 		});
+		crossroads.addRoute('/text', () => {
+			loadTemplate('text');
+			window.scrollTo(0, 0);
+		});
 		crossroads.addRoute('/map', () => {
 			loadTemplate('map');
 			App.initMap();
