@@ -26,10 +26,6 @@ const Routing = {};
 			App.initMap();
 			window.scrollTo(0, 0);
 		});
-		crossroads.addRoute('/about', () => {
-			loadTemplate('about');
-			window.scrollTo(0, 0);
-		});
 
 		// setup hasher for subscribing to hash changes and browser history
 		hasher.prependHash = '';
