@@ -38,7 +38,8 @@
       "hasher": true,
       "crossroads": true,
       "Handlebars": true,
-      "d3": true
+      "d3": true,
+      "L": true
     },
     "rules": {
       "indent": [
