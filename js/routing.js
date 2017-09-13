@@ -13,18 +13,19 @@ const Routing = {};
 	Routing.initializeRoutes = () => {
 		// setup crossroads for routing
 		crossroads.addRoute('/', () => {
-			loadTemplate('home');
-			App.initHome();
-			window.scrollTo(0, 0);
+			loadPage('home', App.initHome);
 		});
 		crossroads.addRoute('/text', () => {
-			loadTemplate('text');
-			window.scrollTo(0, 0);
+			loadPage('text');
 		});
 		crossroads.addRoute('/map', () => {
-			loadTemplate('map');
-			App.initMap();
-			window.scrollTo(0, 0);
+			loadPage('map', App.initMap);
+		});
+		crossroads.addRoute('/buttons', () => {
+			loadPage('buttons', App.initButtons);
+		});
+		crossroads.addRoute('/filters', () => {
+			loadPage('filters', App.initFilters);
 		});
 
 		// setup hasher for subscribing to hash changes and browser history
@@ -34,6 +35,11 @@ const Routing = {};
 		hasher.init();
 	};
 
+	function loadPage(pageName, func, ...data) {
+		loadTemplate(pageName);
+		if (func) func(...data);
+		window.scrollTo(0, 0);
+	}
 	function parseHash(newHash) { crossroads.parse(newHash); }
 	function loadTemplate(page, data) {
 		$('#page-content').html(templates[page](data));
