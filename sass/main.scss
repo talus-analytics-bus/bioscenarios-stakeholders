@@ -3,12 +3,19 @@
 @import 'helpers/colors';
 @import 'helpers/mixins';
 
+@import 'components/blocks';
+@import 'components/buttons';
 @import 'components/containers';
 @import 'components/footer';
-@import 'components/map';
+@import 'components/maps';
 @import 'components/navbar';
+@import 'components/sections';
+@import 'components/sliders';
+@import 'components/tabs';
 @import 'components/text';
+@import 'components/tooltips';
 
+@import 'pages/buttons';
 @import 'pages/home';
 @import 'pages/map';
 

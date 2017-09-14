@@ -33,14 +33,21 @@
 				</form>
 				<ul class="nav navbar-nav navbar-right">
 					<li><a href="#">Home</a></li>
+					<li><a href="#libraries">Libraries</a></li>
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Components <span class="caret"></span></a>
 						<ul class="dropdown-menu">
 							<li><a href="#text">Text</a></li>
-							<li><a href="#map">Maps</a></li>
+							<li><a href="#blocks">Blocks &amp; Sections</a></li>
+							<li role="separator" class="divider"></li>
 							<li><a href="#buttons">Buttons &amp; Tabs</a></li>
 							<li><a href="#filters">Filters</a></li>
-							<li role="separator" class="divider"></li>
+							<li><a href="#map">Maps</a></li>
+						</ul>
+					</li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Functions <span class="caret"></span></a>
+						<ul class="dropdown-menu">
 							<li><a href="#">Exporting Data</a></li>
 						</ul>
 					</li>
@@ -86,7 +93,7 @@
 	</script>
 		
 	<script id="map-template" type="text/x-handlebars-template">
-		<div class="map-container container container-content">
+		<div class="map-page-container container container-content">
 			<h3 class="map-title">Maps</h3>
 			<div class="description">
 				This map uses <a href="http://leafletjs.com/" target="_blank">Leaflet JS</a> with a light <a href="https://www.mapbox.com/studio/" target="_blank">Mapbox</a> tile layer.
@@ -97,8 +104,72 @@
 	</script>
 
 	<script id="buttons-template" type="text/x-handlebars-template">
-		<div class="buttons-container container container-content">
-			<h3>Buttons &amp; Tabs</h3>
+		<div class="buttons-page-container container container-content">
+			<div class="section">
+				<h3>Buttons</h3>
+				<div class="description">
+					For buttons, the Bootstrap theme is used.
+					The <b>default</b> button style is more often used, as it provides a minimal look without using color.
+					However, the <b>primary</b> button style is useful for drawing the user's attention.
+					An <b>alternate</b> style is also available. It extends the Bootstrap style, but has more rounded corners and is a bit wider.
+				</div>
+				<div class="buttons-container">
+					<div class="btn btn-default">Default</div>
+					<div class="btn btn-primary">Primary</div>
+				</div>
+				<div class="sec-buttons-container">
+					<div class="alt-btn btn btn-default">Alt Default</div>
+					<div class="alt-btn btn btn-primary">Alt Primary</div>
+					<div class="alt-btn-large btn btn-default">Alt Default Large</div>
+				</div>
+			</div>
+			<div class="section">
+				<h3>Button Groups</h3>
+				<div class="description">
+					Button groups are useful for supplying a global radio button-like option for a page.
+					Note that for the toggle to work, the behavior must be hard-coded in the proper js file.
+				</div>
+				<div class="btn-group-container">
+					<div class="btn-group">
+						<div class="btn btn-default active">Button 1</div>
+						<div class="btn btn-default">Button 2</div>
+						<div class="btn btn-default">Button 3</div>
+					</div>
+				</div>
+			</div>
+			<div class="section">
+				<h3>Tabs</h3>
+				<div class="description">
+					<p>
+						Tabs are similar to button groups, but add bordered content beneath the buttons.
+						Tabs are useful for showing different views on a single page.
+					</p>
+					<p>
+						To create tabs, place multiple bootstrap buttons with class "tab" inside a bootstrap button group. Then, place a div with class "tab-content-container" immediately after the tab container. There should be a "tab-content" div inside the tab content container for each tab.
+					</p>
+					<p>
+						Note that the behavior for tabs must be hard-coded in the proper js file. If you want the active tab state to be saved, make sure that the click behavior for tabs triggers a hash change.
+					</p>
+				</div>
+				<div class="tab-container">
+					<div class="btn-group">
+						<div class="tab btn btn-default" tab="1">Tab 1</div>
+						<div class="tab btn btn-default" tab="2">Tab 2</div>
+						<div class="tab btn btn-default" tab="3">Tab 3</div>
+					</div>
+				</div>
+				<div class="tab-content-container">
+					<div class="tab-content" tab="1">
+						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce luctus sed nulla eu placerat. Cras sed neque sit amet ipsum dignissim dignissim. Phasellus ante turpis, viverra ut dui efficitur, viverra venenatis libero.
+					</div>
+					<div class="tab-content" tab="2">
+						Vivamus eu nulla ut turpis convallis pretium quis ut augue. In sit amet est vel massa hendrerit tincidunt. Sed velit erat, scelerisque ut finibus vel, luctus condimentum enim. Sed nec dui sit amet lorem volutpat pellentesque ac suscipit lectus. Donec vitae orci tempor, malesuada quam non, ultrices tortor. Ut accumsan libero non ullamcorper eleifend. Ut elementum placerat est, nec sodales orci tincidunt vitae.
+					</div>
+					<div class="tab-content" tab="3">
+						Sed consequat nunc metus, eu semper tortor fringilla eu. Ut ante lorem, euismod in urna quis, molestie gravida tellus. Aliquam ac magna venenatis, imperdiet dui nec, aliquet felis. In hac habitasse platea dictumst.
+					</div>
+				</div>
+			</div>
 		</div>
 	</script>
 
