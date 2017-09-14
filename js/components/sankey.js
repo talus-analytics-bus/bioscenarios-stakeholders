@@ -13,7 +13,7 @@
 		const color = d3.scaleOrdinal(d3.schemeCategory10);
 
 		const sankey = d3.sankey()
-			.nodeWidth(param.nodeWidth || 20)
+			.nodeWidth(param.nodeWidth || 30)
 			.nodePadding(param.nodePadding || 10)
 			.extent([[1, 1], [width - 1, height - 6]]);
 
@@ -25,7 +25,10 @@
 			.enter().append('path')
 				.attr('class', 'link')
 				.attr('d', d3.sankeyLinkHorizontal())
-				.attr('stroke-width', d => Math.max(1, d.width));
+				.style('fill', 'none')
+				.style('stroke', 'black')
+				.style('stroke-opacity', 0.2)
+				.style('stroke-width', d => Math.max(1, d.width));
 
 		// add in nodes
 		const nodes = chart.append('g').selectAll('g')
@@ -37,6 +40,7 @@
 			.attr('y', d => d.y0)
 			.attr('width', d => d.x1 - d.x0)
 			.attr('height', d => d.y1 - d.y0)
+			.style('stroke', 'black')
 			.style('fill', d => color(d.name));
 		nodes.append('text')
 			.attr('class', 'node-label')

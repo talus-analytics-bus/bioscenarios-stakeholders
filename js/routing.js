@@ -24,8 +24,8 @@ const Routing = {};
 		crossroads.addRoute('/tables', () => {
 			loadPage('tables', App.initTables);
 		});
-		crossroads.addRoute('/blocks', () => {
-			loadPage('blocks');
+		crossroads.addRoute('/sections', () => {
+			loadPage('sections');
 		});
 		crossroads.addRoute('/map', () => {
 			loadPage('map', App.initMap);

@@ -2,7 +2,6 @@
 var app = require('express')();
 var server = require('http').Server(app);
 var path = require('path');
-var bodyParser = require('body-parser');
 
 // if no hash, send to index
 app.get('/', function(req, res) {
