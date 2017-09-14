@@ -83,6 +83,35 @@
 		</div>
 	</script>
 
+	<script id="libraries-template" type="text/x-handlebars-template">
+		<div class="libraries-page-container container container-text">
+			<h3>Javascript Libraries</h3>
+			<div class="description">
+				Below is a list of Javascript libraries used in Talus web applications. Libraries used to build components are not included here.
+			</div>
+			<ul class="margin-top-10">
+				<li>
+						<a href="http://d3js.org" target="_blank">D3.js</a> - a data visualization library
+				</li>
+				<li>
+						<a href="https://jquery.com" target="_blank">jQuery</a> - js shortcut library
+				</li>
+				<li>
+						<a href="https://getbootstrap.com/docs/3.3/" target="_blank">Bootstrap 3</a> - library for stylish components
+				</li>
+				<li>
+						<a href="http://handlebarsjs.com/" target="_blank">Handlebars</a> - used to load html templates
+				</li>
+				<li>
+						<a href="https://github.com/millermedeiros/Hasher" target="_blank">Hasher</a> - hash navigation
+				</li>
+				<li>
+						<a href="http://fusejs.io" target="_blank">Fuse</a> - a simple fuzzy search library 
+				</li>
+			</ul>
+		</div>
+	</script>
+
 	<script id="text-template" type="text/x-handlebars-template">
 		<div class="text-page-container container container-text">
 			<h2>Big Header (h2)</h2>
@@ -99,10 +128,27 @@
 		</div>
 	</script>
 		
+	<script id="blocks-template" type="text/x-handlebars-template">
+		<div class="blocks-page-container container container-content">
+			<div class="section">
+				<h3>Sections</h3>
+				<div class="description">
+					Description 1
+				</div>
+			</div>
+			<div class="section">
+				<h3>Blocks</h3>
+				<div class="description">
+					Description 2
+				</div>
+			</div>
+		</div>
+	</script>
+
 	<script id="map-template" type="text/x-handlebars-template">
 		<div class="map-page-container container container-content">
 			<div class="section">
-				<h3 class="map-title">Leaflet Map</h3>
+				<h3>Leaflet Map</h3>
 				<div class="description">
 					<a href="http://leafletjs.com/" target="_blank">Leaflet</a> maps are useful for showing detailed topography. The map below uses a light <a href="https://www.mapbox.com/studio/" target="_blank">Mapbox</a> tile layer.
 					The basemap may be customized by specifying a different tile layer in <code>components/maps.js</code>. Note that the topographic data are pulled dynamically online.

@@ -15,8 +15,14 @@ const Routing = {};
 		crossroads.addRoute('/', () => {
 			loadPage('home', App.initHome);
 		});
+		crossroads.addRoute('/libraries', () => {
+			loadPage('libraries');
+		});
 		crossroads.addRoute('/text', () => {
 			loadPage('text');
+		});
+		crossroads.addRoute('/blocks', () => {
+			loadPage('blocks');
 		});
 		crossroads.addRoute('/map', () => {
 			loadPage('map', App.initMap);
