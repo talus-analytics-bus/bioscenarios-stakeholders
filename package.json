@@ -35,11 +35,14 @@
       "App": true,
       "Routing": true,
       "Util": true,
+      "Map": true,
       "hasher": true,
       "crossroads": true,
       "Handlebars": true,
       "d3": true,
-      "L": true
+      "L": true,
+      "noty": true,
+      "topojson": true
     },
     "rules": {
       "indent": [

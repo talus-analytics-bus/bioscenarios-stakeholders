@@ -18,7 +18,7 @@
 
 				// create a d3 map; note that a selector is passed
 				Map.createD3Map('#d3-map', us);
-		
+
 				// create lookup for county data
 				const countyData = d3.map();
 				data.forEach((d) => {
@@ -28,9 +28,11 @@
 				});
 
 				// set color scale
+				const blues = ['#f7fbff', '#deebf7', '#c6dbef', '#9ecae1',
+					'#6baed6', '#4292c6', '#2171b5', '#08519c', '#08306b'];
 				const colorScale = d3.scaleQuantile()
 					.domain(countyData.values())
-					.range(['#f7fbff','#deebf7','#c6dbef','#9ecae1','#6baed6','#4292c6','#2171b5','#08519c','#08306b']);
+					.range(blues);
 
 				// color counties
 				d3.selectAll('.county').transition()
@@ -38,6 +40,7 @@
 						if (countyData.has(d.id)) {
 							return colorScale(countyData.get(d.id));
 						}
+						return '#ccc';
 					});
 			});
 	};

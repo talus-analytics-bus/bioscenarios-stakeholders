@@ -20,7 +20,7 @@
 		sankey(data);
 
 		// add in links
-		const links = chart.append('g').selectAll('path')
+		chart.append('g').selectAll('path')
 			.data(data.links)
 			.enter().append('path')
 				.attr('class', 'link')
@@ -53,5 +53,5 @@
 				.style('text-anchor', 'start');
 
 		return chart;
-	}
+	};
 })();

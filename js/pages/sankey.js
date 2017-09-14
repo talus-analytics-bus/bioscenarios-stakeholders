@@ -9,7 +9,7 @@
 				{ name: 'Only unapproved for experiments' },
 				{ name: 'MCM available' },
 				{ name: 'No MCM' },
-				{ name: 'No MCM because Novel' }
+				{ name: 'No MCM because Novel' },
 			],
 			links: [
 				{ source: 0, target: 2, value: 70 },
@@ -22,9 +22,9 @@
 				{ source: 3, target: 4, value: 1 },
 				{ source: 3, target: 5, value: 3 },
 				{ source: 3, target: 6, value: 6 },
-				{ source: 3, target: 7, value: 5 }
-			]
-		}
+				{ source: 3, target: 7, value: 5 },
+			],
+		};
 		App.buildSankey('.sankey-chart', exampleData);
-	}
+	};
 })();

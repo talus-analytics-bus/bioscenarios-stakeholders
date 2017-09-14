@@ -1,12 +1,11 @@
 (() => {
 	App.initButtons = () => {
-
 		/* ------------------- Button Group Behavior ------------------ */
 		$('.btn-group-container .btn-group .btn').click(function activateButton() {
 			$(this).addClass('active')
 				.siblings().removeClass('active');
 		});
-		
+
 
 		/* ------------------- Tab Behavior ------------------ */
 		// defining tab behavior using jQuery

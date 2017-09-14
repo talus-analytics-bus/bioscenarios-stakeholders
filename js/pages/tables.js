@@ -4,14 +4,14 @@
 		const exampleData = [
 			{ name: 'Jeff', title: 'Software Engineer', hobbies: 'Basketball' },
 			{ name: 'Michael', title: 'Senior Analyst', hobbies: 'Opera' },
-			{ name: 'Dan', title: 'Quant Researcher', hobbies: 'Climbing' }
+			{ name: 'Dan', title: 'Quant Researcher', hobbies: 'Climbing' },
 		];
 
 		// make up column data
 		const exampleColData = [
 			{ name: 'Name', value: 'name' },
 			{ name: 'Title', value: 'title' },
-			{ name: 'Hobbies', value: 'hobbies' }
+			{ name: 'Hobbies', value: 'hobbies' },
 		];
 
 		// populate table
@@ -26,8 +26,8 @@
 			.data(exampleData)
 			.enter().append('tr');
 		rows.selectAll('td')
-			.data(d => exampleColData.map(c => ({rowData: d, colData: c })))
+			.data(d => exampleColData.map(c => ({ rowData: d, colData: c })))
 			.enter().append('td')
 				.text(d => d.rowData[d.colData.value]);
-	}
+	};
 })();

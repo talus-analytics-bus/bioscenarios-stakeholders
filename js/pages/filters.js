@@ -23,14 +23,14 @@
 		const multiselectOptions = {
 			includeSelectAllOption: true,
 			onChange: (option, checked) => {
-				noty({ text: `Changed option ${$(option).val()}` });
+				noty({ text: `Changed option ${$(option).val()} to ${checked}` });
 			},
 			onSelectAll: () => {
 				noty({ text: 'Selected all' });
 			},
 			onDeselectAll: () => {
 				noty({ text: 'Deselected all' });
-			},			
+			},
 		};
 
 		$('.multi-dropdown-default').multiselect(multiselectOptions);
