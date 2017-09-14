@@ -9,6 +9,9 @@
 		<!-- Stylesheets -->
 	<link href='http://fonts.googleapis.com/css?family=Open+Sans:800,600,400,300' rel='stylesheet' type='text/css'>
 	<link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
+	<link href="css/bootstrap-multiselect.css" rel="stylesheet" type="text/css">
+	<link href="css/tooltipster.bundle.min.css" rel="stylesheet" type="text/css">
+	<link href="css/tooltipster-sideTip-shadow.css" rel="stylesheet" type="text/css">
 	<link href="css/leaflet.css" rel="stylesheet" type="text/css">
 	<link href="css/main.css" rel="stylesheet" type="text/css">
 </head>
@@ -38,11 +41,15 @@
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Components <span class="caret"></span></a>
 						<ul class="dropdown-menu">
 							<li><a href="#text">Text</a></li>
+							<li><a href="#tables">Tables</a></li>
 							<li><a href="#blocks">Blocks &amp; Sections</a></li>
 							<li role="separator" class="divider"></li>
 							<li><a href="#buttons">Buttons &amp; Tabs</a></li>
 							<li><a href="#filters">Filters</a></li>
 							<li><a href="#map">Maps</a></li>
+							<li role="separator" class="divider"></li>
+							<li><a href="#tooltips">Tooltips</a></li>
+							<li><a href="#notifications">Notifications</a></li>
 						</ul>
 					</li>
 					<li class="dropdown">
@@ -174,8 +181,55 @@
 	</script>
 
 	<script id="filters-template" type="text/x-handlebars-template">
-		<div class="filters-container container container-content">
-			<h3>Filters</h3>
+		<div class="filters-page-container container container-content">
+			<div class="section">
+				<h3>Dropdowns</h3>
+				<div class="description">
+					The two types of dropdowns used the most are the single-select dropdown and the multi-select dropdown. The dropdowns are almost always populated by dynamic data. See the js file for an example of how to populate the dropdowns.
+				</div>
+				<div class="filters-container">
+					<div class="dropdown-label">Dropdown Label</div>
+					<select class="single-dropdown form-control"></select>
+				</div>
+				<div class="filters-container">
+					<div class="dropdown-label-inline">Inline Dropdown Label:</div>
+					<select class="single-dropdown form-control"></select>
+				</div>
+			</div>
+			<div class="section">
+				<h3>Multiselect Dropdowns</h3>
+				<div class="description">
+					A <a href="http://davidstutz.github.io/bootstrap-multiselect" target="_blank">bootstrap multiselect dropdown</a> is used to allow the user the ability to select multiple options.
+				</div>
+				<div class="filters-container">
+					<select class="multi-dropdown-default form-control" multiple="multiple"></select>
+					<select class="multi-dropdown-primary form-control" multiple="multiple"></select>
+				</div>
+			</div>
+			<div class="section">
+				<h3>Row of Dropdowns</h3>
+				<div class="description">
+					Often, a row of multiple dropdowns are presented to the user. Below is an example of how that may be achieved using the "dropdown-box" class.
+				</div>
+				<div class="dropdown-row">
+					<div class="dropdown-box">
+						<div class="dropdown-label">Dropdown 1</div>
+						<select class="single-dropdown form-control"></select>
+					</div>
+					<div class="dropdown-box">
+						<div class="dropdown-label">Dropdown 2</div>
+						<select class="multi-dropdown-default form-control" multiple="multiple"></select>
+					</div>
+					<div class="dropdown-box">
+						<div class="dropdown-label">Dropdown 3</div>
+						<select class="multi-dropdown-default form-control" multiple="multiple"></select>
+					</div>
+					<div class="dropdown-box">
+						<div class="dropdown-label">Dropdown 4</div>
+						<select class="multi-dropdown-default form-control" multiple="multiple"></select>
+					</div>
+				</div>
+			</div>
 		</div>
 	</script>
 	
@@ -193,6 +247,11 @@
 	<script src="lib/hasher.min.js"></script>
 	<script src="lib/handlebars-v3.0.0.js"></script>	
 	
+	<!-- Miscellaneous Libraries -->
+	<script src="lib/bootstrap-multiselect.js"></script>
+	<script src="lib/jquery.noty.packaged.min.js"></script>
+	<script src="lib/tooltipster.bundle.min.js"></script>
+
 	<!--<script src="build/lib.min.js"></script>-->
 		
 	<!-- Project Specific Files -->

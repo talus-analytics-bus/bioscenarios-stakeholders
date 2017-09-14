@@ -39,7 +39,7 @@ const Util = {};
 
 	// populates a select element with the given data using d3
 	Util.populateSelect = (selector, data, param = {}) => {
-		let options = d3.select(selector).selectAll('option')
+		let options = d3.selectAll(selector).selectAll('option')
 			.data(data);
 		options.exit().remove();
 		const newOptions = options.enter().append('option');
