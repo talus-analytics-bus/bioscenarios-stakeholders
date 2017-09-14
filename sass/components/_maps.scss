@@ -1,3 +1,10 @@
-#map {
-	height: 500px;
+.states,
+.counties {
+	fill: none;
+	stroke: white;
+	stroke-linejoin: round;
+}
+.state,
+.county {
+	fill: #ccc;
 }

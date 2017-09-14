@@ -1,3 +1,14 @@
-#map {
+#leaflet-map {
 	margin-top: 30px;
+	height: 400px;
+}
+.d3-map-container {
+	text-align: center;
+}
+#d3-map {
+	display: inline-block;
+	margin-top: 30px;
+	width: 800px;
+	text-align: center;
+	border: $light-border;
 }

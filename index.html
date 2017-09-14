@@ -101,12 +101,23 @@
 		
 	<script id="map-template" type="text/x-handlebars-template">
 		<div class="map-page-container container container-content">
-			<h3 class="map-title">Maps</h3>
-			<div class="description">
-				This map uses <a href="http://leafletjs.com/" target="_blank">Leaflet JS</a> with a light <a href="https://www.mapbox.com/studio/" target="_blank">Mapbox</a> tile layer.
-				The basemap may be customized by specifying a different tile layer in <code>components/maps.js</code>.
+			<div class="section">
+				<h3 class="map-title">Leaflet Map</h3>
+				<div class="description">
+					<a href="http://leafletjs.com/" target="_blank">Leaflet</a> maps are useful for showing detailed topography. The map below uses a light <a href="https://www.mapbox.com/studio/" target="_blank">Mapbox</a> tile layer.
+					The basemap may be customized by specifying a different tile layer in <code>components/maps.js</code>. Note that the topographic data are pulled dynamically online.
+				</div>
+				<div id="leaflet-map"></div>
 			</div>
-			<div id="map"></div>
+			<div class="section">
+				<h3>D3 Map</h3>
+				<div class="description">
+					D3 maps are useful for visualizing geographic data. County and state outlines are included, but no additional topography is shown. Coloring counties or states works well with D3 maps. The underlying data used to draw this map can be found in <code>data/location_data.tsv</code>.
+				</div>
+				<div class="d3-map-container">
+					<div id="d3-map"></div>
+				</div>
+			</div>
 		</div>
 	</script>
 
@@ -248,6 +259,7 @@
 	<script src="lib/handlebars-v3.0.0.js"></script>	
 	
 	<!-- Miscellaneous Libraries -->
+	<script src="lib/topojson.v2.min.js"></script>
 	<script src="lib/bootstrap-multiselect.js"></script>
 	<script src="lib/jquery.noty.packaged.min.js"></script>
 	<script src="lib/tooltipster.bundle.min.js"></script>
