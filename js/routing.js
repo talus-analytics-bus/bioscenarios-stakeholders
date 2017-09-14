@@ -21,6 +21,9 @@ const Routing = {};
 		crossroads.addRoute('/text', () => {
 			loadPage('text');
 		});
+		crossroads.addRoute('/tables', () => {
+			loadPage('tables', App.initTables);
+		});
 		crossroads.addRoute('/blocks', () => {
 			loadPage('blocks');
 		});

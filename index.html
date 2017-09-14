@@ -36,7 +36,6 @@
 				</form>
 				<ul class="nav navbar-nav navbar-right">
 					<li><a href="#">Home</a></li>
-					<li><a href="#libraries">Libraries</a></li>
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Components <span class="caret"></span></a>
 						<ul class="dropdown-menu">
@@ -58,6 +57,7 @@
 							<li><a href="#">Exporting Data</a></li>
 						</ul>
 					</li>
+					<li><a href="#libraries">Libraries</a></li>
 				</ul>
 			</div><!-- /.navbar-collapse -->
 		</div><!-- /.container-fluid -->
@@ -125,6 +125,19 @@
 			<p class="instructions">
 				This is <b>instructions text</b> (class="instructions"). Use this when providing instructions or commands to the user.
 			</p>
+		</div>
+	</script>
+
+	<script id="tables-template" type="text/x-handlebars-template">
+		<div class="text-page-container container container-text">
+			<h3>Tables</h3>
+			<p class="description">
+				Bootstrap tables are most commonly used when displaying data in a tabular format.
+				D3 is almost always used to populate the data in the table.
+			</p>
+			<div class="margin-top-20">
+				<table class="table table-condensed table-hover table-striped"></table>
+			</div>
 		</div>
 	</script>
 		
@@ -321,6 +334,7 @@
 	<script src="js/pages/filters.js"></script>
 	<script src="js/pages/home.js"></script>
 	<script src="js/pages/map.js"></script>
+	<script src="js/pages/tables.js"></script>
 	<script src="js/init.js"></script>
 
 	<!--<script src="build/bundle.min.js"></script>-->
