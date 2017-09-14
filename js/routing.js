@@ -36,6 +36,9 @@ const Routing = {};
 		crossroads.addRoute('/filters', () => {
 			loadPage('filters', App.initFilters);
 		});
+		crossroads.addRoute('/sankey', () => {
+			loadPage('sankey', App.initSankey);
+		});
 
 		// setup hasher for subscribing to hash changes and browser history
 		hasher.prependHash = '';
