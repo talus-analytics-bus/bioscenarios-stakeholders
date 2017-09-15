@@ -28,8 +28,8 @@
 				});
 
 				// set color scale
-				const blues = ['#f7fbff', '#deebf7', '#c6dbef', '#9ecae1',
-					'#6baed6', '#4292c6', '#2171b5', '#08519c', '#08306b'];
+				const blues = ['#f7fcfd', '#e0ecf4', '#bfd3e6', '#9ebcda',
+					'#8c96c6', '#8c6bb1', '#88419d', '#810f7c', '#4d004b'];
 				const colorScale = d3.scaleQuantile()
 					.domain(countyData.values())
 					.range(blues);

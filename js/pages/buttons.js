@@ -14,7 +14,11 @@
 		});
 
 		// function for making the correct tab active and displaying the correct tab content
+		let activeTab;
 		function showTab(tabName) {
+			if (activeTab === tabName) return;
+			activeTab = tabName;
+
 			// make the correct tab active; make all others inactive
 			$('.tab-container .tab').removeClass('active');
 			$(`.tab-container .tab[tab=${tabName}]`).addClass('active');
