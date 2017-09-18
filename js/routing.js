@@ -51,6 +51,9 @@ const Routing = {};
 		crossroads.addRoute('/sankey', () => {
 			loadPage('sankey', App.initSankey);
 		});
+		crossroads.addRoute('/force', () => {
+			loadPage('force', App.initForce);
+		});
 
 		// setup hasher for subscribing to hash changes and browser history
 		hasher.prependHash = '';

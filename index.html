@@ -63,6 +63,7 @@
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Charts <span class="caret"></span></a>
 						<ul class="dropdown-menu">
 							<li><a href="#sankey">Sankey</a></li>
+							<li><a href="#force">Force Diagram</a></li>
 						</ul>
 					</li>
 					<li class="dropdown">
@@ -462,6 +463,16 @@
 			<div class="sankey-chart margin-top-10"></div>
 		</div>
 	</script>
+
+	<script id="force-template" type="text/x-handlebars-template">
+		<div class="force-page-container container container-content">
+			<h3>Force Diagrams</h3>
+			<div class="description">
+				Force diagrams made by d3 are useful as an interactive display of a network of nodes.
+			</div>
+			<div class="force-chart"></div>
+		</div>
+	</script>
 	
 	
 	<!-- General Libraries -->
@@ -490,10 +501,12 @@
 	<script src="js/utility.js"></script>
 	<script src="js/routing.js"></script>
 	<script src="js/app.js"></script>
+	<script src="js/components/force.js"></script>
 	<script src="js/components/map.js"></script>
 	<script src="js/components/sankey.js"></script>
 	<script src="js/pages/buttons.js"></script>
 	<script src="js/pages/filters.js"></script>
+	<script src="js/pages/force.js"></script>
 	<script src="js/pages/home.js"></script>
 	<script src="js/pages/map.js"></script>
 	<script src="js/pages/notifications.js"></script>
