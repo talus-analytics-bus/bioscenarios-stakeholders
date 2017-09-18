@@ -3,12 +3,15 @@
 	height: 400px;
 }
 .d3-map-container {
+	margin-top: 30px;
+	padding: 0 10px 10px;
+	border: $light-border;
+	background-color: #e3e3e3;
 	text-align: center;
 }
 #d3-map {
 	display: inline-block;
-	margin-top: 30px;
-	width: 800px;
-	text-align: center;
-	border: $light-border;
+}
+.map-legend {
+	margin-top: 20px;
 }
