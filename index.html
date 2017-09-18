@@ -8,6 +8,7 @@
 		
 		<!-- Stylesheets -->
 	<link href='http://fonts.googleapis.com/css?family=Open+Sans:800,600,400,300' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Raleway:600,400' rel='stylesheet' type='text/css'>
 	<link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
 	<link href="css/bootstrap-multiselect.css" rel="stylesheet" type="text/css">
 	<link href="css/tooltipster.bundle.min.css" rel="stylesheet" type="text/css">
@@ -323,6 +324,82 @@
 		</div>
 	</script>
 
+	<script id="tooltips-template" type="text/x-handlebars-template">
+		<div class="tooltips-page-container container container-content">
+			<h3>Tooltips</h3>
+			<div class="description">
+				For tooltips, the 
+				<a href="http://iamceege.github.io/tooltipster/" target="_blank">jQuery tooltipster plugin</a>
+				is typically used.
+			</div>
+		</div>
+	</script>
+
+	<script id="notifications-template" type="text/x-handlebars-template">
+		<div class="notifications-page-container container container-content">
+			<div class="section">
+				<h3>Notifications</h3>
+				<div class="description">
+					<a href="https://ned.im/noty/#/" target="_blank">Noty</a>
+					is typically used to display notifications to the user.
+					Examples of uses are the completion of a file download or an advisory to use a different browser.
+				</div>
+			</div>
+			<div class="section">
+				<h3>Progress Bar</h3>
+				<div class="description">
+					<a href="http://ricostacruz.com/nprogress/" target="_blank">NProgress</a>
+					is typically used to show progress.
+					It is a slim progress bar with two calls: <code>NProgress.start()</code> and <code>NProgress.done()</code>. The color of the bar may be customized as well in the css file.
+				</div>
+			</div>
+		</div>
+	</script>
+
+	<script id="fonts-template" type="text/x-handlebars-template">
+		<div class="fonts-page-container container container-content">
+			<div class="section">
+				<h3>Fonts</h3>
+				<div class="description">
+					The two most commonly used fonts in Talus web applications are Open Sans and Raleway.
+					Open Sans is used as the primary font, while Raleway is used as an emphasis font.
+					For example, Raleway is a good choice for displaying large numbers meant as a take-home message to the user.
+					Both fonts are imported via a CDN and can be found on Google Fonts.
+				</div>
+				<p class="open-sans-message">
+					Open Sans is a clean-looking sans-serif font.
+				</p>
+				<p class="raleway-message">
+					Raleway: $2,400,000
+				</p>
+			</div>
+			<div class="section">
+				<h3>Font Weights</h3>
+				<div class="description">
+					A font weight of <b>600</b> is used for bold and is useful for displaying emphasis.
+					Font weights of <light>300</light> work well when displayed in large font sizes as titles or subtitles.
+				</div>
+				<div class="example-snippet">
+					<div class="example-title">Font-Weight 300</div>
+					<div class="example-subtitle">Font-weight 400 with information</div>
+				</div>
+				<div class="example-snippet">
+					<div class="example-title-bold">Font-Weight 600</div>
+					<div class="example-subtitle">Font-weight 400 with information</div>
+				</div>
+			</div>
+		</div>
+	</script>
+
+	<script id="colors-template" type="text/x-handlebars-template">
+		<div class="colors-page-container container container-content">
+			<h3>Fonts</h3>
+			<div class="description">
+				Sankey charts are useful for visualizing data flow.
+			</div>
+		</div>
+	</script>
+
 	<script id="sankey-template" type="text/x-handlebars-template">
 		<div class="sankey-page-container container container-content">
 			<h3>Sankey Chart</h3>
@@ -366,8 +443,10 @@
 	<script src="js/pages/filters.js"></script>
 	<script src="js/pages/home.js"></script>
 	<script src="js/pages/map.js"></script>
+	<script src="js/pages/notifications.js"></script>
 	<script src="js/pages/sankey.js"></script>
 	<script src="js/pages/tables.js"></script>
+	<script src="js/pages/tooltips.js"></script>
 	<script src="js/init.js"></script>
 
 	<!--<script src="build/bundle.min.js"></script>-->

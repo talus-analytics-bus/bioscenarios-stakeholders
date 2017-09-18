@@ -36,6 +36,18 @@ const Routing = {};
 		crossroads.addRoute('/filters', () => {
 			loadPage('filters', App.initFilters);
 		});
+		crossroads.addRoute('/tooltips', () => {
+			loadPage('tooltips', App.initTooltips);
+		});
+		crossroads.addRoute('/notifications', () => {
+			loadPage('notifications', App.initNotifications);
+		});
+		crossroads.addRoute('/fonts', () => {
+			loadPage('fonts');
+		});
+		crossroads.addRoute('/colors', () => {
+			loadPage('colors');
+		});
 		crossroads.addRoute('/sankey', () => {
 			loadPage('sankey', App.initSankey);
 		});
