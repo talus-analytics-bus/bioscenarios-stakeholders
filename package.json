@@ -42,7 +42,9 @@
       "d3": true,
       "L": true,
       "noty": true,
-      "topojson": true
+      "topojson": true,
+      "NProgress": true,
+      "Fuse": true
     },
     "rules": {
       "indent": [
