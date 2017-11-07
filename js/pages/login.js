@@ -40,7 +40,7 @@
 	function login() {
 		const formData = `emailOrUsername=test1&password=test2`;
 
-		fetch('/auth/login', {
+		fetch('/login', {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
 			body: formData,

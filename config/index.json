@@ -1,0 +1,4 @@
+{
+	"dbUri": "mongodb://jpecht:test22@ds127063.mlab.com:27063/personal",
+	"jwtSecret": "Wh;~e49[[BERw]bY"
+}

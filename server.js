@@ -3,6 +3,15 @@ var app = require('express')();
 var server = require('http').Server(app);
 var path = require('path');
 
+var mongoose = require('mongoose');
+var configDB = require('./config/index.json');
+mongoose.createConnection(configDB.dbUri);
+
+var passport = require('passport');
+app.use(passport.initialize());
+app.use(passport.session());
+
+
 // if no hash, send to index
 app.get('/', function(req, res) {
 	res.sendFile(path.join(__dirname, '/', 'index.html'));
@@ -12,6 +21,10 @@ app.get('/', function(req, res) {
 app.get(/^(.+)$/, function(req, res) {
 	res.sendFile(path.join(__dirname, '/', req.params[0]));
 });	
+
+app.post('/login', passport.authenticate('local'), function(req, res) {
+	console.log('logging in...');
+});
 
 // Start the HTTP Server
 server.listen(process.env.PORT || 8888, function() {
