@@ -65,6 +65,7 @@
 						<ul class="dropdown-menu">
 							<li><a href="#svgcrowbar">SVG Crowbar</a></li>
 							<li role="separator" class="divider"></li>
+							<li><a href="#stacked">Stacked Bar Chart</a></li>
 							<li><a href="#sankey">Sankey</a></li>
 							<li><a href="#force">Force Diagram</a></li>
 						</ul>
@@ -498,6 +499,25 @@
 		</div>
 	</script>
 
+	<script id="stacked-template" type="text/x-handlebars-template">
+		<div class="stacked-page-container container container-content">
+			<h3>Stacked Bar Charts</h3>
+			<div class="description">
+				Stacked bar charts are useful for showing a third dimension of data.
+			</div>
+			<div class="row margin-top-20">
+				<div class="col-sm-6">
+					<h4>Vertical Stacked Bar Chart</h4>
+					<div class="vertical-bar-chart"></div>
+				</div>
+				<div class="col-sm-6">
+					<h4>Horizontal Stacked Bar Chart</h4>
+					<div class="horizontal-bar-chart"></div>
+				</div>
+			</div>
+		</div>
+	</script>
+
 	<script id="sankey-template" type="text/x-handlebars-template">
 		<div class="sankey-page-container container container-content">
 			<h3>Sankey Chart</h3>
@@ -549,6 +569,7 @@
 	<script src="js/components/force.js"></script>
 	<script src="js/components/map.js"></script>
 	<script src="js/components/sankey.js"></script>
+	<script src="js/components/stackedBarChart.js"></script>
 	<script src="js/pages/buttons.js"></script>
 	<script src="js/pages/filters.js"></script>
 	<script src="js/pages/force.js"></script>
@@ -556,6 +577,7 @@
 	<script src="js/pages/map.js"></script>
 	<script src="js/pages/notifications.js"></script>
 	<script src="js/pages/sankey.js"></script>
+	<script src="js/pages/stacked.js"></script>
 	<script src="js/pages/tables.js"></script>
 	<script src="js/pages/tooltips.js"></script>
 	<script src="js/init.js"></script>

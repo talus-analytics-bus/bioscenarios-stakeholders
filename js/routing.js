@@ -51,6 +51,9 @@ const Routing = {};
 		crossroads.addRoute('/svgcrowbar', () => {
 			loadPage('svgcrowbar');
 		});
+		crossroads.addRoute('/stacked', () => {
+			loadPage('stacked', App.initStacked);
+		});
 		crossroads.addRoute('/sankey', () => {
 			loadPage('sankey', App.initSankey);
 		});
