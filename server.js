@@ -3,17 +3,21 @@ var app = require('express')();
 var server = require('http').Server(app);
 var path = require('path');
 
-var mongoose = require('mongoose');
 var passport = require('passport');
+var mongoose = require('mongoose');
 
 var configDB = require('./config/database.js');
-mongoose.createConnection(configDB.url);
+mongoose.connect(configDB.url, {
+	useMongoClient: true,
+});
 
-require('./config/passport')(passport);
+var bodyParser = require('body-parser');
+app.use(bodyParser());
 
 // set up passport
 app.use(passport.initialize());
 app.use(passport.session());
+require('./config/passport')(passport);
 
 // if no hash, send to index
 app.get('/', function(req, res) {
@@ -27,16 +31,14 @@ app.get(/^(.+)$/, function(req, res) {
 
 app.post('/signup', function(req, res, next) {
 	passport.authenticate('local-signup', function(err, user, info) {
+		console.log('in passport authenticate');
 		if (err) {
 			console.log(err);
 			return next(err);
 		}
-		if (!user) {
-			console.log('auth failed');
-		}
 		req.login(user, function(err) {
 			if (err) {
-				console.log(err);
+				//console.log(err);
 				return next(err);
 			}
 			return res.send({ success: true, message: 'Success!' });

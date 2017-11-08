@@ -3,11 +3,12 @@ const User = require('../models/user');
 
 module.exports = function(passport) {
 	passport.serializeUser(function(user, done) {
-		console.log(user);
+		console.log('in serialize');
 		done(null, 'test');
 	});
 
 	passport.deserializeUser(function(id, done) {
+		console.log('in deserialize');
 		User.findById(id, function(err, user) {
 			done(err, user);
 		});
@@ -18,23 +19,18 @@ module.exports = function(passport) {
 		passwordField: 'password',
 		passReqToCallback: true,
 	}, function(req, username, password, done) {
-		process.nextTick(function() {
-			User.findOne({ 'local.username': username }, function(err, user) {
-				if (err) return done(err);
-				if (user) return done(null, false);
-				else {
-					var newUser = new User();
-					newUser.local.username = username;
-					newUser.local.password = password;
-					newUser.save(function(err) {
-						if (err) throw err;
-						return done(null, newUser);
-					});
-				}
-			});
-		})
+		const userData = {
+			username: username.trim(),
+			password: password.trim(),
+		};
+		const newUser = new User(userData);
+		newUser.save(function(err) {
+			console.log('user created!');
+			if (err) return done(err);
+			return done(null, newUser);
+		});
 	}));
-}
+};
 
 
 /*const validator = require('validator');
