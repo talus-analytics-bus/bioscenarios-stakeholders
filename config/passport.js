@@ -1,10 +1,45 @@
 const LocalStrategy = require('passport-local').Strategy;
-const User = require('mongoose').model('User');
-const validator = require('validator');
+const User = require('../models/user');
+
+module.exports = function(passport) {
+	passport.serializeUser(function(user, done) {
+		console.log(user);
+		done(null, 'test');
+	});
+
+	passport.deserializeUser(function(id, done) {
+		User.findById(id, function(err, user) {
+			done(err, user);
+		});
+	});
+
+	passport.use('local-signup', new LocalStrategy({
+		usernameField: 'username',
+		passwordField: 'password',
+		passReqToCallback: true,
+	}, function(req, username, password, done) {
+		process.nextTick(function() {
+			User.findOne({ 'local.username': username }, function(err, user) {
+				if (err) return done(err);
+				if (user) return done(null, false);
+				else {
+					var newUser = new User();
+					newUser.local.username = username;
+					newUser.local.password = password;
+					newUser.save(function(err) {
+						if (err) throw err;
+						return done(null, newUser);
+					});
+				}
+			});
+		})
+	}));
+}
+
+
+/*const validator = require('validator');
 const jwt = require('jsonwebtoken');
-
-const config = require('../../config/index.json');
-
+const config = require('../config/index.json');
 
 module.exports = new LocalStrategy({
 	usernameField: 'emailOrUsername',
@@ -46,4 +81,4 @@ module.exports = new LocalStrategy({
 			});
 		});
 	});
-});
+});*/

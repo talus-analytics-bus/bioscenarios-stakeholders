@@ -1,18 +1,18 @@
 (() => {
 	App.initLogin = () => {
-		$('.login-button').click(login);
+		/*$('.login-button').click(login);
 		$('.password-input').on('keyup', (e) => {
 			if (e.which === 13) login();
 		});
-	};
+	};*/
 
-	const instance = axios.create({
+	/*const instance = axios.create({
 		baseURL: 'http://auth.talusanalytics.com:3000',
 		//baseURL: 'http://localhost:3000',
 		//baseURL: 'https://randomuser.me/api/',
 		timeout: 1000,
 		headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-	});
+	});*/
 	
 	/*function login() {
 		NProgress.start();
@@ -38,9 +38,9 @@
 	};*/
 
 	function login() {
-		const formData = `emailOrUsername=test1&password=test2`;
+		const formData = `username=test1&password=test2`;
 
-		fetch('/login', {
+		fetch('/signup', {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
 			body: formData,

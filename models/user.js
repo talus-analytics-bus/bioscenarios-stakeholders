@@ -14,6 +14,14 @@ const UserSchema = new mongoose.Schema({
 	lastLoggedIn: Date,
 });
 
+UserSchema.methods.generateHash = function(password) {
+	return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
+};
+
+UserSchema.methods.validPassword = function(password) {
+	return bcrypt.compareSync(password, this.local.password);
+}
+
 UserSchema.methods.comparePassword = function comparePassword(password, callback) {
 	bcrypt.compare(password, this.password, callback);
 };
