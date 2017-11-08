@@ -23,15 +23,12 @@
 		})
 			.then((response) => {
 				if (response.status !== 200) {
-					console.log(response);
-					console.log('Error: ' + response.status);
-					noty({ text: 'Error!' });
+					noty({ text: '<b>Error!</b><br>The credentials you provided are invalid!' });
 					return;
 				}
 
 				response.json().then((data) => {
-					console.log(data);
-					noty({ type: 'success', text: 'Success!' });
+					noty({ type: 'success', text: '<b>Success!</b><br>You are now logged in!' });
 					hasher.setHash('/');
 				});
 			})
