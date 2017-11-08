@@ -14,6 +14,22 @@ UserSchema.methods.comparePassword = function comparePassword(password, callback
 	bcrypt.compare(password, this.password, callback);
 };
 
+UserSchema.statics.authenticate = (email, password, callback) => {
+	User.findOne({ email }).exec((err, user) => {
+		if (err) return callback(err);
+		else if (!user) {
+			var err = new Error('User not found.');
+			err.status = 401;
+			return callback(err);
+		}
+
+		bcrypt.compare(password, user.password, (err, result) => {
+			if (result === true) return callback(null, user);
+			return callback();
+		});
+	});
+};
+
 UserSchema.pre('save', function saveHook(next) {
 	const user = this;
 	if (!user.isModified('password')) return next();

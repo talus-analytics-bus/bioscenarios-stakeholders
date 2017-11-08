@@ -2,6 +2,7 @@
 var app = require('express')();
 var server = require('http').Server(app);
 var path = require('path');
+var session = require('express-session');
 var passport = require('passport');
 var mongoose = require('mongoose');
 var configDB = require('./config/database.js');
@@ -14,6 +15,13 @@ mongoose.connect(configDB.url, {
 // use body parser
 var bodyParser = require('body-parser');
 app.use(bodyParser());
+
+// add session middleware
+app.use(session({
+	secret: 'its a secret',
+	resave: true,
+	saveUninitialized: false,
+}));
 
 // set up passport
 app.use(passport.initialize());
