@@ -31,23 +31,34 @@ app.get(/^(.+)$/, function(req, res) {
 
 app.post('/signup', function(req, res, next) {
 	passport.authenticate('local-signup', function(err, user, info) {
-		console.log('in passport authenticate');
 		if (err) {
 			console.log(err);
 			return next(err);
 		}
 		req.login(user, function(err) {
 			if (err) {
-				//console.log(err);
+				console.log(err);
 				return next(err);
 			}
-			return res.send({ success: true, message: 'Success!' });
+			return res.send({ success: true, message: 'Success registering!' });
 		});
 	})(req, res, next);
 });
 
-app.post('/login', passport.authenticate('local'), function(req, res) {
-	console.log('logging in...');
+app.post('/login', function(req, res, next) {
+	passport.authenticate('local-login', function(err, user, info) {
+		if (err) {
+			console.log(err);
+			return next(err);
+		}
+		req.login(user, function(err) {
+			if (err) {
+				console.log(err);
+				return next(err);
+			}
+			return res.send({ success: true, message: 'Success logging in!' });
+		});
+	})(req, res, next);
 });
 
 // Start the HTTP Server
