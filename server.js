@@ -1,11 +1,11 @@
 // NodeJS script for starting server and listening for HTTP requests
-var app = require('express')();
-var server = require('http').Server(app);
-var path = require('path');
-var session = require('express-session');
-var passport = require('passport');
-var mongoose = require('mongoose');
-var configDB = require('./config/database.js');
+const app = require('express')();
+const server = require('http').Server(app);
+const path = require('path');
+const session = require('express-session');
+const passport = require('passport');
+const mongoose = require('mongoose');
+const configDB = require('./config/database.js');
 
 // connect to mongo database
 mongoose.connect(configDB.url, {
@@ -13,15 +13,20 @@ mongoose.connect(configDB.url, {
 });
 
 // use body parser
-var bodyParser = require('body-parser');
+const bodyParser = require('body-parser');
 app.use(bodyParser());
 
 // add session middleware
 app.use(session({
 	secret: 'its a secret',
-	resave: true,
+	resave: false,
 	saveUninitialized: false,
 }));
+
+// define session checker
+const sessionChecker = (req, res, next) => {
+	next();
+};
 
 // set up passport
 app.use(passport.initialize());
@@ -39,12 +44,12 @@ app.use('/auth', authRoutes);
 app.use('/api', apiRoutes);
 
 // if no hash, send to index
-app.get('/', function(req, res) {
+app.get('/', sessionChecker, (req, res) => {
 	res.sendFile(path.join(__dirname, '/', 'index.html'));
 });
 
 // if hash, send to requested resource
-app.get(/^(.+)$/, function(req, res) {
+app.get(/^(.+)$/, sessionChecker, (req, res) => {
 	res.sendFile(path.join(__dirname, '/', req.params[0]));
 });	
 

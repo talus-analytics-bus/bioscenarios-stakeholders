@@ -75,6 +75,15 @@ const Routing = {};
 		loadTemplate(pageName);
 		if (func) func(...data);
 		window.scrollTo(0, 0);
+
+		fetch('/auth/verify', {
+			method: 'GET'
+		})
+			.then((response) => {
+				response.json().then((data) => {
+					console.log(data);
+				});
+			});
 	}
 	function parseHash(newHash) { crossroads.parse(newHash); }
 	function loadTemplate(page, data) {

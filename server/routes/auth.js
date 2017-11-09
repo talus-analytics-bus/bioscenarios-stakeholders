@@ -33,10 +33,15 @@ router.post('/login', function(req, res, next) {
 				console.log(err);
 				return next(err);
 			}
-			console.log(user);
-			return res.send({ success: true, message: 'Success logging in!' });
+			req.session.token = user;
+			res.send({ success: true, message: 'Success logging in!' });
 		});
 	})(req, res, next);
+});
+
+router.get('/verify', function(req, res, next) {
+	console.log(req.session);
+	return res.send(req.session);
 });
 
 router.get('/logout', function(req, res, next) {
