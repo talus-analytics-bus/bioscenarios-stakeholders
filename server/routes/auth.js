@@ -2,6 +2,7 @@ const express = require('express');
 const passport = require('passport');
 
 const router = new express.Router();
+let isLoggedIn = false;
 
 // sign-up requests
 router.post('/signup', function(req, res, next) {
@@ -20,6 +21,10 @@ router.post('/signup', function(req, res, next) {
 	})(req, res, next);
 });
 
+router.use((req, res, next) => {
+	req.session.test8 = 'test9';
+	next();
+});
 
 // login requests
 router.post('/login', function(req, res, next) {
@@ -33,15 +38,14 @@ router.post('/login', function(req, res, next) {
 				console.log(err);
 				return next(err);
 			}
-			req.session.token = user;
+			isLoggedIn = true;
 			res.send({ success: true, message: 'Success logging in!' });
 		});
 	})(req, res, next);
 });
 
 router.get('/verify', function(req, res, next) {
-	console.log(req.session);
-	return res.send(req.session);
+	return res.send({ loggedIn: isLoggedIn });
 });
 
 router.get('/logout', function(req, res, next) {

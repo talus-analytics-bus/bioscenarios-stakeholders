@@ -20,7 +20,7 @@ app.use(bodyParser());
 app.use(session({
 	secret: 'its a secret',
 	resave: false,
-	saveUninitialized: false,
+	saveUninitialized: true,
 }));
 
 // define session checker
