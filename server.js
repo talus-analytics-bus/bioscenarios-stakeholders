@@ -2,10 +2,11 @@
 const app = require('express')();
 const server = require('http').Server(app);
 const path = require('path');
-const session = require('express-session');
-const passport = require('passport');
+const jwt = require('jsonwebtoken');
+
+const config = require('./config/database.js');
 const mongoose = require('mongoose');
-const configDB = require('./config/database.js');
+const passport = require('passport');
 
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
@@ -13,7 +14,7 @@ app.use(bodyParser());
 app.use(cookieParser());
 
 // connect to mongo database
-mongoose.connect(configDB.url, {
+mongoose.connect(config.url, {
 	useMongoClient: true,
 });
 
@@ -27,10 +28,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 require('./config/passport')(passport);
 
-// check logged in state
-const authCheckMiddleware = require('./server/auth-check');
-app.use('/api', authCheckMiddleware);
-
 // if no hash, send to index
 app.get('/', sessionChecker, (req, res) => {
 	res.sendFile(path.join(__dirname, '/', 'index.html'));
@@ -38,9 +35,8 @@ app.get('/', sessionChecker, (req, res) => {
 
 // if hash, send to requested resource
 app.get(/^(.+)$/, sessionChecker, (req, res) => {
-	console.log(req.cookies);
 	res.sendFile(path.join(__dirname, '/', req.params[0]));
-});	
+});
 
 // sign-up requests
 app.post('/signup', function(req, res, next) {
@@ -54,8 +50,11 @@ app.post('/signup', function(req, res, next) {
 				console.log(err);
 				return next(err);
 			}
-			res.cookie('token', token);
-			return res.send({ success: true, message: 'Success registering!' });
+			return res.send({
+				success: true,
+				token,
+				message: 'Success registering!',
+			});
 		});
 	})(req, res, next);
 });
@@ -72,18 +71,46 @@ app.post('/login', function(req, res, next) {
 				console.log(err);
 				return next(err);
 			}
-			res.cookie('token', token);
-			res.send({ success: true, message: 'Success logging in!' });
+			res.send({
+				success: true,
+				token,
+				message: 'Success logging in!',
+			});
 		});
 	})(req, res, next);
 });
 
 // script for verifying logged in status
 app.post('/verify', function(req, res, next) {
-	if (req.cookies.token) {
-		return res.send({ loggedIn: true });
+	// TODO this needs to move to parent level
+	const User = mongoose.model('User');
+
+	const token = req.body.token;
+	console.log('verifying token...: ' + token);
+
+	// token is undefined
+	if (!token || token === 'undefined') {
+		res.redirect('/#login');
+		return res.send({ loggedIn: false }).end();
 	}
-	return res.send({ loggedIn: false });
+
+	// verify token
+	return jwt.verify(token, config.secret, (err, decoded) => {
+		// the 401 code is for unauthorized status
+		console.log(decoded);
+		if (err) { return res.status(401).end(); }
+
+		const userId = decoded.sub;
+
+		// check if a user exists
+		return User.findById(userId, (userErr, user) => {
+			if (userErr || !user) {
+				return res.status(401).end();
+			}
+
+			return next();
+		});
+	});
 });
 
 // log out script

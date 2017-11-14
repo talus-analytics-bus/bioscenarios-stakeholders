@@ -77,9 +77,12 @@ const Routing = {};
 		window.scrollTo(0, 0);
 
 		fetch('/verify', {
-			method: 'POST'
+			method: 'POST',
+			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+			body: `token=${App.authToken}`,
 		})
 			.then((response) => {
+				console.log(response);
 				response.json().then((data) => {
 					console.log(data);
 				});

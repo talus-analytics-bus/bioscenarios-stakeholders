@@ -29,6 +29,7 @@
 
 				response.json().then((data) => {
 					noty({ type: 'success', text: '<b>Success!</b><br>You are now logged in!' });
+					App.authToken = data.token;
 					hasher.setHash('/');
 				});
 			})
