@@ -9,7 +9,10 @@ module.exports = (req, res, next) => {
 	}
 
 	// get the last part from a authorization header string like "bearer token-value"
-	const token = req.headers.authorization.split(' ')[1];
+	const token = req.cookies.token;
+	console.log('-- auth check --');
+	console.log(token);
+	console.log('----------------');
 
 	// decode the token using a secret key-phrase
 	console.log('verifying user id...');

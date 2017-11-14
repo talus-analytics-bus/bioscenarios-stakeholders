@@ -76,8 +76,8 @@ const Routing = {};
 		if (func) func(...data);
 		window.scrollTo(0, 0);
 
-		fetch('/auth/verify', {
-			method: 'GET'
+		fetch('/verify', {
+			method: 'POST'
 		})
 			.then((response) => {
 				response.json().then((data) => {

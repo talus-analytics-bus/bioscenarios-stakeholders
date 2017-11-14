@@ -16,7 +16,7 @@
 			return;
 		}
 
-		fetch('/auth/login', {
+		fetch('/login', {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
 			body: `username=${username}&password=${password}`,
