@@ -13,6 +13,9 @@ const cookieParser = require('cookie-parser');
 app.use(bodyParser());
 app.use(cookieParser());
 
+// local variable to keep track of logged in state
+let isLoggedIn = false;
+
 // connect to mongo database
 mongoose.connect(config.url, {
 	useMongoClient: true,
@@ -50,6 +53,7 @@ app.post('/signup', function(req, res, next) {
 				console.log(err);
 				return next(err);
 			}
+			isLoggedIn = true;
 			return res.send({
 				success: true,
 				token,
@@ -71,6 +75,7 @@ app.post('/login', function(req, res, next) {
 				console.log(err);
 				return next(err);
 			}
+			isLoggedIn = true;
 			res.send({
 				success: true,
 				token,
@@ -83,8 +88,9 @@ app.post('/login', function(req, res, next) {
 // script for verifying logged in status
 app.post('/verify', function(req, res, next) {
 	// TODO this needs to move to parent level
-	const User = mongoose.model('User');
+	return res.send({ loggedIn: isLoggedIn }).end();
 
+	/*const User = mongoose.model('User');
 	const token = req.body.token;
 	console.log('verifying token...: ' + token);
 
@@ -110,7 +116,7 @@ app.post('/verify', function(req, res, next) {
 
 			return next();
 		});
-	});
+	});*/
 });
 
 // log out script
