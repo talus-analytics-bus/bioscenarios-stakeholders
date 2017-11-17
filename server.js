@@ -2,34 +2,33 @@
 const app = require('express')();
 const server = require('http').Server(app);
 const path = require('path');
-const jwt = require('jsonwebtoken');
 
+// grab config object
 const config = require('./config/database.js');
-const mongoose = require('mongoose');
-const passport = require('passport');
 
+// initialize express session and other parsers
+const session = require('express-session');
 const bodyParser = require('body-parser');
-const cookieParser = require('cookie-parser');
-app.use(bodyParser());
-app.use(cookieParser());
-
-// local variable to keep track of logged in state
-let isLoggedIn = false;
+app.use(session({ secret: 'cats' }));
+app.use(bodyParser.urlencoded({ extended: false }));
 
 // connect to mongo database
+const mongoose = require('mongoose');
 mongoose.connect(config.url, {
 	useMongoClient: true,
 });
 
-// define session checker
-const sessionChecker = (req, res, next) => {
-	next();
-};
-
 // set up passport
+const passport = require('passport');
 app.use(passport.initialize());
 app.use(passport.session());
 require('./config/passport')(passport);
+
+// check if user is logged in
+app.use((req, res, next) => {
+	console.log(req.user);
+	next();
+});
 
 // if no hash, send to index
 app.get('/', sessionChecker, (req, res) => {
@@ -87,36 +86,7 @@ app.post('/login', function(req, res, next) {
 
 // script for verifying logged in status
 app.post('/verify', function(req, res, next) {
-	// TODO this needs to move to parent level
-	return res.send({ loggedIn: isLoggedIn }).end();
-
-	/*const User = mongoose.model('User');
-	const token = req.body.token;
-	console.log('verifying token...: ' + token);
-
-	// token is undefined
-	if (!token || token === 'undefined') {
-		res.redirect('/#login');
-		return res.send({ loggedIn: false }).end();
-	}
-
-	// verify token
-	return jwt.verify(token, config.secret, (err, decoded) => {
-		// the 401 code is for unauthorized status
-		console.log(decoded);
-		if (err) { return res.status(401).end(); }
-
-		const userId = decoded.sub;
-
-		// check if a user exists
-		return User.findById(userId, (userErr, user) => {
-			if (userErr || !user) {
-				return res.status(401).end();
-			}
-
-			return next();
-		});
-	});*/
+	return res.send({ loggedIn: 'maybe' }).end();
 });
 
 // log out script

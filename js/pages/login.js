@@ -18,6 +18,7 @@
 
 		fetch('/login', {
 			method: 'POST',
+			credentials: 'include',
 			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
 			body: `username=${username}&password=${password}`,
 		})

@@ -78,6 +78,7 @@ const Routing = {};
 
 		fetch('/verify', {
 			method: 'POST',
+			credentials: 'include',
 			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
 			body: `token=${App.authToken}`,
 		})

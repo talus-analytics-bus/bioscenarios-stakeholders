@@ -4,13 +4,16 @@ const jwt = require('jsonwebtoken');
 const config = require('../config/database.js');
 
 module.exports = function(passport) {
-	passport.serializeUser(function(user, done) {
-		done(null, 'test');
+	passport.serializeUser(function(token, done) {
+		done(null, token);
 	});
 
-	passport.deserializeUser(function(id, done) {
-		User.findById(id, function(err, user) {
-			done(err, user);
+	passport.deserializeUser(function(token, done) {
+		jwt.verify(token, config.secret, (err, decoded) => {
+			if (err) return done(err);
+			User.findById(decoded.sub, (err, user) => {
+				done(err, user);
+			});
 		});
 	});
 
