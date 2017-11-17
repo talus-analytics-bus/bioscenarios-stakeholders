@@ -4,7 +4,7 @@ const server = require('http').Server(app);
 const path = require('path');
 
 // grab config object
-const config = require('./config/database.js');
+const config = require('./server/database.js');
 
 // initialize express session and other parsers
 const session = require('express-session');
@@ -26,7 +26,7 @@ mongoose.connect(config.url, {
 const passport = require('passport');
 app.use(passport.initialize());
 app.use(passport.session());
-require('./config/passport')(passport);
+require('./server/passport')(passport);
 
 // define resources that do not need authentication for user to access
 const noAuthScripts = [
