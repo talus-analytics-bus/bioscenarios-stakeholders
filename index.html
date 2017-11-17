@@ -27,7 +27,7 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="#">Talus Analytics</a>
+				<a class="navbar-brand" href="/">Talus Analytics</a>
 			</div>
 			<div class="collapse navbar-collapse" id="navbar-collapse-1">
 				<form class="navbar-form navbar-right">
@@ -63,20 +63,16 @@
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Charts <span class="caret"></span></a>
 						<ul class="dropdown-menu">
-							<li><a href="#svgcrowbar">SVG Crowbar</a></li>
-							<li role="separator" class="divider"></li>
 							<li><a href="#stacked">Stacked Bar Chart</a></li>
 							<li><a href="#sankey">Sankey</a></li>
 							<li><a href="#force">Force Diagram</a></li>
-						</ul>
-					</li>
-					<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Functions <span class="caret"></span></a>
-						<ul class="dropdown-menu">
+							<li role="separator" class="divider"></li>
 							<li><a href="#">Exporting Data</a></li>
+							<li><a href="#svgcrowbar">SVG Crowbar</a></li>
 						</ul>
 					</li>
-					<li><a href="#libraries">Libraries</a></li>
+					<li><a href="#libraries">Resources</a></li>
+					<li><a class="logout-link">Logout</a></li>
 				</ul>
 			</div><!-- /.navbar-collapse -->
 		</div><!-- /.container-fluid -->
@@ -98,33 +94,6 @@
 					Typically, our home pages include a picture with a summary of the tool.
 					This page is very free-form and will look different for every application.
 				</div>
-			</div>
-		</div>
-	</script>
-
-	<script id="login-template" type="text/x-handlebars-template">
-		<div class="login-container container">
-			<div class="login-box">
-				<div class="login-input-container">
-					<div class="login-input-label">Username</div>
-					<input class="username-input login-input form-control">
-				</div>
-				<div class="login-input-container">
-					<div class="login-input-label">Password</div>
-					<input type="password" class="password-input login-input form-control">
-				</div>
-				<div class="login-button btn btn-primary">Login</div>
-				<!--<form action="/login" method="post">
-					<div class="form-group">
-						<label>Username</label>
-						<input type="text" class="form-control" name="username" />
-					</div>
-					<div class="form-group">
-						<label>Password</label>
-						<input type="password" class="form-control" name="password" />
-					</div>
-					<button type="submit" class="btn btn-primary">Login</button>
-				</form>-->
 			</div>
 		</div>
 	</script>
@@ -601,7 +570,6 @@
 	<script src="js/pages/filters.js"></script>
 	<script src="js/pages/force.js"></script>
 	<script src="js/pages/home.js"></script>
-	<script src="js/pages/login.js"></script>
 	<script src="js/pages/map.js"></script>
 	<script src="js/pages/notifications.js"></script>
 	<script src="js/pages/sankey.js"></script>

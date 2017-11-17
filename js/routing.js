@@ -75,19 +75,6 @@ const Routing = {};
 		loadTemplate(pageName);
 		if (func) func(...data);
 		window.scrollTo(0, 0);
-
-		fetch('/verify', {
-			method: 'POST',
-			credentials: 'include',
-			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-			body: `token=${App.authToken}`,
-		})
-			.then((response) => {
-				console.log(response);
-				response.json().then((data) => {
-					console.log(data);
-				});
-			});
 	}
 	function parseHash(newHash) { crossroads.parse(newHash); }
 	function loadTemplate(page, data) {

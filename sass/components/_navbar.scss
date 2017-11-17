@@ -2,9 +2,7 @@
 	border-bottom: $border;
 	@include gradient(#fff, #f0f0f0);
 
-	.navbar-brand {
-		color: #555;
-	}
+	.navbar-brand { color: #555; }
 	.navbar-nav > li {
 		&.active,
 		&:hover {
@@ -17,4 +15,5 @@
 	.dropdown-menu {
 		min-width: 120px;
 	}
+	.logout-link { cursor: pointer; }
 }

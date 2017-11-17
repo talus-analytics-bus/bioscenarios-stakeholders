@@ -9,7 +9,11 @@ const config = require('./config/database.js');
 // initialize express session and other parsers
 const session = require('express-session');
 const bodyParser = require('body-parser');
-app.use(session({ secret: 'cats' }));
+app.use(session({
+	secret: 'cats',
+	resave: true,
+	saveUninitialized: false,
+}));
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // connect to mongo database
@@ -24,20 +28,40 @@ app.use(passport.initialize());
 app.use(passport.session());
 require('./config/passport')(passport);
 
-// check if user is logged in
-app.use((req, res, next) => {
-	console.log(req.user);
-	next();
-});
+// define resources that do not need authentication for user to access
+const noAuthScripts = [
+	'/login.html',
+	'/login.html/',
+	'/lib/jquery-3.2.1.min.js',
+	'/lib/jquery.noty.packaged.min.js',
+	'/js/pages/login.js',
+	'/css/main.css',
+	'/css/main.css.map',
+	'/css/bootstrap.min.css',
+	'/css/bootstrap.min.css.map',
+	'/img/talus-logo.png',
+	'/img/favicon.ico',
+];
 
 // if no hash, send to index
-app.get('/', sessionChecker, (req, res) => {
+app.get('/', (req, res) => {
+	if (!req.user) return res.redirect('/login.html');
 	res.sendFile(path.join(__dirname, '/', 'index.html'));
 });
 
-// if hash, send to requested resource
-app.get(/^(.+)$/, sessionChecker, (req, res) => {
-	res.sendFile(path.join(__dirname, '/', req.params[0]));
+// send to requested resource (check for user auth if script is protected)
+app.get(/^(.+)$/, (req, res) => {
+	const scriptPath = req.params[0];
+	if (!req.user) {
+		// user has not been authenticated; block scripts
+		if (scriptPath === '/index.html' || scriptPath === '/index.html/') {
+			return res.redirect('/login.html');
+		}
+		if (!noAuthScripts.includes(scriptPath)) {
+			return res.end();
+		}
+	}
+	res.sendFile(path.join(__dirname, '/', scriptPath));
 });
 
 // sign-up requests
@@ -52,10 +76,8 @@ app.post('/signup', function(req, res, next) {
 				console.log(err);
 				return next(err);
 			}
-			isLoggedIn = true;
 			return res.send({
 				success: true,
-				token,
 				message: 'Success registering!',
 			});
 		});
@@ -74,29 +96,21 @@ app.post('/login', function(req, res, next) {
 				console.log(err);
 				return next(err);
 			}
-			isLoggedIn = true;
 			res.send({
 				success: true,
-				token,
 				message: 'Success logging in!',
 			});
 		});
 	})(req, res, next);
 });
 
-// script for verifying logged in status
-app.post('/verify', function(req, res, next) {
-	return res.send({ loggedIn: 'maybe' }).end();
-});
-
 // log out script
-app.get('/logout', function(req, res, next) {
-	if (req.session) {
-		req.session.destroy(function(err) {
-			if (err) return next(err);
-			return res.redirect('/');
-		});
-	}
+app.post('/logout', function(req, res, next) {
+	req.logout();
+	res.send({
+		success: true,
+		message: 'Success logging out!',
+	});
 });
 
 // start the HTTP Server
