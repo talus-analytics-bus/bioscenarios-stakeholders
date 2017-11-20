@@ -36,7 +36,7 @@ module.exports = (passport) => {
 			});
 		} else {
 			const error = new Error('Admin password is incorrect.');
-			done(err);
+			done(error);
 		}
 	}));
 
@@ -61,9 +61,17 @@ module.exports = (passport) => {
 					return done(error);
 				}
 
-				const payload = { sub: user._id };
-				const token = jwt.sign(payload, config.secret);
-				return done(null, token, user.username);
+				// successful password match; update logged in date
+				user.lastLoggedIn = new Date();
+				user.save((err) => {
+					if (err) {
+						const error = new Error('Error saving user information.');
+						return done(error);
+					}
+					const payload = { sub: user._id };
+					const token = jwt.sign(payload, config.secret);
+					return done(null, token, user.username);
+				});
 			});
 		});
 	}));

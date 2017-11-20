@@ -17,15 +17,9 @@ router.post('/signup', function(req, res, next) {
 			console.log(err);
 			return next(err);
 		}
-		req.login(token, function(err) {
-			if (err) {
-				console.log(err);
-				return next(err);
-			}
-			return res.send({
-				success: true,
-				message: 'Success registering!',
-			});
+		return res.send({
+			success: true,
+			message: 'Success registering!',
 		});
 	})(req, res, next);
 });
