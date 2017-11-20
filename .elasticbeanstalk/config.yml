@@ -1,6 +1,6 @@
 branch-defaults:
   master:
-    environment: framework-dev
+    environment: framework-master
     group_suffix: null
 global:
   application_name: framework
