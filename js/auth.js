@@ -9,8 +9,11 @@ const Auth = {};
 		fetch('/auth/login', {
 			method: 'POST',
 			credentials: 'include',
-			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-			body: `username=${username}&password=${password}`,
+			body: JSON.stringify({ username, password }),
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json',
+			},
 		})
 			.then((response) => {
 				if (response.status !== 200) {
@@ -43,8 +46,11 @@ const Auth = {};
 		fetch('/auth/logout', {
 			method: 'POST',
 			credentials: 'include',
-			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-			body: '',
+			body: JSON.stringify({}),
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json',
+			},
 		})
 			.then((response) => {
 				if (response.status !== 200) {
@@ -87,8 +93,11 @@ const Auth = {};
 		fetch('/auth/signup', {
 			method: 'POST',
 			credentials: 'include',
-			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-			body: `username=${username}&password=${password}&adminPassword=${adminPassword}`,
+			body: JSON.stringify({ username, password, adminPassword }),
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json',
+			},
 		})
 			.then((response) => {
 				if (response.status !== 200) {

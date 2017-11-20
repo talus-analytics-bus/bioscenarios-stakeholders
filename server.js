@@ -14,7 +14,7 @@ app.use(session({
 	resave: true,
 	saveUninitialized: false,
 }));
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 // connect to mongo database
 const mongoose = require('mongoose');
