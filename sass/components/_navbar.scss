@@ -2,7 +2,17 @@
 	border-bottom: $border;
 	@include gradient(#fff, #f0f0f0);
 
-	.navbar-brand { color: #555; }
+	.navbar-brand {
+		position: relative;
+		top: -8px;
+		color: #555;
+	}
+	.logo {
+		display: inline-block;
+		width: 100px;
+		height: 40px;
+		margin-right: 5px;
+	}
 	.navbar-nav > li {
 		&.active,
 		&:hover {
