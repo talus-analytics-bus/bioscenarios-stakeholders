@@ -14,8 +14,8 @@ UserSchema.methods.comparePassword = function comparePassword(password, callback
 	bcrypt.compare(password, this.password, callback);
 };
 
-UserSchema.statics.authenticate = (email, password, callback) => {
-	User.findOne({ email }).exec((err, user) => {
+UserSchema.statics.authenticate = (username, password, callback) => {
+	User.findOne({ username }).exec((err, user) => {
 		if (err) return callback(err);
 		else if (!user) {
 			var err = new Error('User not found.');
