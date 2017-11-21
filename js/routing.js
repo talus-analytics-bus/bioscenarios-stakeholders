@@ -15,53 +15,53 @@ const Routing = {};
 		crossroads.addRoute('/', () => {
 			loadPage('home', App.initHome);
 		});
+		crossroads.addRoute('/acronyms', () => {
+			loadPage('acronyms');
+		});
+		crossroads.addRoute('/colors', () => {
+			loadPage('colors');
+		});
+		crossroads.addRoute('/filters', () => {
+			loadPage('filters', App.initFilters);
+		});
+		crossroads.addRoute('/fonts', () => {
+			loadPage('fonts');
+		});
+		crossroads.addRoute('/force', () => {
+			loadPage('force', App.initForce);
+		});
 		crossroads.addRoute('/login', () => {
 			loadPage('login', App.initLogin);
 		});
 		crossroads.addRoute('/libraries', () => {
 			loadPage('libraries');
 		});
-		crossroads.addRoute('/text', () => {
-			loadPage('text');
-		});
-		crossroads.addRoute('/tables', () => {
-			loadPage('tables', App.initTables);
-		});
-		crossroads.addRoute('/sections', () => {
-			loadPage('sections');
-		});
 		crossroads.addRoute('/map', () => {
 			loadPage('map', App.initMap);
-		});
-		crossroads.addRoute('/buttons', () => {
-			loadPage('buttons', App.initButtons);
-		});
-		crossroads.addRoute('/filters', () => {
-			loadPage('filters', App.initFilters);
-		});
-		crossroads.addRoute('/tooltips', () => {
-			loadPage('tooltips', App.initTooltips);
 		});
 		crossroads.addRoute('/notifications', () => {
 			loadPage('notifications', App.initNotifications);
 		});
-		crossroads.addRoute('/fonts', () => {
-			loadPage('fonts');
+		crossroads.addRoute('/sankey', () => {
+			loadPage('sankey', App.initSankey);
 		});
-		crossroads.addRoute('/colors', () => {
-			loadPage('colors');
-		});
-		crossroads.addRoute('/svgcrowbar', () => {
-			loadPage('svgcrowbar');
+		crossroads.addRoute('/sections', () => {
+			loadPage('sections');
 		});
 		crossroads.addRoute('/stacked', () => {
 			loadPage('stacked', App.initStacked);
 		});
-		crossroads.addRoute('/sankey', () => {
-			loadPage('sankey', App.initSankey);
+		crossroads.addRoute('/svgcrowbar', () => {
+			loadPage('svgcrowbar');
 		});
-		crossroads.addRoute('/force', () => {
-			loadPage('force', App.initForce);
+		crossroads.addRoute('/tables', () => {
+			loadPage('tables', App.initTables);
+		});
+		crossroads.addRoute('/text', () => {
+			loadPage('text');
+		});
+		crossroads.addRoute('/tooltips', () => {
+			loadPage('tooltips', App.initTooltips);
 		});
 
 		// setup hasher for subscribing to hash changes and browser history
