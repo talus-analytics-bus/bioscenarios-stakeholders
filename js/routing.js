@@ -15,6 +15,9 @@ const Routing = {};
 		crossroads.addRoute('/', () => {
 			loadPage('home', App.initHome);
 		});
+		crossroads.addRoute('/sites', () => {
+			loadPage('sites');
+		});
 		crossroads.addRoute('/acronyms', () => {
 			loadPage('acronyms');
 		});
