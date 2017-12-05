@@ -1,8 +1,13 @@
+.sites-container {
+	border-left: $border;
+	border-right: $border;
+	padding: 20px 50px;
+}
 .sites-table {
 	margin-top: 25px;
 	width: 100%;
 
 	td:first-child {
-		width: 250px;
+		width: 200px;
 	}
 }
