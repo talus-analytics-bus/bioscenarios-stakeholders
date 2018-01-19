@@ -1,5 +1,5 @@
 {
-	"url": "mongodb://jpecht:test22@ds251245.mlab.com:51245/talus",
+	"url": "mongodb://talus:boulder2@ds263317.mlab.com:63317/talus",
 	"secret": "Wh;~e49[[BERw]bY",
-	"adminPassword": "JeffsSecret90210"
+	"adminPassword": "Talus645"
 }
