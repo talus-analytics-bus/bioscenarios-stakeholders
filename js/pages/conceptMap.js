@@ -38,7 +38,6 @@
 				var data = d3.select(d1).data();
 				d3.select(d1).on("mouseover", function(d) { 
 			    		event = data;
-			    		console.log(event);
 			            })                  
 			        .on("mouseout", function(d) {   
 			        });
@@ -58,12 +57,12 @@
 
 		//CONCEPT MAP
 		function buildConceptMap(event) {
-			var fulldata = {'Case in other species': [[120, ["like", "call response", "dramatic intro", "has breaks", "male vocalist", "silly", "swing"]], [150, ["brassy", "like", "calm energy", "female vocalist", "swing", "fun"]], [170, ["calm energy", "instrumental", "swing", "like", "happy"]]], 
-			'Index case' : [["UN", ["UNSG", "UNSGM", "OCHA", "JEU", "UNDPI", "UNIDIR", "UNODA", "BWC ISU", "1540 COMMITTEE", "WCO", "UNDAC", "FAO", "WFP", "UNHCR", "WIPO", "UNISDR", "UNICRI", "UNDSS", "WHO"]], ["Non-governmental Organizations", ["INTERPOL", "OIE", "ICRC", "IFRC", "MSF", "LOCAL NGOs", "Gavi", "CEPI", "Sabin", "IOM", "Open Philanthropy", "Welcome Trust", "Bill & Melinda Gates", "Skoll Global Threats Fund Rockefeller", "Vulcan"]], ["Private Sector", ["Pharmaceuticals", "Biotech", "Telecom Companies", "GHSA PSR", "WEF"]], ["National Governments", ["Affected Countries", "Cartener Countries"]], 
+			var fulldata = {'Index case' : [["UN", ["UN Organizations", "UNSG", "UNSGM", "OCHA", "JEU", "UNDPI", "UNIDIR", "UNODA", "BWC ISU", "1540 COMMITTEE", "WCO", "UNDAC", "FAO", "WFP", "UNHCR", "WIPO", "UNISDR", "UNICRI", "UNDSS", "WHO"]], ["Non-governmental Organizations", ["Non-governmental Organizations", "INTERPOL", "OIE", "ICRC", "IFRC", "MSF", "LOCAL NGOs", "Gavi", "CEPI", "Sabin", "IOM", "Open Philanthropy", "Welcome Trust", "Bill & Melinda Gates", "Skoll Global Threats Fund Rockefeller", "Vulcan"]], ["Private Sector", ["Private Sector", "Pharmaceuticals", "Biotech", "Telecom Companies", "GHSA PSR", "WEF"]], ["National Governments", ["National Governments", "Affected Countries", "Partener Countries"]], 
 			["Event notificataion", ["WHO", "OIE"]], ["Early warning", ["WHO", "OIE", "FAO"]], ["Initial sample collection", ["WHO", "OIE", "FAO"]], ["Advice on containment measures", ["WHO", "OIE"]], ["Event verification", ["WHO", "OIE", "INTERPOL", "FAO"]]]};
 			var data = fulldata[event];
-			//var data = [[120, ["like", "call response", "dramatic intro", "has breaks", "male vocalist", "silly", "swing"]], [150, ["brassy", "like", "calm energy", "female vocalist", "swing", "fun"]], [170, ["calm energy", "instrumental", "swing", "like", "happy"]]];
-			//, [140, ["has breaks", "male vocalist", "swing", "piano", "banjo", "chill"]], [160, ["calm energy", "instrumental", "swing", "like", "interesting"]], [140, ["brassy", "like", "energy", "dramatic intro", "male vocalist", "baseball", "swing"]], [170, ["instrumental", "interesting", "high energy", "like", "swing"]], [140, ["instrumental", "energy", "like", "swing"]], [200, ["instrumental", "brassy", "dramatic intro", "like", "swing"]], [160, ["male vocalist", "brassy", "swing", "like", "my favorites"]], [130, ["like", "interesting", "dramatic intro", "male vocalist", "silly", "swing", "gospel"]], [160, ["like", "long intro", "announcer", "energy", "swing", "female vocalist"]], [170, ["instrumental", "swing", "bass", "like"]], [150, ["like", "interesting", "has breaks", "instrumental", "chunky", "swing", "banjo", "trumpet"]], [170, ["like", "has breaks", "male vocalist", "silly", "swing", "banjo"]], [190, ["instrumental", "banjo", "swing"]], [130, ["instrumental", "brassy", "banjo", "like", "swing"]], [160, ["brassy", "like", "energy", "instrumental", "big band", "jam", "swing"]], [150, ["like", "male vocalist", "live", "swing", "piano", "banjo", "chill"]], [150, ["like", "trick ending", "instrumental", "chunky", "swing", "chill"]], [120, ["brassy", "like", "female vocalist", "swing", "chill", "energy buildup"]], [150, ["brassy", "like", "interesting", "instrumental", "swing", "piano"]], [190, ["brassy", "like", "long intro", "energy", "baseball", "swing", "female vocalist"]], [180, ["calm energy", "female vocalist", "live", "like", "swing"]], [200, ["banjo", "like", "long intro", "interesting", "energy", "my favorites", "male vocalist", "silly", "swing", "fun", "balboa"]], [150, ["brassy", "calm energy", "chunky", "instrumental", "old-timey", "live", "swing"]], [160, ["like", "call response", "interesting", "instrumental", "calm energy", "swing"]], [180, ["interesting", "swing", "fast", "male vocalist"]], [150, ["calm energy", "chunky", "swing", "female vocalist", "like"]], [180, ["like", "has breaks", "male vocalist", "chunky", "silly", "swing"]], [140, ["instrumental", "brassy", "dramatic intro", "swing", "chill"]], [150, ["male vocalist", "trumpet", "like", "swing"]], [150, ["instrumental", "energy", "like", "has breaks", "swing"]], [180, ["brassy", "like", "energy", "has breaks", "instrumental", "has calm", "swing"]], [150, ["female vocalist", "swing"]], [170, ["instrumental", "brassy", "energy", "swing"]], [170, ["calm energy", "instrumental", "energy", "like", "swing"]], [190, ["brassy", "like", "instrumental", "high energy", "swing", "trumpet"]], [160, ["male vocalist", "energy", "swing", "old-timey"]], [170, ["like", "oldies", "my favorites", "fast", "male vocalist", "high energy", "swing"]]];
+			var titles = ["UN Organizations", "Non-governmental Organizations", "Private Sector", "National Governments"];
+
+			var total = 45;
 
 			var outer = d3.map();
 			var inner = [];
@@ -104,13 +103,11 @@
 					i.related_links.push(l.id);
 					o.related_nodes.push(i.id);
 					o.related_links.push(l.id);
-
-					console.log(o);
 				});
 			});
 
 			inner.splice(0, 4);
-			links.splice(0, 41);
+			links.splice(0, total);
 
 			data = {
 				inner: inner,
@@ -121,17 +118,20 @@
 			outer = data.outer;
 			data.outer = Array(outer.length);
 
-			console.log(data);
-
 			var i1 = 0;
 			var i2 = outer.length - 1;
 
 			for (var i = 0; i < data.outer.length; ++i)
 			{
-				if (i % 2 == 1)
+				if (i <= 19) {
+					data.outer[i2--] = outer[i];
+				} else {
+					data.outer[i1++] = outer[i];
+				}
+				/*if (i % 2 == 1)
 					data.outer[i2--] = outer[i];
 				else
-					data.outer[i1++] = outer[i];
+					data.outer[i1++] = outer[i];*/
 			}
 
 			var diameter = 1060;
@@ -150,14 +150,28 @@
 			    .domain([0, mid, mid, data.outer.length])
 			    .range([50, 135, 225 ,320]);
 
+			var outer_x_UN = d3.scaleLinear()
+			    .domain([0, 20])
+			    .range([50, 135]);
+
+			var outer_x_non = d3.scaleLinear()
+			    .domain([20, data.outer.length])
+			    .range([225 ,320]);
+
 			var outer_y = d3.scaleLinear()
 			    .domain([0, data.outer.length])
 			    .range([0, diameter / 2 - 120]);
 
 
+			//console.log(data.outer);
 			// setup positioning
 			data.outer = data.outer.map(function(d, i) { 
-			    d.x = outer_x(i);
+				if (i<= total-21) {
+					d.x = outer_x_UN(i);
+				}else {
+					d.x = outer_x_non(i);
+				};
+			    //d.x = outer_x(i);
 			    d.y = diameter/3;
 			    return d;
 			});
@@ -185,7 +199,17 @@
 			    .attr("height", diameter)
 			  .append("g")
 			    .attr("transform", "translate(" + diameter / 2 + "," + diameter / 2 + ")");
-			    
+
+			svg.append("text")
+		        .attr("x", 0)  
+		        //Adjust placement of title based on number of sub-events for event?           
+		        .attr("y", -diameter/2+250)
+		        .attr("text-anchor", "middle")
+		        .style("font-size", "25px") 
+		        .style("font-weight", "600") 
+		        .style('fill', '#076eb5')
+		        .text(event.toUpperCase());
+					    
 
 			// links
 			var link = svg.append('g').attr('class', 'links').selectAll(".link")
@@ -196,7 +220,7 @@
 			        .attr('id', function(d) { return d.id })
 			        .attr('fill', "none")
 			        .style('stroke-width', '1px')
-			        .style('stroke', '#dbdbdb');
+			        .style('stroke', '#ffffff');
 			        
 
 			function placement(d) {
@@ -212,24 +236,51 @@
 			    .attr("transform", placement)
 			    .on("mouseover", mouseover)
 			    .on("mouseout", mouseout);
+
+			function circle_color(d) {
+				if (titles.includes(d.name)) {
+					return "white"
+				} else {
+					return '#e8e8e8'
+				}
+			};
 			  
 			onode.append("circle")
 			    .attr('id', function(d) { return d.id })
-			    .style('fill', '#e8e8e8')
-			    .attr("r", 4.5);
-			  
-			onode.append("circle")
-			    .attr('r', 20)
-			    .attr('visibility', 'hidden');
+			    .style('fill', circle_color)
+			    .attr("r", 5.2);
+
+			function outer_color(d) {
+				if (titles.includes(d.name)) {
+					return "black"
+				} else {
+					return '#c1c1c1'
+				}
+			};
+			function outer_dec(d) {
+				if (titles.includes(d.name)) {
+					return "underline"
+				} else {
+					return "none"
+				}
+			};
+			function outer_style(d) {
+				if (titles.includes(d.name)) {
+					return "italic"
+				} else {
+					return "none"
+				}
+			};
 			  
 			onode.append("text")
 				.attr('id', function(d) { return d.id + '-txt'; })
 			    .attr("dy", ".31em")
 			    .attr("text-anchor", function(d) { return d.x < 180 ? "start" : "end"; })
 			    .attr("transform", function(d) { return d.x < 180 ? "translate(8)" : "rotate(180)translate(-8)"; })
-			    .attr('fill', '#c1c1c1')
+			    .attr('fill', outer_color)
 			    .attr('font-size', 16)
-			    //.attr("font-weight", 'bold')
+			    .attr("text-decoration", outer_dec)
+			    .attr("font-style", outer_style)
 			    .text(function(d) { return d.name; });
 			  
 			// inner nodes
@@ -251,7 +302,6 @@
 			inode.append('rect')
 			    .attr('width', rect_width)
 			    .attr('height', 20)
-			    //.attr('id', function(d) { return d.id; })
 			    .style('fill', '#ffffff');
 			  
 			inode.append("text")
@@ -299,11 +349,12 @@
 				d3.selectAll('.links .link').sort(function(a, b){ return d.related_links.indexOf(a.id); });	
 				
 			    for (var i = 0; i < d.related_nodes.length; i++)
-			    {
+			    {	if (!titles.includes(d.name)){
 			        d3.select('#' + d.related_nodes[i]).classed('highlight', true).style('fill', '#076eb5');
 			        if (d.related_nodes[i][0] == "i") {d3.select('#' + d.related_nodes[i] + '-txt').style('fill', '#f2f3f4');}
-			        else {d3.select('#' + d.related_nodes[i] + '-txt').style('fill', '#076eb5').attr('font-size', 18);};
+			        else {d3.select('#' + d.related_nodes[i] + '-txt').style('fill', '#076eb5').attr('font-size', 18).style("font-weight", "600") ;};
 			    }
+			}
 			    
 			    for (var i = 0; i < d.related_links.length; i++)
 			        d3.select('#' + d.related_links[i]).style('stroke', '#076eb5').style('stroke-width', '1.5px');
@@ -312,14 +363,16 @@
 			function mouseout(d)
 			{   	
 			    for (var i = 0; i < d.related_nodes.length; i++)
-			    {
+			    {	
+			    	if (!titles.includes(d.name)){
 			        d3.select('#' + d.related_nodes[i]).classed('highlight', false).style('fill', '#e8e8e8');
 			        if (d.related_nodes[i][0] == "i") {d3.select('#' + d.related_nodes[i] + '-txt').style('fill', '#4f4f4f');}
-			        else {d3.select('#' + d.related_nodes[i] + '-txt').style('fill', '#c1c1c1').attr('font-size', 16);};
+			        else {d3.select('#' + d.related_nodes[i] + '-txt').style('fill', '#c1c1c1').attr('font-size', 16).style("font-weight", "normal") ;};
 			    }
+			}
 			    
 			    for (var i = 0; i < d.related_links.length; i++)
-			        d3.select('#' + d.related_links[i]).style('stroke-width', '1px').style('stroke', '#dbdbdb');
+			        d3.select('#' + d.related_links[i]).style('stroke-width', '1px').style('stroke', '#ffffff');
 			}
 		}
 	};
