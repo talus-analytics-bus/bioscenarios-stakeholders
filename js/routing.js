@@ -13,8 +13,11 @@ const Routing = {};
 	Routing.initializeRoutes = () => {
 		// setup crossroads for routing
 		crossroads.addRoute('/', () => {
-			loadPage('home', App.initHome);
+			loadPage('main', App.initMain);
 		});
+		/*crossroads.addRoute('/', () => {
+			loadPage('home', App.initHome);
+		});*/
 
 		// setup hasher for subscribing to hash changes and browser history
 		hasher.prependHash = '';

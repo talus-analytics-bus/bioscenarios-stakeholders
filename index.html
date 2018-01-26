@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<meta charset="utf-8">
-	<title>Talus Framework</title>
+	<title>Bioscenarios stakeholders</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="icon" href="img/favicon.ico">
 		
@@ -24,16 +24,20 @@
 				<a class="navbar-brand" href="/">
 					<img class="logo" src="img/talus-logo.png" />
 				</a>
+				<!--<ol class="nav navbar-nav navbar-right">
+					<li><a href="#other">Other</a></li>
+				</ol>
+				<ol class="nav navbar-nav navbar-right">
+					<li><a href="#">Home</a></li>
+				</ol>-->
 			</div>
-			<div class="collapse navbar-collapse" id="navbar-collapse-1">
-			</div><!-- /.navbar-collapse -->
 		</div><!-- /.container-fluid -->
 	</nav>
 	<div id="page-content"></div>
-	<div id="footer">
+	<!--<div id="footer">
 		<span>Built by</span>
 		<img src="img/talus-logo.png" />
-	</div>
+	</div>-->
 
 		
 	<!-- ----------- TEMPLATES ------------- -->
@@ -49,7 +53,12 @@
 			</div>
 		</div>
 	</script>
-	
+
+	<script id="main-template" type="text/x-handlebars-template">
+		<div class="timeline"></div>
+		<div class="concept-map"></div>
+	</script>
+
 	<!-- General Libraries -->
 	<script src="lib/jquery-3.2.1.min.js"></script>
 	<script src="lib/d3.min.js"></script>
@@ -79,6 +88,9 @@
 	<script src="js/auth.js"></script>
 	<script src="js/app.js"></script>
 	<script src="js/pages/home.js"></script>
+	<script src="js/pages/main.js"></script>
+	<script src="js/pages/timeline.js"></script>
+	<script src="js/pages/conceptMap.js"></script>
 	<script src="js/init.js"></script>
 
 	<!--<script src="build/bundle.min.js"></script>-->
