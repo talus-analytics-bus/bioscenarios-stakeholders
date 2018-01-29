@@ -1,11 +1,13 @@
 (() => {
-	App.initGraphs = (selector1, selector2) => {
+	App.initGraphs = (selector1, selector2, data) => {
 		// TIMELINE	
 
 		const events = ['Index case', 'Case in other species', 'Suggestion of a DBE', 'Request help from countries', 'Bug crosses border', 'EPI peak', 'Recovery', 'Economic recovery'];
-		const margin = { top: 25, right: 25, bottom: 25, left: 25 };
-		const width = 1060;
-		const height = 100;
+		const event_labels = []
+		events.forEach(function(d) {event_labels.push(d.toUpperCase())})
+		const margin = { top: 25, right: 25, bottom: 70, left: 25 };
+		const width = 1200;
+		const height = 140;
 		var event;
 
 			// add chart to DOM
@@ -15,51 +17,127 @@
 				.append('g')
 					.attr('transform', `translate(${margin.left}, ${margin.top})`);
 
+			chart.append("rect")
+			    .attr("width", width)
+			    .attr("height", height)
+			    .attr("fill", "#e8e8e8");
+
+			chart.append("rect")
+			    .attr("width", 30)
+			    .attr("height", height)
+			    .attr("fill", "#c9c9c9");
+
+			chart.append("text")
+				.attr("transform", "translate(20,"+String(height-10)+")rotate(-90)")
+				.attr("fill", "white")
+				.attr("font-style", "italic")
+				.style("font-weight", "600")
+				.text("Number of cases");
+
 			// define scales
 			const x = d3.scaleBand()
-				.domain(events)
+				.domain(event_labels)
 				.range([0, width]);
 			const y = d3.scaleLinear()
 				.range([height, 0]);
 
 			// add axes to DOM
 			const xAxis = d3.axisBottom()
+				.tickSize(-height)
 				.scale(x);
 
-			chart.append('g')
-				.attr('transform', `translate(0, ${height})`);
-				//.call(yAxis);
-
 			var xaxis = chart.append("g")
-			    .attr("class", "x axis")
+				.attr('transform', `translate(0, ${height})`)
 			    .call(xAxis);
+
+			xaxis.selectAll("path").attr("stroke", "white");
+			xaxis.selectAll("line").attr("stroke", "white");
+
+			xaxis.selectAll("text")
+				.attr("class", "label-text")
+				.attr('transform', `translate(0, 20)`)
+				.attr("font-size", 14)
+				.call(wrap, 128);
+
+			var box = {bottom: 276.953125, height: 175.953125, left: 57.609375, right: 142.40625, top: 101, width: 84.796875, x: 57.609375, y: 101}
+
+			chart.append("path").attr("class", "highlight-path").attr("d", "M "+String(box.x-33+box.width*0.6)+" "+String(box.y+45)+" L "+String(box.x-33+box.width*0.6)+" 0").attr("stroke", "#076eb5").attr("stroke-width", 3.5);
+			chart.append("rect").attr("x", box.x-33).attr("y", box.y+45).attr("width", box.width*1.2).attr("height", box.height-120).attr("fill", "#076eb5").attr("opacity", 0.5).attr("class", "highlight-box");
 
 			xaxis.selectAll(".tick")['_groups'][0].forEach(function(d1) {
 				var data = d3.select(d1).data();
-				d3.select(d1).on("mouseover", function(d) { 
-			    		event = data;
-			            })                  
-			        .on("mouseout", function(d) {   
-			        });
+				d3.select(d1).on("click", function(d) {
+						event = events[event_labels.indexOf(d)];
+						var box = d3.select(d1).node().getBoundingClientRect();
+						chart.selectAll("rect.highlight-box").remove();
+						chart.selectAll("text.highlight-text").remove();
+						chart.selectAll("path.highlight-path").remove();
+						chart.append("path").attr("class", "highlight-path").attr("d", "M "+String(box.x-33+box.width*0.6)+" "+String(box.y+70)+" L "+String(box.x-33+box.width*0.6)+" 0").attr("stroke", "#076eb5").attr("stroke-width", 3.5);
+						chart.append("rect").attr("x", box.x-33).attr("y", box.y+70).attr("width", box.width*1.2).attr("height", box.height-120).attr("fill", "#076eb5").attr("opacity", 0.5).attr("class", "highlight-box");
+			    		//chart.append("text").attr("class", "highlight-text").attr('transform', `translate(0, 20)`).attr("font-size", 14).attr("dy", 0.35).attr("dx", box.x-33+box.width*0.6).attr("y", box.y).attr("text-anchor", "middle").attr("fill", "red").text(d).call(wrap, 130);
+			    		resetMap(event);
+			    	});
 
 			  })
-			const yAxis = d3.axisLeft();
-			const yAxisG = chart.append('g');
+
+			function wrap(text, width) {
+			  text.each(function() {
+			    var text = d3.select(this),
+			        words = text.text().split(/\s+/).reverse(),
+			        word,
+			        line = [],
+			        lineNumber = 0,
+			        lineHeight = 1.7, // ems
+			        y = text.attr("y"),
+			        dy = parseFloat(text.attr("dy")),
+			        tspan = text.text(null).append("tspan").attr("x", 0).attr("y", y).attr("dy", dy + "em");
+			    while (word = words.pop()) {
+			      line.push(word);
+			      tspan.text(line.join(" "));
+			      if (tspan.node().getComputedTextLength() > width) {
+			        line.pop();
+			        tspan.text(line.join(" "));
+			        line = [word];
+			        tspan = text.append("tspan").attr("x", 0).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
+			      }
+			    }
+			  });
+			}
+			
 
 
-		buildConceptMap("Index case");
-		//chart.on("click", resetMap(event));
+		buildConceptMap("Index case", data);
+		
 
-		/*function resetMap(event) {
-			d3.select("svg").remove()
-			buildConceptMap(event);
-		}*/
+		function resetMap(event) {
+			$(selector2).empty();
+			buildConceptMap(event, data);
+		};
 
 		//CONCEPT MAP
-		function buildConceptMap(event) {
-			var fulldata = {'Index case' : [["UN", ["UN Organizations", "UNSG", "UNSGM", "OCHA", "JEU", "UNDPI", "UNIDIR", "UNODA", "BWC ISU", "1540 COMMITTEE", "WCO", "UNDAC", "FAO", "WFP", "UNHCR", "WIPO", "UNISDR", "UNICRI", "UNDSS", "WHO"]], ["Non-governmental Organizations", ["Non-governmental Organizations", "INTERPOL", "OIE", "ICRC", "IFRC", "MSF", "LOCAL NGOs", "Gavi", "CEPI", "Sabin", "IOM", "Open Philanthropy", "Welcome Trust", "Bill & Melinda Gates", "Skoll Global Threats Fund Rockefeller", "Vulcan"]], ["Private Sector", ["Private Sector", "Pharmaceuticals", "Biotech", "Telecom Companies", "GHSA PSR", "WEF"]], ["National Governments", ["National Governments", "Affected Countries", "Partener Countries"]], 
-			["Event notificataion", ["WHO", "OIE"]], ["Early warning", ["WHO", "OIE", "FAO"]], ["Initial sample collection", ["WHO", "OIE", "FAO"]], ["Advice on containment measures", ["WHO", "OIE"]], ["Event verification", ["WHO", "OIE", "INTERPOL", "FAO"]]]};
-			var data = fulldata[event];
+		function buildConceptMap(event, data) {
+			/*Index case	Event notificataion	WHO
+Index case	Event notificataion	OIE
+Index case	Early warning	WHO
+Index case	Early warning	OIE
+Index case	Early warning	FAO
+Index case	Initial sample collection	WHO
+Index case	Initial sample collection	OIE
+Index case	Initial sample collection	FAO
+Index case	Advice on containment measures	WHO
+Index case	Advice on containment measures	OIE
+Index case	Event verification	WHO
+Index case	Event verification	OIE
+Index case	Event verification	INTERPOL
+Index case	Event verification	FAO*/
+
+			data = data.filter(function(d) {return d.Event == event});
+			var allOrgs = [{"Stakeholders": '["UN Organizations", "UNSG", "UNSGM", "OCHA", "JEU", "UNDPI", "UNIDIR", "UNODA", "BWC ISU", "1540 COMMITTEE", "WCO", "UNDAC", "FAO", "WFP", "UNHCR", "WIPO", "UNISDR", "UNICRI", "UNDSS", "WHO"]'},
+			{"Stakeholders": '["Non-governmental Organizations", "INTERPOL", "OIE", "ICRC", "IFRC", "MSF", "LOCAL NGOs", "Gavi", "CEPI", "Sabin", "IOM", "Open Philanthropy", "Welcome Trust", "Bill & Melinda Gates", "Skoll Global Threats Fund Rockefeller", "Vulcan"]'},
+			{"Stakeholders": '["Private Sector", "Pharmaceuticals", "Biotech", "Telecom Companies", "GHSA PSR", "WEF"]'}, 
+			{"Stakeholders": '["National Governments", "Affected Countries", "Partner Countries"]'}];
+			data = allOrgs.concat(data);
+
 			var titles = ["UN Organizations", "Non-governmental Organizations", "Private Sector", "National Governments"];
 
 			var total = 45;
@@ -74,14 +152,12 @@
 				if (d == null)
 					return; 
 				
-				i = { id: 'i' + inner.length, name: d[0], related_links: [] };
+				i = { id: 'i' + inner.length, name: d.Task, related_links: [] };
 				i.related_nodes = [i.id];
 				inner.push(i);
+				if (typeof d.Stakeholders == "string") {d.Stakeholders = JSON.parse(d.Stakeholders);};
 				
-				if (!Array.isArray(d[1]))
-					d[1] = [d[1]];
-				
-				d[1].forEach(function(d1){
+				d.Stakeholders.forEach(function(d1){
 					
 					o = outer.get(d1);
 					
@@ -128,10 +204,6 @@
 				} else {
 					data.outer[i1++] = outer[i];
 				}
-				/*if (i % 2 == 1)
-					data.outer[i2--] = outer[i];
-				else
-					data.outer[i1++] = outer[i];*/
 			}
 
 			var diameter = 1060;
@@ -162,8 +234,6 @@
 			    .domain([0, data.outer.length])
 			    .range([0, diameter / 2 - 120]);
 
-
-			//console.log(data.outer);
 			// setup positioning
 			data.outer = data.outer.map(function(d, i) { 
 				if (i<= total-21) {
@@ -313,31 +383,7 @@
 			    //.attr('font-weight', 'bold')
 			    .attr("dy", -0.8)
 			    .text(function(d) { return d.name })
-			    	.call(wrap, 180);;
-
-			function wrap(text, width) {
-			  text.each(function() {
-			    var text = d3.select(this),
-			        words = text.text().split(/\s+/).reverse(),
-			        word,
-			        line = [],
-			        lineNumber = 0,
-			        lineHeight = 1.7, // ems
-			        y = text.attr("y"),
-			        dy = parseFloat(text.attr("dy")),
-			        tspan = text.text(null).append("tspan").attr("x", 0).attr("y", y).attr("dy", dy + "em");
-			    while (word = words.pop()) {
-			      line.push(word);
-			      tspan.text(line.join(" "));
-			      if (tspan.node().getComputedTextLength() > width) {
-			        line.pop();
-			        tspan.text(line.join(" "));
-			        line = [word];
-			        tspan = text.append("tspan").attr("x", 0).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
-			      }
-			    }
-			  });
-			}
+			    	.call(wrap, 180);
 
 			// need to specify x/y/etc
 

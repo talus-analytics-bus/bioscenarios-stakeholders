@@ -8,19 +8,19 @@
 		}
 
 		function initGraphs() {
-			graphs = App.initGraphs('.timeline', '.concept-map');
+			graphs = App.initGraphs('.timeline', '.concept-map', eventData);
 		}
 
 		/*function initConcept() {
 			conceptMap = App.initConcept('.concept-map');
 		}*/
 
-		/*d3.queue()
+		d3.queue()
 			.defer(d3.tsv, 'data/events.tsv')
 			.await((error, rawEventData) => {
 				eventData = rawEventData;
 				init();
-		});*/
-		init();
+		});
+		//init();
 	};
 })();

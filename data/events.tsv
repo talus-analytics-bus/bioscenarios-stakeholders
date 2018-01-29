@@ -1,6 +1,10 @@
-Task	Stakeholders
-Event notificataion	[WHO, OIE]
-Early warning	[WHO, OIE, FAO]
-Initial sample collection	[WHO, OIE, FAO]
-Advice on containment measures	[WHO, OIE]
-Event verification	[WHO, OIE, INTERPOL, FAO]
+Event	Task	Stakeholders
+Case in other species	one	["UNDSS", "OIE"]
+Case in other species	two	["Vulcan", "Bill & Melinda Gates", "FAO"]
+Case in other species	three	["WHO", "OIE", "Biotech"]
+Case in other species	four	["WHO", "Skoll Global Threats Fund Rockefeller"]
+Index case	Event notificataion	["WHO", "OIE"]
+Index case	Early warning	["WHO", "OIE", "FAO"]
+Index case	Initial sample collection	["WHO", "OIE", "FAO"]
+Index case	Advice on containment measures	["WHO", "OIE"]
+Index case	Event verification	["WHO", "OIE", "INTERPOL", "FAO"]

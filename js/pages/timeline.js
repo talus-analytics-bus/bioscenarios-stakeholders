@@ -68,6 +68,5 @@
 		    for (var i = 0; i < d.related_links.length; i++)
 		        d3.select('#' + d.related_links[i]).style('stroke-width', "1px").style('stroke', 'black');
 		}
-		return event;
 	};
 })();
