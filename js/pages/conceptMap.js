@@ -4,10 +4,14 @@
 
 		const events = ['Index case', 'Case in other species', 'Suggestion of a DBE', 'Request help from countries', 'Bug crosses border', 'EPI peak', 'Recovery', 'Economic recovery'];
 		const event_labels = []
-		events.forEach(function(d) {event_labels.push(d.toUpperCase())})
+		events.forEach(function(d) {event_labels.push(d.toUpperCase())});
 		const margin = { top: 25, right: 25, bottom: 70, left: 25 };
 		const width = 1200;
 		const height = 140;
+		const cases = [0,5,5,10,20,40,77,0];
+		var timelineData = event_labels.map(function(e, i) {
+		  return [e, cases[i]];
+		});
 		var event;
 
 			// add chart to DOM
@@ -37,9 +41,22 @@
 			// define scales
 			const x = d3.scaleBand()
 				.domain(event_labels)
-				.range([0, width]);
+				.range([0, width])
+				.padding(1);
 			const y = d3.scaleLinear()
+				.domain([0, 100])
 				.range([height, 0]);
+
+			var line = d3.line()
+				.curve(d3.curveBasis)
+				.x(function(d) {return x(d[0])})
+				.y(function(d) {return y(d[1])});
+
+			chart.append("path")
+				.attr("fill", "none")
+				.style("stroke", "white")
+		        .datum(timelineData)
+		        .attr("d", line);
 
 			// add axes to DOM
 			const xAxis = d3.axisBottom()
@@ -59,10 +76,9 @@
 				.attr("font-size", 14)
 				.call(wrap, 128);
 
-			var box = {bottom: 276.953125, height: 175.953125, left: 57.609375, right: 142.40625, top: 101, width: 84.796875, x: 57.609375, y: 101}
-
-			chart.append("path").attr("class", "highlight-path").attr("d", "M "+String(box.x-33+box.width*0.6)+" "+String(box.y+45)+" L "+String(box.x-33+box.width*0.6)+" 0").attr("stroke", "#076eb5").attr("stroke-width", 3.5);
-			chart.append("rect").attr("x", box.x-33).attr("y", box.y+45).attr("width", box.width*1.2).attr("height", box.height-120).attr("fill", "#076eb5").attr("opacity", 0.5).attr("class", "highlight-box");
+			var box = {bottom: 286.953125, height: 175.953125, left: 116.442703, right: 201.23957, top: 111, width: 84.796875, x: 116.4427032, y: 111};
+			chart.append("path").attr("class", "highlight-path").attr("d", "M "+String(box.x-33+box.width*0.6)+" "+String(box.y+35)+" L "+String(box.x-33+box.width*0.6)+" 0").attr("stroke", "#076eb5").attr("stroke-width", 3.5);
+			chart.append("rect").attr("rx", 5).attr("ry", 5).attr("x", box.x-33).attr("y", box.y+35).attr("width", box.width*1.2).attr("height", box.height-115).attr("fill", "#076eb5").attr("opacity", 0.5).attr("class", "highlight-box");
 
 			xaxis.selectAll(".tick")['_groups'][0].forEach(function(d1) {
 				var data = d3.select(d1).data();
@@ -72,9 +88,9 @@
 						chart.selectAll("rect.highlight-box").remove();
 						chart.selectAll("text.highlight-text").remove();
 						chart.selectAll("path.highlight-path").remove();
-						chart.append("path").attr("class", "highlight-path").attr("d", "M "+String(box.x-33+box.width*0.6)+" "+String(box.y+70)+" L "+String(box.x-33+box.width*0.6)+" 0").attr("stroke", "#076eb5").attr("stroke-width", 3.5);
-						chart.append("rect").attr("x", box.x-33).attr("y", box.y+70).attr("width", box.width*1.2).attr("height", box.height-120).attr("fill", "#076eb5").attr("opacity", 0.5).attr("class", "highlight-box");
-			    		//chart.append("text").attr("class", "highlight-text").attr('transform', `translate(0, 20)`).attr("font-size", 14).attr("dy", 0.35).attr("dx", box.x-33+box.width*0.6).attr("y", box.y).attr("text-anchor", "middle").attr("fill", "red").text(d).call(wrap, 130);
+						chart.append("path").attr("class", "highlight-path").attr("d", "M "+String(box.x-33+box.width*0.6)+" "+String(box.y+35)+" L "+String(box.x-33+box.width*0.6)+" 0").attr("stroke", "#076eb5").attr("stroke-width", 3.5);
+						chart.append("rect").attr("rx", 5).attr("ry", 5).attr("x", box.x-33).attr("y", box.y+35).attr("width", box.width*1.2).attr("height", 60.953125).attr("fill", "#076eb5").attr("opacity", 0.5).attr("class", "highlight-box");
+			    		//chart.append("text").attr("class", "highlight-text").attr('transform', `translate(0, 20)`).attr("font-size", 14).attr("text-anchor", "middle").attr("fill", "red").text(d).call(wrap, 128);
 			    		resetMap(event);
 			    	});
 
