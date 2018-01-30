@@ -2,13 +2,13 @@
 	App.initGraphs = (selector1, selector2, data) => {
 		// TIMELINE	
 
-		const events = ['Index case', 'Case in other species', 'Suggestion of a DBE', 'Request help from countries', 'Bug crosses border', 'EPI peak', 'Recovery', 'Economic recovery'];
+		const events = ['First case in animals', 'First case in animals identified', 'First case in humans identified', 'Agent identified', 'WHO Public Health Emergency delcared', 'Suspicion of deliberate use', 'Confirmation of deliberate use'];
 		const event_labels = []
 		events.forEach(function(d) {event_labels.push(d.toUpperCase())});
-		const margin = { top: 25, right: 25, bottom: 70, left: 25 };
+		const margin = { top: 25, right: 25, bottom: 100, left: 25 };
 		const width = 1200;
 		const height = 140;
-		const cases = [0,5,5,10,20,40,77,0];
+		const cases = [0,5,10,20,40,77,0];
 		var timelineData = event_labels.map(function(e, i) {
 		  return [e, cases[i]];
 		});
@@ -71,14 +71,14 @@
 			xaxis.selectAll("line").attr("stroke", "white");
 
 			xaxis.selectAll("text")
-				.attr("class", "label-text")
+				.attr("class", "timeline-label")
 				.attr('transform', `translate(0, 20)`)
-				.attr("font-size", 14)
-				.call(wrap, 128);
+				.attr("font-size", 12)
+				.call(wrap, 135);
 
-			var box = {bottom: 286.953125, height: 175.953125, left: 116.442703, right: 201.23957, top: 111, width: 84.796875, x: 116.4427032, y: 111};
+			var box = {bottom:303.846923828125,height:194.0469207763672,left:132.50003051757812,right:218.50006866455078,top:109.80000305175781,width:86.00003814697266,x:132.50003051757812,y:109.80000305175781};
 			chart.append("path").attr("class", "highlight-path").attr("d", "M "+String(box.x-33+box.width*0.6)+" "+String(box.y+35)+" L "+String(box.x-33+box.width*0.6)+" 0").attr("stroke", "#076eb5").attr("stroke-width", 3.5);
-			chart.append("rect").attr("rx", 5).attr("ry", 5).attr("x", box.x-33).attr("y", box.y+35).attr("width", box.width*1.2).attr("height", box.height-115).attr("fill", "#076eb5").attr("opacity", 0.5).attr("class", "highlight-box");
+			chart.append("rect").attr("rx", 5).attr("ry", 5).attr("x", box.x-33).attr("y", box.y+35).attr("width", box.width*1.2).attr("height", box.height-130).attr("fill", "#076eb5").attr("opacity", 0.5).attr("class", "highlight-box");
 
 			xaxis.selectAll(".tick")['_groups'][0].forEach(function(d1) {
 				var data = d3.select(d1).data();
@@ -89,7 +89,7 @@
 						chart.selectAll("text.highlight-text").remove();
 						chart.selectAll("path.highlight-path").remove();
 						chart.append("path").attr("class", "highlight-path").attr("d", "M "+String(box.x-33+box.width*0.6)+" "+String(box.y+35)+" L "+String(box.x-33+box.width*0.6)+" 0").attr("stroke", "#076eb5").attr("stroke-width", 3.5);
-						chart.append("rect").attr("rx", 5).attr("ry", 5).attr("x", box.x-33).attr("y", box.y+35).attr("width", box.width*1.2).attr("height", 60.953125).attr("fill", "#076eb5").attr("opacity", 0.5).attr("class", "highlight-box");
+						chart.append("rect").attr("rx", 5).attr("ry", 5).attr("x", box.x-33).attr("y", box.y+35).attr("width", box.width*1.2).attr("height", box.height-130).attr("fill", "#076eb5").attr("opacity", 0.5).attr("class", "highlight-box");
 			    		//chart.append("text").attr("class", "highlight-text").attr('transform', `translate(0, 20)`).attr("font-size", 14).attr("text-anchor", "middle").attr("fill", "red").text(d).call(wrap, 128);
 			    		resetMap(event);
 			    	});
@@ -122,7 +122,7 @@
 			
 
 
-		buildConceptMap("Index case", data);
+		buildConceptMap("First case in animals", data);
 		
 
 		function resetMap(event) {
@@ -289,12 +289,14 @@ Index case	Event verification	FAO*/
 			svg.append("text")
 		        .attr("x", 0)  
 		        //Adjust placement of title based on number of sub-events for event?           
-		        .attr("y", -diameter/2+250)
+		        .attr("y", -diameter/2+200)
+		        .attr("dy", 0.35)
 		        .attr("text-anchor", "middle")
 		        .style("font-size", "25px") 
 		        .style("font-weight", "600") 
 		        .style('fill', '#076eb5')
-		        .text(event.toUpperCase());
+		        .text(event.toUpperCase())
+		        .call(wrap, 340);
 					    
 
 			// links
@@ -400,6 +402,8 @@ Index case	Event verification	FAO*/
 			    .attr("dy", -0.8)
 			    .text(function(d) { return d.name })
 			    	.call(wrap, 180);
+
+			//onode.selectAll("text")['_groups'].forEach(function(d){console.log(d);});
 
 			// need to specify x/y/etc
 
