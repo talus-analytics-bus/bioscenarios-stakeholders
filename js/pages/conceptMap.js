@@ -76,20 +76,21 @@
 				.attr("font-size", 12)
 				.call(wrap, 135);
 
-			var box = {bottom:303.846923828125,height:194.0469207763672,left:132.50003051757812,right:218.50006866455078,top:109.80000305175781,width:86.00003814697266,x:132.50003051757812,y:109.80000305175781};
+			var box = {bottom:303.846923828125,height:194.0469207763672,left:263.09381103515625,right:386.84387969970703,top:109.80000305175781,width:123.75006866455078,x:263.09381103515625,y:109.80000305175781};
 			chart.append("path").attr("class", "highlight-path").attr("d", "M "+String(box.x-33+box.width*0.6)+" "+String(box.y+35)+" L "+String(box.x-33+box.width*0.6)+" 0").attr("stroke", "#076eb5").attr("stroke-width", 3.5);
-			chart.append("rect").attr("rx", 5).attr("ry", 5).attr("x", box.x-33).attr("y", box.y+35).attr("width", box.width*1.2).attr("height", box.height-130).attr("fill", "#076eb5").attr("opacity", 0.5).attr("class", "highlight-box");
+			chart.append("rect").attr("rx", 5).attr("ry", 5).attr("x", box.x-33).attr("y", box.y+35).attr("width", box.width*1.2).attr("height", box.height-130).attr("fill", "#076eb5").attr("opacity", 0.2).attr("class", "highlight-box");
 
 			xaxis.selectAll(".tick")['_groups'][0].forEach(function(d1) {
 				var data = d3.select(d1).data();
 				d3.select(d1).on("click", function(d) {
+						//d3.select(this).select('text').style('fill', 'white');
 						event = events[event_labels.indexOf(d)];
 						var box = d3.select(d1).node().getBoundingClientRect();
 						chart.selectAll("rect.highlight-box").remove();
 						chart.selectAll("text.highlight-text").remove();
 						chart.selectAll("path.highlight-path").remove();
 						chart.append("path").attr("class", "highlight-path").attr("d", "M "+String(box.x-33+box.width*0.6)+" "+String(box.y+35)+" L "+String(box.x-33+box.width*0.6)+" 0").attr("stroke", "#076eb5").attr("stroke-width", 3.5);
-						chart.append("rect").attr("rx", 5).attr("ry", 5).attr("x", box.x-33).attr("y", box.y+35).attr("width", box.width*1.2).attr("height", box.height-130).attr("fill", "#076eb5").attr("opacity", 0.5).attr("class", "highlight-box");
+						chart.append("rect").attr("rx", 5).attr("ry", 5).attr("x", box.x-33).attr("y", box.y+35).attr("width", box.width*1.2).attr("height", box.height-130).attr("fill", "#076eb5").attr("opacity", 0.2).attr("class", "highlight-box");
 			    		//chart.append("text").attr("class", "highlight-text").attr('transform', `translate(0, 20)`).attr("font-size", 14).attr("text-anchor", "middle").attr("fill", "red").text(d).call(wrap, 128);
 			    		resetMap(event);
 			    	});
@@ -122,7 +123,7 @@
 			
 
 
-		buildConceptMap("First case in animals", data);
+		buildConceptMap("First case in animals identified", data);
 		
 
 		function resetMap(event) {
@@ -132,31 +133,15 @@
 
 		//CONCEPT MAP
 		function buildConceptMap(event, data) {
-			/*Index case	Event notificataion	WHO
-Index case	Event notificataion	OIE
-Index case	Early warning	WHO
-Index case	Early warning	OIE
-Index case	Early warning	FAO
-Index case	Initial sample collection	WHO
-Index case	Initial sample collection	OIE
-Index case	Initial sample collection	FAO
-Index case	Advice on containment measures	WHO
-Index case	Advice on containment measures	OIE
-Index case	Event verification	WHO
-Index case	Event verification	OIE
-Index case	Event verification	INTERPOL
-Index case	Event verification	FAO*/
-
 			data = data.filter(function(d) {return d.Event == event});
-			var allOrgs = [{"Stakeholders": '["UN Organizations", "UNSG", "UNSGM", "OCHA", "JEU", "UNDPI", "UNIDIR", "UNODA", "BWC ISU", "1540 COMMITTEE", "WCO", "UNDAC", "FAO", "WFP", "UNHCR", "WIPO", "UNISDR", "UNICRI", "UNDSS", "WHO"]'},
-			{"Stakeholders": '["Non-governmental Organizations", "INTERPOL", "OIE", "ICRC", "IFRC", "MSF", "LOCAL NGOs", "Gavi", "CEPI", "Sabin", "IOM", "Open Philanthropy", "Welcome Trust", "Bill & Melinda Gates", "Skoll Global Threats Fund Rockefeller", "Vulcan"]'},
-			{"Stakeholders": '["Private Sector", "Pharmaceuticals", "Biotech", "Telecom Companies", "GHSA PSR", "WEF"]'}, 
-			{"Stakeholders": '["National Governments", "Affected Countries", "Partner Countries"]'}];
+			var allOrgs = [{"Stakeholders": '["UN Organizations", "UNSG", "UNSGM", "UNGA", "OCHA", "JEU", "UNDPI", "UNIDIR", "UNODA", "BWC ISU", "UNSC", "WCO", "ICAO", "UNDAC", "FAO", "WFP", "UNHCR", "WIPO", "UNISDR", "WBG", "IMO", "UNICRI", "UNDSS", "WHO", "OPCW", "UNICEF"]'},
+			{"Stakeholders": '["Non-governmental Organizations", "INTERPOL", "OIE", "ICRC", "IFRC", "MSF", "LOCAL NGOs", "Gavi", "National Academies", "CEPI", "Sabin", "IOM", "WTO", "Ministry of Health", "Veterinary care providers", "Health care workers", "Public Health Emergency Operation Center", "Local law enforcement", "National Governemnets (non-affected)", "Open Philanthropy", "Welcome Trust", "Bill & Melinda Gates Foundation", "Skoll Global Threats Fund", "Rockefeller Foundation", "Vulcan Foundation"]'},
+			{"Stakeholders": '["Private Sector", "Pharmaceutical and biotechnology companies", "Telecommunications Companies", "GHSA PSRT", "WEF"]'}];
 			data = allOrgs.concat(data);
 
-			var titles = ["UN Organizations", "Non-governmental Organizations", "Private Sector", "National Governments"];
+			var titles = ["UN Organizations", "Non-governmental Organizations", "Private Sector"];
 
-			var total = 45;
+			var total = 56;
 
 			var outer = d3.map();
 			var inner = [];
@@ -172,6 +157,7 @@ Index case	Event verification	FAO*/
 				i.related_nodes = [i.id];
 				inner.push(i);
 				if (typeof d.Stakeholders == "string") {d.Stakeholders = JSON.parse(d.Stakeholders);};
+
 				
 				d.Stakeholders.forEach(function(d1){
 					
@@ -198,7 +184,7 @@ Index case	Event verification	FAO*/
 				});
 			});
 
-			inner.splice(0, 4);
+			inner.splice(0, 3);
 			links.splice(0, total);
 
 			data = {
@@ -215,14 +201,14 @@ Index case	Event verification	FAO*/
 
 			for (var i = 0; i < data.outer.length; ++i)
 			{
-				if (i <= 19) {
+				if (i <= 25) {
 					data.outer[i2--] = outer[i];
 				} else {
 					data.outer[i1++] = outer[i];
 				}
 			}
 
-			var diameter = 1060;
+			var diameter = 1160;
 			var rect_width = 250;
 			var rect_height = 100; 
 
@@ -236,15 +222,15 @@ Index case	Event verification	FAO*/
 			mid = (data.outer.length/2.0)
 			var outer_x = d3.scaleLinear()
 			    .domain([0, mid, mid, data.outer.length])
-			    .range([50, 135, 225 ,320]);
+			    .range([50, 135, 215 ,320]);
 
 			var outer_x_UN = d3.scaleLinear()
-			    .domain([0, 20])
+			    .domain([0, 26])
 			    .range([50, 135]);
 
 			var outer_x_non = d3.scaleLinear()
-			    .domain([20, data.outer.length])
-			    .range([225 ,320]);
+			    .domain([26, data.outer.length])
+			    .range([215 ,320]);
 
 			var outer_y = d3.scaleLinear()
 			    .domain([0, data.outer.length])
@@ -252,7 +238,7 @@ Index case	Event verification	FAO*/
 
 			// setup positioning
 			data.outer = data.outer.map(function(d, i) { 
-				if (i<= total-21) {
+				if (i<= total-27) {
 					d.x = outer_x_UN(i);
 				}else {
 					d.x = outer_x_non(i);
@@ -359,6 +345,13 @@ Index case	Event verification	FAO*/
 					return "none"
 				}
 			};
+			function outer_size(d) {
+				if (titles.includes(d.name)) {
+					return 19
+				} else {
+					return 16
+				}
+			};
 			  
 			onode.append("text")
 				.attr('id', function(d) { return d.id + '-txt'; })
@@ -366,7 +359,7 @@ Index case	Event verification	FAO*/
 			    .attr("text-anchor", function(d) { return d.x < 180 ? "start" : "end"; })
 			    .attr("transform", function(d) { return d.x < 180 ? "translate(8)" : "rotate(180)translate(-8)"; })
 			    .attr('fill', outer_color)
-			    .attr('font-size', 16)
+			    .attr('font-size', outer_size)
 			    .attr("text-decoration", outer_dec)
 			    .attr("font-style", outer_style)
 			    .text(function(d) { return d.name; });
@@ -388,8 +381,9 @@ Index case	Event verification	FAO*/
 			    .attr('fill', '#e8e8e8');
 
 			inode.append('rect')
-			    .attr('width', rect_width)
-			    .attr('height', 20)
+			    .attr('width', rect_width+2)
+			    .attr('height', 21)
+			    .attr("transform", "translate(-1, -1)")
 			    .style('fill', '#ffffff');
 			  
 			inode.append("text")
@@ -418,7 +412,7 @@ Index case	Event verification	FAO*/
 			    {	if (!titles.includes(d.name)){
 			        d3.select('#' + d.related_nodes[i]).classed('highlight', true).style('fill', '#076eb5');
 			        if (d.related_nodes[i][0] == "i") {d3.select('#' + d.related_nodes[i] + '-txt').style('fill', '#f2f3f4');}
-			        else {d3.select('#' + d.related_nodes[i] + '-txt').style('fill', '#076eb5').attr('font-size', 18).style("font-weight", "600") ;};
+			        else {d3.select('#' + d.related_nodes[i] + '-txt').style('fill', '#076eb5').attr('font-size', 19).style("font-weight", "600") ;};
 			    }
 			}
 			    
