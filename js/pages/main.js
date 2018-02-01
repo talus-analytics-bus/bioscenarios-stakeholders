@@ -8,7 +8,7 @@
 		}
 
 		function initGraphs() {
-			graphs = App.initGraphs('.timeline', '.concept-map', eventData);
+			graphs = App.initGraphs('.timeline', '.concept-map', '.donut-chart', eventData);
 		}
 
 		/*function initConcept() {
