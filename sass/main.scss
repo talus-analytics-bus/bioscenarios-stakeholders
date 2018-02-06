@@ -20,10 +20,8 @@
 @import 'components/tooltips';
 
 
-@import 'pages/main';
-@import 'pages/conceptMap';
 @import 'pages/login';
-@import 'pages/main';
 @import 'pages/home';
-@import 'pages/login';
-@import 'pages/timeline';
+
+@import 'charts/conceptMap';
+@import 'charts/timeline'
