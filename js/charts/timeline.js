@@ -92,12 +92,15 @@
 			.domain(eventLabels)
 			.range([0, width])
 			.padding(1);
+
 		const reverseX = d3.scaleQuantize()
-			.domain([0, width])
+			.domain([x(eventLabels[0]), x(eventLabels[eventLabels.length - 1]) - 100])
 			.range(eventLabels);
+
 		const dayScale = d3.scaleLinear()
 			.domain([0, width])
 			.rangeRound([1, 30 * eventLabels.length])
+
 		const y = d3.scaleLinear()
 			.domain([0, 100])
 			.range([height, 0]);
@@ -182,6 +185,9 @@
 
 				d3.select('.what-day-is-it')
 					.text(`Day ${dayScale(newX)}`);
+
+				d3.select('.what-event-is-it')
+					.text(`${reverseX(newX)}`);
 
 				// TODO: make overlap checking work
 				checkOverlap = (d) => (Math.abs(x(d.eventName.toUpperCase()) - newX - 50) < 45);
