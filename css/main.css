@@ -246,6 +246,20 @@
   border-left: 1px solid #ccc;
   border-right: 1px solid #ccc; }
 
+.svg-container {
+  display: inline-block;
+  position: relative;
+  width: 100%;
+  padding-bottom: 100%;
+  vertical-align: top;
+  overflow: hidden; }
+
+.svg-content-responsive {
+  display: inline-block;
+  position: absolute;
+  top: 10px;
+  left: 0; }
+
 select.form-control {
   display: inline-block;
   width: auto; }

@@ -1,8 +1,7 @@
 (() => {
-	App.initConceptMap = (selector, data) => {
-		const event = 'null';
+	App.initConceptMap = (selector, eventName, data) => {
 		// get event data
-		data = data.filter(function(d) {return d.Event == event});
+		data = data.filter(function(d) {return d.Event == eventName});
 		// add data to ensure all stakeholders will be shown
 		var allOrgs = [{"Stakeholders": '["UN Organizations", "UNSG", "UNSGM", "UNGA", "OCHA", "JEU", "UNDPI", "UNIDIR", "UNODA", "BWC ISU", "UNSC", "WCO", "ICAO", "UNDAC", "FAO", "WFP", "UNHCR", "WIPO", "UNISDR", "WBG", "IMO", "UNICRI", "UNDSS", "WHO", "OPCW", "UNICEF"]'},
 		{"Stakeholders": '["Non-governmental Organizations", "INTERPOL", "OIE", "ICRC", "IFRC", "MSF", "LOCAL NGOs", "Gavi", "National Academies", "CEPI", "Sabin", "IOM", "WTO", "Ministry of Health", "Veterinary care providers", "Health care workers", "Public Health Emergency Operation Center", "Local law enforcement", "National Governemnets (non-affected)", "Open Philanthropy", "Welcome Trust", "Bill & Melinda Gates Foundation", "Skoll Global Threats Fund", "Rockefeller Foundation", "Vulcan Foundation"]'},
@@ -150,7 +149,7 @@
 			.style("font-size", "25px") 
 			.style("font-weight", "600") 
 			.style('fill', '#076eb5')
-			.text(event.toUpperCase())
+			.text(eventName.toUpperCase())
 			.call(wrap, 340);	 
 
 		// add links

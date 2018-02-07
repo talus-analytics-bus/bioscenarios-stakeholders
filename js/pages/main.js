@@ -5,7 +5,7 @@
 
 		d3.queue()
 			.defer(d3.tsv, 'data/events.tsv')
-			.defer(d3.json, 'data/timeline.json')
+			.defer(d3.tsv, 'data/timeline.tsv')
 			.await((error, rawEventData, rawTimelineData) => {
 				eventData = rawEventData;
 				timelineData = rawTimelineData;
@@ -21,11 +21,11 @@
 		}
 
 		function initGraphs() {
-			timeline   = App.initTimeline('.timeline', timelineData.events);
-			conceptMap = App.initConceptMap('.concept-map', eventData);
+			timeline   = App.initTimeline('.timeline', timelineData);
+			conceptMap = App.initConceptMap('.concept-map', timelineData[0].eventName, eventData);
 			donut      = App.initDonut('.donut-chart', eventData);
 		}
 
-		init();
+
 	};
 })();
