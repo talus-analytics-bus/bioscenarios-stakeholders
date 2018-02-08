@@ -1,9 +1,9 @@
 branch-defaults:
   master:
-    environment: framework-dev
+    environment: bio-scenarios-stakeholders-dev
     group_suffix: null
 global:
-  application_name: framework
+  application_name: bio-scenarios-stakeholders
   branch: null
   default_ec2_keyname: null
   default_platform: Node.js
