@@ -174,7 +174,7 @@
 		const drag = d3.drag()
 			.on('drag', function(d) {
 				// TODO: better math around newX
-				var newX = d3.event.sourceEvent.x + d3.event.dx - 80 - margin.left;
+				var newX = indicatorGroup.select('rect').attr('x') + d3.event.dx;
 				newX = Math.max(0, newX);
 				newX = Math.min(width - margin.right - 160, newX);
 				indicatorGroup.selectAll('rect')

@@ -15,8 +15,16 @@
 		let conceptMap;
 		let timeline;
 		let donut;
+		let mandates;
 
 		function init () {
+			//populate dropdown
+			d3.select(".timeline-event-dropdown").selectAll('option')
+				.data(timelineData)
+				.enter()
+				.append('option')
+				.attr('value', d => d.eventName)
+				.text(d => d.eventName);
 			initGraphs();
 		}
 
@@ -24,6 +32,7 @@
 			timeline   = App.initTimeline('.timeline', timelineData);
 			conceptMap = App.initConceptMap('.concept-map', timelineData[0].eventName, eventData);
 			donut      = App.initDonut('.donut-chart', eventData);
+			mandates   = App.initMandates('.mandate-chart', null, null);
 		}
 
 

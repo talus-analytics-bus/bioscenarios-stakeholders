@@ -1,6 +1,10 @@
 (() => {
 	App.initDonut = (selector, data) => {
-		var innerData = [{"name":"public health and medical", "val":1},{"name":"humanitarian aid", "val":1},{"name":"safety and security", "val":1}];
+		var innerData = [
+			{"name":"public health and medical", "val":1},
+			{"name":"humanitarian aid", "val":1},
+			{"name":"safety and security", "val":1}
+		];
 		var width = 960,
 			height = 500,
 			radius = Math.min(width, height)/2;

@@ -2,7 +2,11 @@
 	App.initConceptMap = (selector, eventName, data) => {
 		// get event data
 		eventName = 'First case in humans identified';
-		console.log(data);
+
+		$('what-event-is-it').on('DOMSubtreeModified', function() {
+			console.log('here');
+		});
+
 		data = data.filter(function(d) {return d.Event == eventName});
 		// add data to ensure all stakeholders will be shown
 		var allOrgs = [{"Stakeholders": '["UN Organizations", "UNSG", "UNSGM", "UNGA", "OCHA", "JEU", "UNDPI", "UNIDIR", "UNODA", "BWC ISU", "UNSC", "WCO", "ICAO", "UNDAC", "FAO", "WFP", "UNHCR", "WIPO", "UNISDR", "WBG", "IMO", "UNICRI", "UNDSS", "WHO", "OPCW", "UNICEF"]'},

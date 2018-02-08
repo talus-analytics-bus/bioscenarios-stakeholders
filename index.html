@@ -55,13 +55,31 @@
 	</script>
 
 	<script id="main-template" type="text/x-handlebars-template">
-		<div class="graphic-title"><h3>POLICY CHARTER TIMELINE</h3></div>
-		<div class="dbe-title"><p>DELIBERATE BIOLOGICAL EVENT (DBE)</p></div>
-		<div class="timeline"></div>
-		<div class="graphic-title"><h3>STAKEHOLDER INVOLVEMENT</h3></div>
-		<div class="concept-map"></div>
-		<div class="graphic-title"><h3>STAKEHOLDER ROLE</h3></div>
-		<div class="donut-chart"></div>
+        <div class="row">
+            <div class="row">
+                <div class="graphic-title"><h3>POLICY CHARTER TIMELINE</h3></div>
+            </div>
+            <div class="row">
+                <div class="timeline"></div>
+            </div>
+            <div class="row col-sm-12">
+                <h6>Selected Event</h6>
+                <select class="timeline-event-dropdown form-control">
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="graphic-title"><h3>STAKEHOLDER INVOLVEMENT</h3></div>
+            <div class="concept-map"></div>
+        </div>
+        <div class="row">
+            <div class="graphic-title"><h3>STAKEHOLDER MANDATES</h3></div>
+            <div class="mandate-chart"></div>
+        </div>
+        <div class="row">
+            <div class="graphic-title"><h3>STAKEHOLDER ROLE</h3></div>
+            <div class="donut-chart"></div>
+        </div>
 	</script>
 
 	<!-- General Libraries -->
@@ -98,6 +116,7 @@
 	<script src="js/charts/timeline.js"></script>
 	<script src="js/charts/conceptMap.js"></script>
 	<script src="js/charts/donut.js"></script>
+	<script src="js/charts/mandates.js"></script>
 	<script src="js/init.js"></script>
 
 	<!--<script src="build/bundle.min.js"></script>-->
