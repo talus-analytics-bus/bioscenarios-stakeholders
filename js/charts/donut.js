@@ -80,9 +80,9 @@
 		 * 3. Org height -> How big is each org -> static
 		 */
 
-		const innerRadius    = 100;
+		const innerRadius    = 75;
 		const outerRadius    = width;
-		const categoryHeight = 75;
+		const categoryHeight = 50;
 		const orgHeight      = 10;
 
 		/* STEP ONE => MASSAGE THE DATA */
@@ -117,31 +117,49 @@
 					height: x.values.length
 				};
 			});
+			const sortedCatData = catData.sort((a, b) => a[3] < b[3])
 			return {
 				name: d,
 				data: catData,
 				orgCounts: catCounts,
 				orgTypes: orgTypes,
-				orgHeights: orgHeights
+				orgHeights: orgHeights,
+				sortedCatData: sortedCatData,
 			};
 		})
 		.sort((a, b) => a.name > b.name);
 
 		// Now append arc data to the catHeights
+		var cdepth;
 		const catArcs = catHeights.map(function(d, i) {
 			const arcPortion = (1 / allRoles.length) * (2 * Math.PI);
 			// first set the global category info
+			const orgRadius = innerRadius + categoryHeight;
+			cdepth = -orgHeight;
+			const orgArcs = d.sortedCatData.map(function(x) {
+				cdepth += orgHeight;
+				return {
+					name: x[1],
+					type: x[3],
+					innerRadius: orgRadius + cdepth,
+					outerRadius: orgRadius + cdepth + orgHeight,
+					startAngle: arcPortion * i,
+					endAngle: arcPortion * (i + 1),
+				}
+			})
 			return {
 				name: d.name,
 				data: d.data,
+				// arc info
 				innerRadius: innerRadius,
-				outerRadius: innerRadius + categoryHeight,
+				outerRadius: orgRadius,
 				startAngle: arcPortion * i,
 				endAngle: arcPortion * (i + 1),
+				// sub arcs
 				orgCounts: d.orgCounts,
 				orgTypes: d.orgTypes,
 				orgHeights: d.orgHeights,
-				orgArcs: 0,
+				orgArcs: orgArcs,
 			}
 		});
 
@@ -159,17 +177,22 @@
 
 		// colours
 		const innerColor = '#4d4e4e';
+		const textColor = '#ffffff';
+		const UNColor = '#a59a95';
+		const NGOColor = '#005272';
 
 		const arc = d3.arc()
 			.innerRadius(d => d.innerRadius)
 			.outerRadius(d => d.outerRadius)
 			.startAngle(d => d.startAngle)
-			.endAngle(d => d.endAngle);
+			.endAngle(d => d.endAngle)
+			.padAngle(0.01);
 
 		const textArc = d3.arc()
 			.outerRadius(d => d.innerRadius + ((d.outerRadius - d.innerRadius) / 2))
-			.startAngle(d => d.startAngle)
-			.endAngle(d => d.endAngle);
+			.startAngle(d => d.startAngle + 0.25)
+			.endAngle(d => d.endAngle)
+			.padAngle(0.05);
 
 		const innerArcGroup = chart.append('g')
 			.classed('arc-group', true);
@@ -199,8 +222,32 @@
 			.append('text')
 			.append('textPath')
 			.attr('xlink:href', (d, i) => `#inner-arc-label-path-${i}`)
-			.style('fill', 'white')
+			.style('fill', textColor)
+			.style('font-size', '0.6em')
 			.text(d => d.name);
+
+		// now time for org arcs
+		const orgArcGroup = chart.append('g')
+			.classed('arc-group', true);
+
+		arcData = catArcs.reduce(function(acc, cval) {
+			return acc.concat(cval.orgArcs);
+		}, []);
+
+		orgArcGroup.selectAll('path')
+			.data(arcData)
+			.enter()
+			.append('path')
+			.attr('d', arc)
+			.style('fill', function(d) {
+				if (d.type === 'UN Organization') {
+					return UNColor;
+				} else {
+					return NGOColor;
+				}
+			})
+
+
 
 	}
 })();
