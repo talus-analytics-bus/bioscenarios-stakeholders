@@ -248,6 +248,9 @@
 			})
 
 
+		// add a center label
+		chart.append('text')
+			.html(wordWrap(eventName, 15, -50, 0));
 
 	}
 })();
