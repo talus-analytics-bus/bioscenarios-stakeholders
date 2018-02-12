@@ -129,8 +129,6 @@
 		})
 		.sort((a, b) => a.name > b.name);
 
-		console.log(catHeights);
-
 		// Now append arc data to the catHeights
 		var cdepth;
 		const catArcs = catHeights.map(function(d, i) {
@@ -138,7 +136,6 @@
 			// first set the global category info
 			const orgRadius = innerRadius + categoryHeight;
 			cdepth = -orgHeight;
-			console.log(d);
 			const orgArcs = d.sortedCatData.map(function(x) {
 				cdepth += orgHeight;
 				return {
@@ -150,7 +147,6 @@
 					endAngle: arcPortion * (i + 1),
 				}
 			})
-			console.log(orgArcs);
 			return {
 				name: d.name,
 				data: d.data,
@@ -234,12 +230,12 @@
 		const orgArcGroup = chart.append('g')
 			.classed('arc-group', true);
 
-
-		catArcs.forEach(function(d) {
-		})
+		arcData = catArcs.reduce(function(acc, cval) {
+			return acc.concat(cval.orgArcs);
+		}, []);
 
 		orgArcGroup.selectAll('path')
-			.data(d.orgArcs)
+			.data(arcData)
 			.enter()
 			.append('path')
 			.attr('d', arc)
