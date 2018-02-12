@@ -1,7 +1,11 @@
 branch-defaults:
   master:
-    environment:  bio-scenarios-stakeholders-dev
+    environment: bio-scenarios-stakeholders-dev
     group_suffix: null
+environment-defaults:
+  bio-scenarios-stakeholders-dev:
+    branch: null
+    repository: null
 global:
   application_name: bio-scenarios-stakeholders
   branch: null
