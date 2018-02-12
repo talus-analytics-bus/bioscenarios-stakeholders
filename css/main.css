@@ -504,6 +504,9 @@ light {
   margin-top: 10px;
   text-align: center; }
 
+#page-content {
+  padding-top: 100px; }
+
 .timeline-label {
   display: inline-flex; }
 
