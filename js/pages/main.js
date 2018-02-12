@@ -15,7 +15,6 @@
 		let conceptMap;
 		let timeline;
 		let donut;
-		let mandates;
 
 		function init () {
 			//populate dropdown
@@ -32,7 +31,6 @@
 			timeline   = App.initTimeline('.timeline', timelineData);
 			conceptMap = App.initConceptMap('.concept-map', timelineData[0].eventName, eventData);
 			donut      = App.initDonut('.donut-chart', eventData);
-			mandates   = App.initMandates('.mandate-chart', null, null);
 		}
 
 

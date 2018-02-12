@@ -1,11 +1,8 @@
 (() => {
 	App.initConceptMap = (selector, eventName, data) => {
 		// get event data
+		// TODO: Pick event based on timeline
 		eventName = 'First case in humans identified';
-
-		$('what-event-is-it').on('DOMSubtreeModified', function() {
-			console.log('here');
-		});
 
 		data = data.filter(function(d) {return d.Event == eventName});
 		// add data to ensure all stakeholders will be shown
