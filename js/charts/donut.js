@@ -70,11 +70,14 @@
 
 		data = data.filter(d => d[0] === eventName);
 
-		// function convertOrgName(s) {
-		// 	return s.match(/\([A-Za-z0-9 ]\)/)[0];
-		// }
-		//
-		// console.log(orgInfo.map(d => convertOrgName(d[0])));
+		function convertOrgName(s) {
+			const abbrev = s.match(/\([A-Za-z0-9 ]+\)/);
+			if (abbrev === null) {
+				return s;
+			} else {
+				return abbrev[0];
+			}
+		}
 
 		const width = 900,
 			height = width;
@@ -194,7 +197,7 @@
 
 		const textArc = d3.arc()
 			.outerRadius(d => d.innerRadius + ((d.outerRadius - d.innerRadius) / 2))
-			.startAngle(d => d.startAngle + 0.05)
+			.startAngle(d => d.startAngle + 0.25)
 			.endAngle(d => d.endAngle);
 
 		const innerArcGroup = chart.append('g')
@@ -245,10 +248,7 @@
 		// append path for text
 		const innerArcDefs = chart.append('defs');
 		innerArcDefs.selectAll('path')
-			.data(catArcs.map(function(d) {
-				d.startAngle += 0.25;
-				return d;
-			}))
+			.data(catArcs)
 			.enter()
 			.append('path')
 			.attr('d', textArc)
@@ -290,6 +290,14 @@
 				} else {
 					return NGOColor;
 				}
+			})
+			.each(function(d) {
+				const content = `<div class="tooltip-title">${d.name}</div>`;
+				$(this).tooltipster({
+					content: content,
+					trigger: 'hover',
+					side: 'right',   // TODO: dynamic positioning of tooltip based on arc location
+				});
 			});
 
 		// let's get labels on the categories
@@ -306,16 +314,6 @@
 			.attr('d', textArc)
 			.attr('id', (d, i) => `org-arc-label-path-${i}`);
 
-		// // debug -> drawing these paths cause something's weird
-		// chart.append('g').selectAll('path')
-		// 	.data(arcData)
-		// 	.enter()
-		// 	.append('path')
-		// 	.attr('d', textArc)
-		// 	.style('fill-opacity', 0)
-		// 	.style('stroke', 'red')
-		// 	.style('stroke-opacity', 1);
-
 		// now we can add text
 		arcLabels.selectAll('text')
 			.data(arcData)
@@ -326,7 +324,7 @@
 			.style('fill', textColor)
 			.style('font-size', '0.5em')
 			.style('text-anchor', 'start')
-			.text(d => d.name);
+			.text(d => convertOrgName(d.name));
 
 		// add a center label
 		chart.append('text')
