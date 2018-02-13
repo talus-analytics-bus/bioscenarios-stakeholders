@@ -7,61 +7,61 @@
 		 */
 
 		data = [
-			['First case in humans identified','World Health Organization (WHO)','public health and medical'],
-			['First case in animals identified','World Organisation for Animal Health (OIE)','public health and medical'],
-			['State request for assistance','Joint United Nations Environment Programme (UNEP)/OCHA Environment Unit (JEU)','humanitarian aid'],
-			['State request for assistance','Food and Agriculture Organization of the United Nations (FAO)','humanitarian aid'],
-			['State request for assistance','World Organisation for Animal Health (OIE)','humanitarian aid'],
-			['State request for assistance','World Health Organization (WHO)','public health and medical; humanitarian aid'],
-			['WHO Public Health Emergency Declared','World Health Organization (WHO)','public health and medical; humanitarian aid; governance and policy'],
-			['uspicion of Deliberate Use','United Nations Secretary-General\'s Mechanism (UNSGM)','governance and policy; safety and security'],
-			['Suspicion of Deliberate Use','Organisation for the Prohibition of Chemical Weapons (OPCW)','governance and policy'],
-			['Suspicion of Deliberate Use','International Criminal Police Organization (INTERPOL)','safety and security'],
-			['Suspicion of Deliberate Use','United Nations Security Council - 1540 Committee','safety and security; governance and policy'],
-			['Suspicion of Deliberate Use','United Nations Office for Disarmament Affairs (UNODA)','safety and security'],
-			['Refugees Flee Country','International Maritime Organization (IMO)','safety and security; governance and policy'],
-			['State request for Funds','World Bank Group (WBG)','humanitarian aid'],
-			['Deployment of UN Personnel to affected country.','United Nations Department for Safety and Security (UNDSS)','safety and security; governance and policy'],
-			['UN Security Council requests assistance','Biological Weapons Convention Implementation Support Unit (BWC ISU)','safety and security'],
-			['Request from Member State','World Customs Organization (WCO)','safety and security; governance and policy'],
-			['Affected State Command and Control Compromised','International Civil Aviation Organization (ICAO)','safety and security; governance and policy'],
-			['State request for assistance','United Nations Disaster Assessment and Coordination (UNDAC)','humanitarian aid'],
-			['State request for assistance','World Food Programme (WFP)','humanitarian aid'],
-			['Refugees Flee Country','United Nations High Commissioner for Refugees (UNHCR)','humanitarian aid'],
-			['State request for assistance','United Nations International Strategy for Disaster Reduction (UNISDR)','governance and policy; safety and security'],
+			['First case in humans identified', 'World Health Organization (WHO)', 'public health and medical'],
+			['First case in animals identified', 'World Organisation for Animal Health (OIE)', 'public health and medical'],
+			['State request for assistance', 'Joint United Nations Environment Programme (UNEP)/OCHA Environment Unit (JEU)', 'humanitarian aid'],
+			['State request for assistance', 'Food and Agriculture Organization of the United Nations (FAO)', 'humanitarian aid'],
+			['State request for assistance', 'World Organisation for Animal Health (OIE)', 'humanitarian aid'],
+			['State request for assistance', 'World Health Organization (WHO)', 'public health and medical; humanitarian aid'],
+			['WHO Public Health Emergency Declared', 'World Health Organization (WHO)', 'public health and medical; humanitarian aid; governance and policy'],
+			['uspicion of Deliberate Use', 'United Nations Secretary-General\'s Mechanism (UNSGM)', 'governance and policy; safety and security'],
+			['Suspicion of Deliberate Use', 'Organisation for the Prohibition of Chemical Weapons (OPCW)', 'governance and policy'],
+			['Suspicion of Deliberate Use', 'International Criminal Police Organization (INTERPOL)', 'safety and security'],
+			['Suspicion of Deliberate Use', 'United Nations Security Council - 1540 Committee', 'safety and security; governance and policy'],
+			['Suspicion of Deliberate Use', 'United Nations Office for Disarmament Affairs (UNODA)', 'safety and security'],
+			['Refugees Flee Country', 'International Maritime Organization (IMO)', 'safety and security; governance and policy'],
+			['State request for Funds', 'World Bank Group (WBG)', 'humanitarian aid'],
+			['Deployment of UN Personnel to affected country.', 'United Nations Department for Safety and Security (UNDSS)', 'safety and security; governance and policy'],
+			['UN Security Council requests assistance', 'Biological Weapons Convention Implementation Support Unit (BWC ISU)', 'safety and security'],
+			['Request from Member State', 'World Customs Organization (WCO)', 'safety and security; governance and policy'],
+			['Affected State Command and Control Compromised', 'International Civil Aviation Organization (ICAO)', 'safety and security; governance and policy'],
+			['State request for assistance', 'United Nations Disaster Assessment and Coordination (UNDAC)', 'humanitarian aid'],
+			['State request for assistance', 'World Food Programme (WFP)', 'humanitarian aid'],
+			['Refugees Flee Country', 'United Nations High Commissioner for Refugees (UNHCR)', 'humanitarian aid'],
+			['State request for assistance', 'United Nations International Strategy for Disaster Reduction (UNISDR)', 'governance and policy; safety and security'],
 		];
 
 		orgInfo = [
-			['United Nations Secretary-General\'s Mechanism (UNSGM)','UN Organization'],
-			['United Nations Secretary General (UNSG)','UN Organization'],
-			['United Nations Department of Public Information (UNDPI)','UN Organization'],
-			['Food and Agriculture Organization of the United Nations (FAO)','UN Organization'],
-			['Joint United Nations Environment Programme (UNEP)/OCHA Environment Unit (JEU)','UN Organization'],
-			['Organisation for the Prohibition of Chemical Weapons (OPCW)','UN Organization'],
-			['World Health Organization (WHO)','UN Organization'],
-			['United Nations Institute for Disarmament Research (UNIDIR)','UN Organization'],
-			['United Nations Office for Disarmament Affairs (UNODA)','UN Organization'],
-			['International Criminal Police Organization (INTERPOL)','NGO'],
-			['World Organisation for Animal Health (OIE)','NGO'],
-			['United Nations Security Council (UNSC)','UN Organization'],
-			['World Bank Group (WBG)','UN Organization'],
-			['Internnational Maritime Organization (IMO)','UN Organization'],
-			['United Nations Department for Safety and Security (UNDSS)','UN Organization'],
-			['Biological Weapons Convention Implementation Support Unit (BWC ISU)','UN Organization'],
-			['World Customs Organization (WCO)','UN Organization'],
-			['International Civil Aviation Organization (ICAO)','UN Organization'],
-			['United Nations Disaster Assessment and Coordination (UNDAC)','UN Organization'],
-			['World Food Programme (WFP)','UN Organization'],
-			['United Nations High Commissioner for Refugees (UNHCR)','UN Organization'],
-			['United Nations International Strategy for Disaster Reduction (UNISDR)','UN Organization'],
+			['United Nations Secretary-General\'s Mechanism (UNSGM)', 'UN Organization'],
+			['United Nations Secretary General (UNSG)', 'UN Organization'],
+			['United Nations Department of Public Information (UNDPI)', 'UN Organization'],
+			['Food and Agriculture Organization of the United Nations (FAO)', 'UN Organization'],
+			['Joint United Nations Environment Programme (UNEP)/OCHA Environment Unit (JEU)', 'UN Organization'],
+			['Organisation for the Prohibition of Chemical Weapons (OPCW)', 'UN Organization'],
+			['World Health Organization (WHO)', 'UN Organization'],
+			['United Nations Institute for Disarmament Research (UNIDIR)', 'UN Organization'],
+			['United Nations Office for Disarmament Affairs (UNODA)', 'UN Organization'],
+			['International Criminal Police Organization (INTERPOL)', 'NGO'],
+			['World Organisation for Animal Health (OIE)', 'NGO'],
+			['United Nations Security Council (UNSC)', 'UN Organization'],
+			['World Bank Group (WBG)', 'UN Organization'],
+			['Internnational Maritime Organization (IMO)', 'UN Organization'],
+			['United Nations Department for Safety and Security (UNDSS)', 'UN Organization'],
+			['Biological Weapons Convention Implementation Support Unit (BWC ISU)', 'UN Organization'],
+			['World Customs Organization (WCO)', 'UN Organization'],
+			['International Civil Aviation Organization (ICAO)', 'UN Organization'],
+			['United Nations Disaster Assessment and Coordination (UNDAC)', 'UN Organization'],
+			['World Food Programme (WFP)', 'UN Organization'],
+			['United Nations High Commissioner for Refugees (UNHCR)', 'UN Organization'],
+			['United Nations International Strategy for Disaster Reduction (UNISDR)', 'UN Organization'],
 		]
 
 		const eventName = 'State request for assistance';
 		const allRoles = [
-		 'public health and medical',
-		 'humanitarian aid',
-		 'governance and policy',
-		 'safety and security',
+			'public health and medical',
+			'humanitarian aid',
+			'governance and policy',
+			'safety and security',
 		];
 		const allCategories = d3.nest()
 			.key(d => d[1])
@@ -70,34 +70,34 @@
 
 		data = data.filter(d => d[0] === eventName);
 
-		const width = 960,
-			height = Math.floor(width / 2);
+		const width = 900,
+			height = width;
 
-		/* In order to display this data, we need the associated "heights"
+		/* In order to display this data, we need the associated 'heights'
 		 * for each bar. We have 3 heights to establish:
 		 * 1. Category height (innermost) -> static
 		 * 2. Org Category height -> determined by number of orgs
 		 * 3. Org height -> How big is each org -> static
 		 */
 
-		const innerRadius    = 75;
-		const outerRadius    = width;
+		const innerRadius = 150;
+		const outerRadius = width;
 		const categoryHeight = 50;
-		const orgHeight      = 10;
+		const orgHeight = 30;
 
 		/* STEP ONE => MASSAGE THE DATA */
 
-		//          meow
+		//		  meow
 		//   /\_/\
 		//  ( o.o )
 		//   > ^ <
 		//
 		// (cause of all the cats here...)
-		const catHeights = allRoles.map(function(d) {
+		const catHeights = allRoles.map(function (d) {
 			// pull out only the data that is associated with this category
 			const catData = data.filter(x => x[2].indexOf(d) !== -1)
-				// now join with orgInfo
-				.map(function(x) {
+			// now join with orgInfo
+				.map(function (x) {
 					// making fundamental assumption here that every org in data is
 					// listed in orgInfo
 					const orgType = orgInfo.filter(y => y[0] === x[1])[0][1];
@@ -111,7 +111,7 @@
 			// pull out just the org types
 			const orgTypes = catCounts.map(x => x.key);
 			// Count how many entries in each
-			const orgHeights = catCounts.map(function(x) {
+			const orgHeights = catCounts.map(function (x) {
 				return {
 					name: x.key,
 					height: x.values.length
@@ -127,16 +127,16 @@
 				sortedCatData: sortedCatData,
 			};
 		})
-		.sort((a, b) => a.name > b.name);
+			.sort((a, b) => a.name > b.name);
 
 		// Now append arc data to the catHeights
 		var cdepth;
-		const catArcs = catHeights.map(function(d, i) {
+		const catArcs = catHeights.map(function (d, i) {
 			const arcPortion = (1 / allRoles.length) * (2 * Math.PI);
 			// first set the global category info
 			const orgRadius = innerRadius + categoryHeight;
 			cdepth = -orgHeight;
-			const orgArcs = d.sortedCatData.map(function(x) {
+			const orgArcs = d.sortedCatData.map(function (x) {
 				cdepth += orgHeight;
 				return {
 					name: x[1],
@@ -163,17 +163,15 @@
 			}
 		});
 
-		console.log(catArcs);
-
 		/* STEP TWO => DISPLAY THE DATA */
 		const chart = d3.select(selector)
-			.append("svg")
-			.attr("width", width)
-			.attr("height", height)
-			.append("g")
-			.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+			.append('svg')
+			.attr('width', width)
+			.attr('height', height)
+			.append('g')
+			.attr('transform', `translate(${width / 2},${height / 2})`);
 
-		const defs = chart.append('defs');
+		const gradientDefs = chart.append('defs');
 
 		// colours
 		const innerColor = '#4d4e4e';
@@ -192,20 +190,55 @@
 			.outerRadius(d => d.innerRadius + ((d.outerRadius - d.innerRadius) / 2))
 			.startAngle(d => d.startAngle + 0.25)
 			.endAngle(d => d.endAngle)
-			.padAngle(0.05);
+			.padAngle(0);
 
 		const innerArcGroup = chart.append('g')
 			.classed('arc-group', true);
 
+		function selectData(selected) {
+			return catArcs.map(function(d, i) {
+				const arcPortion = 0.1 * (2 * Math.PI)
+				d.startAngle = arcPortion;
+				d.endAngle = arcPortion * (i + 1);
+				return d;
+			});
+		}
+
+		// https://bl.ocks.org/mbostock/5348789
 		innerArcGroup.selectAll('path')
 			.data(catArcs)
 			.enter()
 			.append('path')
 			.attr('d', arc)
-			.style('fill', innerColor);
+			.style('fill', innerColor)
+			.attr('value', d => d.name)
+			.attr('plonk', 'null')
+			.classed('inner-arc-group', true)
+			.on('click', function() {
+				const currentArc = d3.select(this);
+				const name = currentArc.attr('value');
+				const newData = selectData(name);
+				const oldData = catArcs.filter(d => d.name === name)[0];
+				const interpolator = d3.interpolateObject(oldData, newData);
+				d3.selectAll('.inner-arc-group')
+					.transition()
+					.delay(1200)
+					.attrTween('plonk', function(d) {
+						return function(t) {
+							const interpResults = interpolator(t);
+							Object.keys(interpResults).forEach(function(x) {
+								const current = interpResults[x];
+								const newArc = arc(current);
+								d3.select('.inner-arc-group').select(`[value="${current.name}"]`)
+									.attr('d', newArc);
+							});
+						};
+					});
+			});
 
 		// append path for text
-		defs.selectAll('path')
+		const innerArcDefs = chart.append('defs');
+		innerArcDefs.selectAll('path')
 			.data(catArcs)
 			.enter()
 			.append('path')
@@ -230,24 +263,54 @@
 		const orgArcGroup = chart.append('g')
 			.classed('arc-group', true);
 
-		arcData = catArcs.reduce(function(acc, cval) {
+		const arcData = catArcs.reduce(function (acc, cval) {
 			return acc.concat(cval.orgArcs);
-		}, []);
+		}, []).map(function(d) {
+			d.padding = 0.001;
+			return d;
+		});
 
 		orgArcGroup.selectAll('path')
 			.data(arcData)
 			.enter()
 			.append('path')
 			.attr('d', arc)
-			.style('fill', function(d) {
+			.style('fill', function (d) {
 				if (d.type === 'UN Organization') {
 					return UNColor;
 				} else {
 					return NGOColor;
 				}
-			})
+			});
 
+		// let's get labels on the categories
+		// first need group
+		const arcLabels = chart.append('g')
+			.classed('arc-labels', true);
 
+		// now need paths for the text
+		const outerArcDefs = chart.append('defs');
+		outerArcDefs.selectAll('path')
+			.data(arcData)
+			.enter()
+			.append('path')
+			.attr('d', textArc)
+			.attr('id', (d, i) => `org-arc-label-path-${i}`);
+
+		// now we can add text
+		arcLabels.selectAll('text')
+			.data(arcData)
+			.enter()
+			.append('text')
+			.append('textPath')
+			.attr('xlink:href', (d, i) => `#org-arc-label-path-${i}`)
+			.style('fill', textColor)
+			.style('font-size', '0.5em')
+			.text(d => d.name);
+
+		// add a center label
+		chart.append('text')
+			.html(wordWrap(eventName, 15, -50, 0));
 
 	}
 })();
