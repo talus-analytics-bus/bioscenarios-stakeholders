@@ -54,7 +54,7 @@
 			['World Food Programme (WFP)', 'UN Organization'],
 			['United Nations High Commissioner for Refugees (UNHCR)', 'UN Organization'],
 			['United Nations International Strategy for Disaster Reduction (UNISDR)', 'UN Organization'],
-		]
+		];
 
 		const eventName = 'State request for assistance';
 		const allRoles = [
@@ -106,7 +106,7 @@
 			// pull out only the data that is associated with this category
 			const catData = data.filter(x => x[2].indexOf(d) !== -1)
 			// now join with orgInfo
-				.map(function (x) {
+				.map((x) => {
 					// making fundamental assumption here that every org in data is
 					// listed in orgInfo
 					const orgType = orgInfo.filter(y => y[0] === x[1])[0][1];
@@ -126,7 +126,7 @@
 					height: x.values.length
 				};
 			});
-			const sortedCatData = catData.sort((a, b) => a[3] < b[3])
+			const sortedCatData = catData.sort((a, b) => a[3] < b[3]);
 			return {
 				name: d,
 				data: catData,
@@ -136,11 +136,11 @@
 				sortedCatData: sortedCatData,
 			};
 		})
-			.sort((a, b) => a.name > b.name);
+		.sort((a, b) => a.name > b.name);
 
 		// Now append arc data to the catHeights
-		var cdepth;
-		const catArcs = catHeights.map(function (d, i) {
+		let cdepth;
+		const catArcs = catHeights.map((d, i) => {
 			const arcPortion = (1 / allRoles.length) * (2 * Math.PI);
 			// first set the global category info
 			const orgRadius = innerRadius + categoryHeight;
@@ -154,8 +154,8 @@
 					outerRadius: orgRadius + cdepth + orgHeight,
 					startAngle: arcPortion * i,
 					endAngle: arcPortion * (i + 1),
-				}
-			})
+				};
+			});
 			return {
 				name: d.name,
 				data: d.data,
@@ -169,7 +169,7 @@
 				orgTypes: d.orgTypes,
 				orgHeights: d.orgHeights,
 				orgArcs: orgArcs,
-			}
+			};
 		});
 
 		/* STEP TWO => DISPLAY THE DATA */
@@ -180,13 +180,15 @@
 			.append('g')
 			.attr('transform', `translate(${width / 2},${height / 2})`);
 
-		const gradientDefs = chart.append('defs');
+		const gradientDefs = chart.append('defs')
+			.classed('gradient-defs', true);
 
 		// colours
 		const innerColor = '#4d4e4e';
 		const textColor = '#ffffff';
 		const UNColor = '#a59a95';
 		const NGOColor = '#005272';
+		const selectedColor = '#ccc9c8';
 
 		const arc = d3.arc()
 			.innerRadius(d => d.innerRadius)
@@ -197,22 +199,12 @@
 
 		const textArc = d3.arc()
 			.outerRadius(d => d.innerRadius + ((d.outerRadius - d.innerRadius) / 2))
-			.startAngle(d => d.startAngle + 0.25)
+			.startAngle(d => d.startAngle + (d.offset || 0.25))
 			.endAngle(d => d.endAngle);
 
 		const innerArcGroup = chart.append('g')
-			.classed('arc-group', true);
+			.classed('inner-arc-group', true);
 
-		function selectData(selected) {
-			return catArcs.map(function(d, i) {
-				const arcPortion = 0.1 * (2 * Math.PI)
-				d.startAngle = arcPortion;
-				d.endAngle = arcPortion * (i + 1);
-				return d;
-			});
-		}
-
-		// https://bl.ocks.org/mbostock/5348789
 		innerArcGroup.selectAll('path')
 			.data(catArcs)
 			.enter()
@@ -221,32 +213,12 @@
 			.style('fill', innerColor)
 			.attr('value', d => d.name)
 			.attr('plonk', 'null')
-			.classed('inner-arc-group', true)
-			.on('click', function() {
-				const currentArc = d3.select(this);
-				const name = currentArc.attr('value');
-				const newData = selectData(name);
-				const oldData = catArcs.filter(d => d.name === name)[0];
-				const interpolator = d3.interpolateObject(oldData, newData);
-				d3.selectAll('.inner-arc-group')
-					.transition()
-					.delay(1200)
-					.attrTween('plonk', function(d) {
-						return function(t) {
-							const interpResults = interpolator(t);
-							Object.keys(interpResults).forEach(function(x) {
-								const current = interpResults[x];
-								const newArc = arc(current);
-								d3.select('.inner-arc-group').select(`[value="${current.name}"]`)
-									.attr('d', newArc)
-							});
-						};
-					});
-			});
+			.classed('inner-arc-group', true);
 
 		// need to set offsets
 		// append path for text
-		const innerArcDefs = chart.append('defs');
+		const innerArcDefs = chart.append('defs')
+			.classed('inner-arc-defs', true);
 		innerArcDefs.selectAll('path')
 			.data(catArcs)
 			.enter()
@@ -255,7 +227,7 @@
 			.attr('id', (d, i) => `inner-arc-label-path-${i}`);
 
 		const innerArcLabels = chart.append('g')
-			.classed('arc-group-labels', true);
+			.classed('inner-arc-group-labels', true);
 
 		// append text itself
 		innerArcLabels.selectAll('text')
@@ -284,7 +256,7 @@
 			.enter()
 			.append('path')
 			.attr('d', arc)
-			.style('fill', function (d) {
+			.style('fill', (d) => {
 				if (d.type === 'UN Organization') {
 					return UNColor;
 				} else {
@@ -306,7 +278,8 @@
 			.classed('arc-labels', true);
 
 		// now need paths for the text
-		const outerArcDefs = chart.append('defs');
+		const outerArcDefs = chart.append('defs')
+			.classed('outer-arc-defs', true);
 		outerArcDefs.selectAll('path')
 			.data(arcData)
 			.enter()
@@ -326,9 +299,87 @@
 			.style('text-anchor', 'start')
 			.text(d => convertOrgName(d.name));
 
+		// now add cover for this
+		const bigArcData = d3.nest()
+			.key(d => d.startAngle)
+			.key(d => d.type)
+			.rollup(d => {
+				return {
+					innerRadius: d[0].innerRadius,
+					outerRadius: d3.max(d, x => x.outerRadius),
+					startAngle: d[0].startAngle,
+					endAngle: d[0].endAngle,
+					type: d[0].type,
+				};
+			})
+			.entries(arcData)
+			.map(d => {
+				return d.values.map(x => {
+					x.startAngle = d.key;
+					Object.keys(x.value).forEach(y => x[y] = x.value[y]);
+					return x;
+				});
+			})
+			.reduce((acc, cval) => acc.concat(cval), []);
+
+		// draw cover Arcs
+		const coverArcGroup = chart.append('g')
+			.classed('cover-arc-group', true);
+
+		// labels arcs
+		const coverDefs = chart.append('defs')
+			.classed('cover-defs', true);
+		coverDefs.selectAll('path')
+			.data(bigArcData.map(d => {
+				d.offset = 0.01;
+				// d.outerRadius -= orgHeight / 2;
+				return d;
+			}))
+			.enter()
+			.append('path')
+			.attr('d', textArc)
+			.attr('id', (d, i) => `cover-arc-labels-${i}`);
+
+		// https://github.com/d3/d3/issues/2644
+		// tl;dr arrow notation override this *for some reason*
+		// so upset
+		// i hate bugs
+		const coverArcs = coverArcGroup.selectAll('g')
+			.data(bigArcData)
+			.enter()
+			.append('g')
+			.on('mouseover', function() {
+				d3.select(this)
+					.selectAll('text')
+					.attr('fill-opacity', 0);
+				d3.select(this)
+					.selectAll('path')
+					.attr('fill-opacity', 0);
+			})
+			.on('mouseout', function() {
+				d3.select(this)
+					.selectAll('text')
+					.attr('fill-opacity', 1);
+				d3.select(this)
+					.selectAll('path')
+					.attr('fill-opacity', 1);
+			});
+
+		coverArcs.append('path')
+			.attr('d', arc)
+			.style('fill', d => (d.type === 'UN Organization') ? UNColor : NGOColor);
+
+		coverArcs.append('text')
+			.append('textPath')
+			.attr('xlink:href', (d, i) => `#cover-arc-labels-${i}`)
+			.style('fill', textColor)
+			.style('font-size', '1.25em')
+			.style('text-anchor', 'start')
+			.classed('cover-arc-labels', true)
+			.text(d => `${d.key}s`);
+
 		// add a center label
 		chart.append('text')
 			.html(wordWrap(eventName, 15, -50, 0));
-
-	}
+	};
 })();
