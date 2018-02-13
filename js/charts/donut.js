@@ -70,6 +70,12 @@
 
 		data = data.filter(d => d[0] === eventName);
 
+		// function convertOrgName(s) {
+		// 	return s.match(/\([A-Za-z0-9 ]\)/)[0];
+		// }
+		//
+		// console.log(orgInfo.map(d => convertOrgName(d[0])));
+
 		const width = 900,
 			height = width;
 
@@ -188,9 +194,8 @@
 
 		const textArc = d3.arc()
 			.outerRadius(d => d.innerRadius + ((d.outerRadius - d.innerRadius) / 2))
-			.startAngle(d => d.startAngle + 0.25)
-			.endAngle(d => d.endAngle)
-			.padAngle(0);
+			.startAngle(d => d.startAngle + 0.05)
+			.endAngle(d => d.endAngle);
 
 		const innerArcGroup = chart.append('g')
 			.classed('arc-group', true);
@@ -230,16 +235,20 @@
 								const current = interpResults[x];
 								const newArc = arc(current);
 								d3.select('.inner-arc-group').select(`[value="${current.name}"]`)
-									.attr('d', newArc);
+									.attr('d', newArc)
 							});
 						};
 					});
 			});
 
+		// need to set offsets
 		// append path for text
 		const innerArcDefs = chart.append('defs');
 		innerArcDefs.selectAll('path')
-			.data(catArcs)
+			.data(catArcs.map(function(d) {
+				d.startAngle += 0.25;
+				return d;
+			}))
 			.enter()
 			.append('path')
 			.attr('d', textArc)
@@ -297,6 +306,16 @@
 			.attr('d', textArc)
 			.attr('id', (d, i) => `org-arc-label-path-${i}`);
 
+		// // debug -> drawing these paths cause something's weird
+		// chart.append('g').selectAll('path')
+		// 	.data(arcData)
+		// 	.enter()
+		// 	.append('path')
+		// 	.attr('d', textArc)
+		// 	.style('fill-opacity', 0)
+		// 	.style('stroke', 'red')
+		// 	.style('stroke-opacity', 1);
+
 		// now we can add text
 		arcLabels.selectAll('text')
 			.data(arcData)
@@ -306,6 +325,7 @@
 			.attr('xlink:href', (d, i) => `#org-arc-label-path-${i}`)
 			.style('fill', textColor)
 			.style('font-size', '0.5em')
+			.style('text-anchor', 'start')
 			.text(d => d.name);
 
 		// add a center label
