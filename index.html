@@ -18,26 +18,23 @@
 	<link href="css/main.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-	<!--<nav class="navbar navbar-default navbar-fixed-top">
+	<nav class="navbar navbar-default navbar-fixed-top">
 		<div class="container">
 			<div class="navbar-header">
 				<a class="navbar-brand" href="/">
 					<img class="logo" src="img/talus-logo.png" />
 				</a>
 				<ol class="nav navbar-nav navbar-right">
-					<li><a href="#other">Other</a></li>
-				</ol>
-				<ol class="nav navbar-nav navbar-right">
 					<li><a href="#">Home</a></li>
 				</ol>
 			</div>
-		</div> /.container-fluid 
-	</nav>-->
+		</div>
+	</nav>
 	<div id="page-content"></div>
-	<!--<div id="footer">
+	<div id="footer">
 		<span>Built by</span>
 		<img src="img/talus-logo.png" />
-	</div>-->
+	</div>
 
 		
 	<!-- ----------- TEMPLATES ------------- -->
@@ -55,27 +52,29 @@
 	</script>
 
 	<script id="main-template" type="text/x-handlebars-template">
-        <div class="row">
-            <div class="row">
-                <div class="graphic-title"><h3>POLICY CHARTER TIMELINE</h3></div>
-            </div>
-            <div class="row">
-                <div class="timeline"></div>
-            </div>
-            <div class="row col-sm-12">
-                <h6>Selected Event</h6>
-                <select class="timeline-event-dropdown form-control">
-                </select>
-            </div>
-        </div>
-        <div class="row">
-            <div class="graphic-title"><h3>STAKEHOLDER INVOLVEMENT</h3></div>
-            <div class="concept-map"></div>
-        </div>
-        <div class="row">
-            <div class="graphic-title"><h3>STAKEHOLDER ROLE</h3></div>
-            <div class="donut-chart"></div>
-        </div>
+        <div class="container main-page">
+			<div class="row col-lg-12 timeline-section">
+				<div class="row">
+					<div class="graphic-title"><h3>POLICY CHARTER TIMELINE</h3></div>
+				</div>
+				<div class="row col-lg-12">
+					<div class="timeline"></div>
+				</div>
+				<div class="row col-sm-12">
+					<h6>Selected Event</h6>
+					<select class="timeline-event-dropdown form-control">
+					</select>
+				</div>
+			</div>
+			<div class="row spaghetti-section">
+				<div class="graphic-title"><h3>STAKEHOLDER INVOLVEMENT</h3></div>
+				<div class="concept-map"></div>
+			</div>
+			<div class="row starburst-section">
+				<div class="graphic-title"><h3>STAKEHOLDER ROLE</h3></div>
+				<div class="donut-chart"></div>
+			</div>
+		</div>
 	</script>
 
 	<!-- General Libraries -->

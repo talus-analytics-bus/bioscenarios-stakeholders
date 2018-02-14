@@ -1,12 +1,34 @@
 (() => {
-	App.initDonut = (selector, data) => {
+	App.initDonut = (selector, rawData) => {
 
 		/*
 		 * Sooo helpful https://bl.ocks.org/kerryrodden/477c1bfb081b783f80ad
 		 *
 		 */
 
-		data = [
+		/* In order to display this data, we need the associated 'heights'
+		 * for each bar. We have 3 heights to establish:
+		 * 1. Category height (innermost) -> static
+		 * 2. Org Category height -> determined by number of orgs
+		 * 3. Org height -> How big is each org -> static
+		 */
+		// chart constants
+		const width = 900;
+		const height = width;
+		const innerRadius = 150;
+		const roleHeight = 50;   // how "tall" is the innermost ring
+		const orgHeight = 30;    // how "tall" is each org listed
+
+		// colours
+		const innerColor = '#4d4e4e';
+		const textColor = '#ffffff';
+		const UNColor = '#a59a95';
+		const NGOColor = '#005272';
+		const selectedColor = '#ccc9c8';
+
+		const eventName = 'State request for assistance';
+
+		rawData = [
 			['First case in humans identified', 'World Health Organization (WHO)', 'public health and medical'],
 			['First case in animals identified', 'World Organisation for Animal Health (OIE)', 'public health and medical'],
 			['State request for assistance', 'Joint United Nations Environment Programme (UNEP)/OCHA Environment Unit (JEU)', 'humanitarian aid'],
@@ -56,123 +78,113 @@
 			['United Nations International Strategy for Disaster Reduction (UNISDR)', 'UN Organization'],
 		];
 
-		const eventName = 'State request for assistance';
-		const allRoles = [
-			'public health and medical',
-			'humanitarian aid',
-			'governance and policy',
-			'safety and security',
-		];
-		const allCategories = d3.nest()
-			.key(d => d[1])
-			.entries(orgInfo)
-			.map(d => d.key);
-
-		data = data.filter(d => d[0] === eventName);
-
-		function convertOrgName(s) {
-			const abbrev = s.match(/\([A-Za-z0-9 ]+\)/);
-			if (abbrev === null) {
-				return s;
-			} else {
-				return abbrev[0];
-			}
-		}
-
-		const width = 900,
-			height = width;
-
-		/* In order to display this data, we need the associated 'heights'
-		 * for each bar. We have 3 heights to establish:
-		 * 1. Category height (innermost) -> static
-		 * 2. Org Category height -> determined by number of orgs
-		 * 3. Org height -> How big is each org -> static
-		 */
-
-		const innerRadius = 150;
-		const outerRadius = width;
-		const categoryHeight = 50;
-		const orgHeight = 30;
+		// parseRawData declarations - gonna bind to these
+		let allRoles;
+		let allCategories;
+		let data;
+		let catArcs;
 
 		/* STEP ONE => MASSAGE THE DATA */
+		function parseRawData() {
+			data = rawData.filter(d => d[0] === eventName);
+			allRoles = [
+				'public health and medical',
+				'humanitarian aid',
+				'governance and policy',
+				'safety and security',
+			];
+			allCategories = ['UN Organization', 'NGO'];
 
-		//		  meow
-		//   /\_/\
-		//  ( o.o )
-		//   > ^ <
-		//
-		// (cause of all the cats here...)
-		const catHeights = allRoles.map(function (d) {
-			// pull out only the data that is associated with this category
-			const catData = data.filter(x => x[2].indexOf(d) !== -1)
-			// now join with orgInfo
-				.map((x) => {
-					// making fundamental assumption here that every org in data is
-					// listed in orgInfo
-					const orgType = orgInfo.filter(y => y[0] === x[1])[0][1];
-					return x.concat([orgType]);
+			//		  meow
+			//   /\_/\
+			//  ( o.o )
+			//   > ^ <
+			//
+			// (cause of all the cats here...)
+			let cdepth;
+			catArcs = allRoles.map(function (d) {
+				// pull out only the data that is associated with this category
+				// and join with org info for each row
+				const catData = data.filter(x => x[2].indexOf(d) !== -1)
+				// now join with orgInfo
+					.map((x) => {
+						// making fundamental assumption here that every org in data is
+						// listed in orgInfo
+						const orgType = orgInfo.filter(y => y[0] === x[1])[0][1];
+						return x.concat([orgType]);
+					});
+				// now group by the type of org
+				const catCounts = d3.nest()
+					.key(x => x[3])
+					.entries(catData)
+					.sort((a, b) => a.key < b.key);
+				// pull out just the org types
+				const orgTypes = catCounts.map(x => x.key);
+				// Count how many entries in each
+				const orgHeights = catCounts.map(function (x) {
+					return {
+						name: x.key,
+						height: x.values.length,
+					};
 				});
-			// now group by the type of org
-			const catCounts = d3.nest()
-				.key(x => x[3])
-				.entries(catData)
-				.sort((a, b) => a.key < b.key);
-			// pull out just the org types
-			const orgTypes = catCounts.map(x => x.key);
-			// Count how many entries in each
-			const orgHeights = catCounts.map(function (x) {
+				// sort catData by category
+				const sortedCatData = catData.sort((a, b) => a[3] < b[3]);
 				return {
-					name: x.key,
-					height: x.values.length
+					name: d,
+					data: catData,
+					orgCounts: catCounts,
+					orgTypes: orgTypes,
+					orgHeights: orgHeights,
+					sortedCatData: sortedCatData,
+				};
+			})
+			// pause to sort
+			.sort((a, b) => a.name > b.name)
+			// Now we append arc data to the catData
+			.map((d, i) => {
+				// first figure out given how many roles we have,
+				// what percentage of the circle should each role take up
+				const arcPortion = (1 / allRoles.length) * 2 * Math.PI;
+				// now let's figure out these group-consistent arcs
+				const startAngle = i * arcPortion;
+				const endAngle = (i + 1) * arcPortion;
+				const padding = 0.01;
+				// we have a couple different sub-arcs
+				// role arcs
+				const rootData = {
+					name: d.name,
+					innerRadius: innerRadius,
+					outerRadius: innerRadius + roleHeight,
+					startAngle: startAngle,
+					endAngle: endAngle,
+					padding: padding,
+				};
+				cdepth = -1;
+				const orgData = d.sortedCatData.map(x => {
+					cdepth += 1;
+					return {
+						name: x[1],
+						type: x[3],
+						innerRadius: innerRadius + roleHeight + (cdepth * orgHeight),
+						outerRadius: innerRadius + roleHeight + ((cdepth + 1) * orgHeight),
+						startAngle: startAngle,
+						endAngle: endAngle,
+						padding: padding,
+					};
+				});
+				return {
+					startAngle: startAngle,
+					endAngle: endAngle,
+					padding: padding,
+					rootArc: rootData,
+					orgArcs: orgData,
 				};
 			});
-			const sortedCatData = catData.sort((a, b) => a[3] < b[3]);
-			return {
-				name: d,
-				data: catData,
-				orgCounts: catCounts,
-				orgTypes: orgTypes,
-				orgHeights: orgHeights,
-				sortedCatData: sortedCatData,
-			};
-		})
-		.sort((a, b) => a.name > b.name);
-
-		// Now append arc data to the catHeights
-		let cdepth;
-		const catArcs = catHeights.map((d, i) => {
-			const arcPortion = (1 / allRoles.length) * (2 * Math.PI);
-			// first set the global category info
-			const orgRadius = innerRadius + categoryHeight;
-			cdepth = -orgHeight;
-			const orgArcs = d.sortedCatData.map(function (x) {
-				cdepth += orgHeight;
-				return {
-					name: x[1],
-					type: x[3],
-					innerRadius: orgRadius + cdepth,
-					outerRadius: orgRadius + cdepth + orgHeight,
-					startAngle: arcPortion * i,
-					endAngle: arcPortion * (i + 1),
-				};
-			});
-			return {
-				name: d.name,
-				data: d.data,
-				// arc info
-				innerRadius: innerRadius,
-				outerRadius: orgRadius,
-				startAngle: arcPortion * i,
-				endAngle: arcPortion * (i + 1),
-				// sub arcs
-				orgCounts: d.orgCounts,
-				orgTypes: d.orgTypes,
-				orgHeights: d.orgHeights,
-				orgArcs: orgArcs,
-			};
-		});
+		}
+		parseRawData();
 
 		/* STEP TWO => DISPLAY THE DATA */
+		// declare and transform chart
 		const chart = d3.select(selector)
 			.append('svg')
 			.attr('width', width)
@@ -180,16 +192,7 @@
 			.append('g')
 			.attr('transform', `translate(${width / 2},${height / 2})`);
 
-		const gradientDefs = chart.append('defs')
-			.classed('gradient-defs', true);
-
-		// colours
-		const innerColor = '#4d4e4e';
-		const textColor = '#ffffff';
-		const UNColor = '#a59a95';
-		const NGOColor = '#005272';
-		const selectedColor = '#ccc9c8';
-
+		// Arc function responsible for setting *all* visible arcs
 		const arc = d3.arc()
 			.innerRadius(d => d.innerRadius)
 			.outerRadius(d => d.outerRadius)
@@ -197,28 +200,31 @@
 			.endAngle(d => d.endAngle)
 			.padAngle(0.01);
 
+		// Arc function responsible for drawing textPath arcs
 		const textArc = d3.arc()
 			.outerRadius(d => d.innerRadius + ((d.outerRadius - d.innerRadius) / 2))
 			.startAngle(d => d.startAngle + (d.offset || 0.25))
 			.endAngle(d => d.endAngle);
 
-		const innerArcGroup = chart.append('g')
-			.classed('inner-arc-group', true);
-
-		innerArcGroup.selectAll('path')
+		console.log(catArcs);
+		// Start by drawing 4 (number of categories) groups, these groups will act in tandem for start and end angles
+		const arcGroups = chart.selectAll('g')
 			.data(catArcs)
 			.enter()
-			.append('path')
-			.attr('d', arc)
+			.append('g');
+
+		// now innermost arcs
+		arcGroups.append('path')
+			.attr('d', d => arc(d.rootArc))
 			.style('fill', innerColor)
 			.attr('value', d => d.name)
-			.attr('plonk', 'null')
 			.classed('inner-arc-group', true);
 
 		// need to set offsets
 		// append path for text
 		const innerArcDefs = chart.append('defs')
 			.classed('inner-arc-defs', true);
+
 		innerArcDefs.selectAll('path')
 			.data(catArcs)
 			.enter()
@@ -240,6 +246,7 @@
 			.style('font-size', '0.6em')
 			.text(d => d.name);
 
+		/* OUTER */
 		// now time for org arcs
 		const orgArcGroup = chart.append('g')
 			.classed('arc-group', true);
@@ -381,5 +388,28 @@
 		// add a center label
 		chart.append('text')
 			.html(wordWrap(eventName, 15, -50, 0));
+
+		/* STEP N - Helpful functions */
+		function convertOrgName(s) {
+			/* Converts Org name to just it's abbreviation (if provided) */
+			const abbrev = s.match(/\(([A-Za-z0-9 ]+)\)/);
+			// if there's not a match, just return normal name
+			if (abbrev === null) {
+				return s;
+			} else {
+				return abbrev[1];
+			}
+		}
+
+		// http://bl.ocks.org/mbostock/5100636
+		function arcTween(newAngle) {
+			return function(d) {
+				const interpolate = d3.interpolate(d.endAngle, newAngle);
+				return function(t) {
+					d.endAngle = interpolate(t);
+					return arc(d);
+				};
+			};
+		}
 	};
 })();

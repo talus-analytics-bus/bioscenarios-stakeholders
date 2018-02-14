@@ -1,0 +1,22 @@
+.main-page {
+  border-left: $border;
+  border-right: $border;
+  padding-left: 30px;
+
+  .timeline-section {
+    margin-bottom: 30px;
+    padding-bottom: 30px;
+    border-bottom: $border;
+  }
+
+  .spaghetti-section {
+    margin-bottom: 30px;
+    padding-bottom: 30px;
+    border-bottom: $border;
+  }
+
+  .starburst-section {
+    margin-bottom: 30px;
+    padding-bottom: 30px;
+  }
+}
