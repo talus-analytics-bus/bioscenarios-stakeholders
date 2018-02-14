@@ -34,6 +34,14 @@
 			.map(d => d.key)
 			.sort();
 
+		const allUNOrgs = allOrgs
+			.filter(d => d.category.toUpperCase() === 'UN ORGANIZATION')
+			.map(d => d.abbrev);
+
+		const allNonUNOrgs = allOrgs
+			.filter(d => d.category.toUpperCase() !== 'UN ORGANIZATION')
+			.map(d => d.abbrev);
+
 		/* CONSTANTS */
 		const height = 1000;
 		const width = 1.2 * height;
@@ -47,6 +55,7 @@
 		const rectTextColor = '#808080';
 		const textColor = '#989898';
 		const circleColor = '#cccbcb';
+		const lineColor = '#cccbcb';
 
 		/* SCALES */
 		const innerNodesScale = d3.scaleBand()
@@ -54,18 +63,17 @@
 			.range([-0.4 * height, 0.4 * height]);
 
 		const leftOrgsScale = d3.scaleBand()
-			.domain(allOrgs
-				.filter(d => d.category.toUpperCase() === 'UN ORGANIZATION')
-				.map(d => d.abbrev))
+			.domain(allUNOrgs)
 			.range([-0.35 * height, 0.35 * height]);
 
 		const rightOrgsScale = d3.scaleBand()
-			.domain(allOrgs
-				.filter(d => d.category.toUpperCase() !== 'UN ORGANIZATION')
-				.map(d => d.abbrev))
+			.domain(allNonUNOrgs)
 			.range([-0.35 * height, 0.35 * height]);
 
 		/* LINES */
+		const line = d3.line()
+			.x(d => d.x)
+			.y(d => d.y);
 
 		/* PLOTTING */
 		// define graph
@@ -74,7 +82,7 @@
 			.attr('width', width)
 			.attr('height', height)
 			.append('g')
-			.attr('transform', `translate(${width / 2},${height / 2})`);
+			.attr('transform', `translate(${3 * width / 8},${height / 2})`);
 
 		// add event title
 		// chart.append('text')
@@ -109,7 +117,7 @@
 			.style('fill', rectTextColor)
 			.style('text-anchor', 'middle')
 			.style('font-size', '0.75em')
-			.html(d => wordWrap(d, rectWidth / 4, 0, innerNodesScale(d) + (rectHeight / 2)));
+			.html(d => wordWrap(d, rectWidth / 6, 0, innerNodesScale(d) + (rectHeight / 2)));
 
 		const leftGroup = chart.append('g')
 			.selectAll('g')
@@ -150,6 +158,40 @@
 			.attr('cy', d => rightOrgsScale(d.abbrev) - 5)
 			.attr('r', 5.2)
 			.style('fill', circleColor);
+
+		// Time to draw lines
+		const lineGroup = chart.append('g')
+			.selectAll('path')
+			.data(data.map(d => {
+				d.abbrev = convertOrgName(d['Policy Stakeholder']);
+				return d;
+			}))
+			.enter()
+			.append('path')
+			.attr('d', d => {
+				let scale;
+				let sign;
+				if (allUNOrgs.includes(d.abbrev)) {
+					scale = leftOrgsScale;
+					sign = -1;
+				} else {
+					scale = rightOrgsScale;
+					sign = 1;
+				}
+				return line([
+					{
+						x: sign * 0.245 * width,
+						y: scale(d.abbrev) - 5,
+					},
+					{
+						x: sign * rectWidth / 2,
+						y: innerNodesScale(d['Policy Document']) + (rectHeight / 2),
+					},
+				]);
+			})
+			.style('stroke', lineColor)
+			.style('stroke-width', '2')
+			.style('stroke-opacity', 0.5);
 
 
 		// var outer = d3.map();
