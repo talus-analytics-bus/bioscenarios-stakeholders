@@ -1,14 +1,23 @@
 (() => {
 	App.initMain = () => {
-		let eventData;
+		let policyData;
+		let policyEventData;
+		let roleData;
+		let stakeholderData;
 		let timelineData;
 
 		d3.queue()
-			.defer(d3.tsv, 'data/events.tsv')
+			.defer(d3.tsv, 'data/policydocs.tsv')
+			.defer(d3.tsv, 'data/policyevents.tsv')
+			.defer(d3.tsv, 'data/roles.tsv')
+			.defer(d3.tsv, 'data/stakeholders.tsv')
 			.defer(d3.tsv, 'data/timeline.tsv')
-			.await((error, rawEventData, rawTimelineData) => {
-				eventData = rawEventData;
+			.await((error, rawPolicyData, rawPolicyEventData, rawRoleData, rawStakeholderData, rawTimelineData) => {
+				policyEventData = rawPolicyEventData;
+				stakeholderData = rawStakeholderData;
 				timelineData = rawTimelineData;
+				policyData = rawPolicyData;
+				roleData = rawRoleData;
 				init();
 			});
 
@@ -16,21 +25,21 @@
 		let timeline;
 		let donut;
 
-		function init () {
-			//populate dropdown
-			d3.select(".timeline-event-dropdown").selectAll('option')
+		function init() {
+			// populate dropdown
+			d3.select('.timeline-event-dropdown').selectAll('option')
 				.data(timelineData)
 				.enter()
 				.append('option')
-				.attr('value', d => d.eventName)
-				.text(d => d.eventName);
+				.attr('value', d => d['Timeline Event'])
+				.text(d => d['Timeline Event']);
 			initGraphs();
 		}
 
 		function initGraphs() {
-			timeline   = App.initTimeline('.timeline', timelineData);
-			conceptMap = App.initConceptMap('.concept-map', timelineData[0].eventName, eventData);
-			donut      = App.initDonut('.donut-chart', eventData);
+			timeline = App.initTimeline('.timeline', timelineData);
+			conceptMap = App.initConceptMap('.concept-map', timelineData[4]['Timeline Event'], policyEventData, stakeholderData);
+			donut = App.initDonut('.donut-chart', timelineData[4]['Timeline Event'], roleData, stakeholderData);
 		}
 
 

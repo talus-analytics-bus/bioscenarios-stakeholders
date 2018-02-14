@@ -1,11 +1,19 @@
 (() => {
-	App.initTimeline = (selector, data, param={}) => {
+	App.initTimeline = (selector, rawData, param={}) => {
 		const margin = { top: 25, right: 25, bottom: 25, left: 25 };
 		const width = param.width || 1000;
 		const height = width * 0.2;
 
+		const cases = [10, 10, 20, 30, 50, 80, 80, 40, 10, 5]
+		const data = rawData.map((d, i) => {
+			return {
+				eventName: d['Timeline Event'],
+				eventDescription: d['Timeline Event Description'],
+				numCases: cases[i],
+			};
+		});
+
 		// TODO => rationalize data
-		const cases = data.map(d => d.numCases);
 		const eventLabels = data.map(d => d.eventName.toUpperCase());
 
 		// Colours

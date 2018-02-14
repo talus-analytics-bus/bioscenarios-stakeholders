@@ -1,5 +1,5 @@
 (() => {
-	App.initDonut = (selector, rawData) => {
+	App.initDonut = (selector, eventName, rawData, rawOrgInfo) => {
 
 		/*
 		 * Sooo helpful https://bl.ocks.org/kerryrodden/477c1bfb081b783f80ad
@@ -15,9 +15,9 @@
 		// chart constants
 		const width = 900;
 		const height = width;
-		const innerRadius = 150;
+		const innerRadius = 100;
 		const roleHeight = 50;   // how "tall" is the innermost ring
-		const orgHeight = 30;    // how "tall" is each org listed
+		const orgHeight = 20;    // how "tall" is each org listed
 
 		// colours
 		const innerColor = '#4d4e4e';
@@ -26,74 +26,28 @@
 		const NGOColor = '#005272';
 		const selectedColor = '#ccc9c8';
 
-		const eventName = 'State request for assistance';
-
-		rawData = [
-			['First case in humans identified', 'World Health Organization (WHO)', 'public health and medical'],
-			['First case in animals identified', 'World Organisation for Animal Health (OIE)', 'public health and medical'],
-			['State request for assistance', 'Joint United Nations Environment Programme (UNEP)/OCHA Environment Unit (JEU)', 'humanitarian aid'],
-			['State request for assistance', 'Food and Agriculture Organization of the United Nations (FAO)', 'humanitarian aid'],
-			['State request for assistance', 'World Organisation for Animal Health (OIE)', 'humanitarian aid'],
-			['State request for assistance', 'World Health Organization (WHO)', 'public health and medical; humanitarian aid'],
-			['WHO Public Health Emergency Declared', 'World Health Organization (WHO)', 'public health and medical; humanitarian aid; governance and policy'],
-			['uspicion of Deliberate Use', 'United Nations Secretary-General\'s Mechanism (UNSGM)', 'governance and policy; safety and security'],
-			['Suspicion of Deliberate Use', 'Organisation for the Prohibition of Chemical Weapons (OPCW)', 'governance and policy'],
-			['Suspicion of Deliberate Use', 'International Criminal Police Organization (INTERPOL)', 'safety and security'],
-			['Suspicion of Deliberate Use', 'United Nations Security Council - 1540 Committee', 'safety and security; governance and policy'],
-			['Suspicion of Deliberate Use', 'United Nations Office for Disarmament Affairs (UNODA)', 'safety and security'],
-			['Refugees Flee Country', 'International Maritime Organization (IMO)', 'safety and security; governance and policy'],
-			['State request for Funds', 'World Bank Group (WBG)', 'humanitarian aid'],
-			['Deployment of UN Personnel to affected country.', 'United Nations Department for Safety and Security (UNDSS)', 'safety and security; governance and policy'],
-			['UN Security Council requests assistance', 'Biological Weapons Convention Implementation Support Unit (BWC ISU)', 'safety and security'],
-			['Request from Member State', 'World Customs Organization (WCO)', 'safety and security; governance and policy'],
-			['Affected State Command and Control Compromised', 'International Civil Aviation Organization (ICAO)', 'safety and security; governance and policy'],
-			['State request for assistance', 'United Nations Disaster Assessment and Coordination (UNDAC)', 'humanitarian aid'],
-			['State request for assistance', 'World Food Programme (WFP)', 'humanitarian aid'],
-			['Refugees Flee Country', 'United Nations High Commissioner for Refugees (UNHCR)', 'humanitarian aid'],
-			['State request for assistance', 'United Nations International Strategy for Disaster Reduction (UNISDR)', 'governance and policy; safety and security'],
-		];
-
-		orgInfo = [
-			['United Nations Secretary-General\'s Mechanism (UNSGM)', 'UN Organization'],
-			['United Nations Secretary General (UNSG)', 'UN Organization'],
-			['United Nations Department of Public Information (UNDPI)', 'UN Organization'],
-			['Food and Agriculture Organization of the United Nations (FAO)', 'UN Organization'],
-			['Joint United Nations Environment Programme (UNEP)/OCHA Environment Unit (JEU)', 'UN Organization'],
-			['Organisation for the Prohibition of Chemical Weapons (OPCW)', 'UN Organization'],
-			['World Health Organization (WHO)', 'UN Organization'],
-			['United Nations Institute for Disarmament Research (UNIDIR)', 'UN Organization'],
-			['United Nations Office for Disarmament Affairs (UNODA)', 'UN Organization'],
-			['International Criminal Police Organization (INTERPOL)', 'NGO'],
-			['World Organisation for Animal Health (OIE)', 'NGO'],
-			['United Nations Security Council (UNSC)', 'UN Organization'],
-			['World Bank Group (WBG)', 'UN Organization'],
-			['Internnational Maritime Organization (IMO)', 'UN Organization'],
-			['United Nations Department for Safety and Security (UNDSS)', 'UN Organization'],
-			['Biological Weapons Convention Implementation Support Unit (BWC ISU)', 'UN Organization'],
-			['World Customs Organization (WCO)', 'UN Organization'],
-			['International Civil Aviation Organization (ICAO)', 'UN Organization'],
-			['United Nations Disaster Assessment and Coordination (UNDAC)', 'UN Organization'],
-			['World Food Programme (WFP)', 'UN Organization'],
-			['United Nations High Commissioner for Refugees (UNHCR)', 'UN Organization'],
-			['United Nations International Strategy for Disaster Reduction (UNISDR)', 'UN Organization'],
-		];
-
 		// parseRawData declarations - gonna bind to these
 		let allRoles;
 		let allCategories;
 		let data;
+		let orgInfo;
 		let catArcs;
 
 		/* STEP ONE => MASSAGE THE DATA */
 		function parseRawData() {
-			data = rawData.filter(d => d[0] === eventName);
+			data = rawData.filter(d => d['Timeline Event'] === eventName);
+			orgInfo = rawOrgInfo;
 			allRoles = [
 				'public health and medical',
 				'humanitarian aid',
 				'governance and policy',
 				'safety and security',
 			];
-			allCategories = ['UN Organization', 'NGO'];
+			allCategories = d3.nest()
+				.key(d => d['Organization Category'].toUpperCase())
+				.entries(orgInfo)
+				.map(d => d.key)
+				.sort();
 
 			//		  meow
 			//   /\_/\
@@ -102,20 +56,22 @@
 			//
 			// (cause of all the cats here...)
 			let cdepth;
-			catArcs = allRoles.map(function (d) {
+			catArcs = allRoles.map(d => {
 				// pull out only the data that is associated with this category
 				// and join with org info for each row
-				const catData = data.filter(x => x[2].indexOf(d) !== -1)
+				const catData = data.filter(x => x['Stakeholder Role'].indexOf(d) !== -1)
 				// now join with orgInfo
 					.map((x) => {
 						// making fundamental assumption here that every org in data is
 						// listed in orgInfo
-						const orgType = orgInfo.filter(y => y[0] === x[1])[0][1];
-						return x.concat([orgType]);
+						const orgType = orgInfo.filter(
+							y => y['Stakeholder Name'] === x['Stakeholder'])[0]['Organization Category'];
+						x['Organization Category'] = orgType;
+						return x;
 					});
 				// now group by the type of org
 				const catCounts = d3.nest()
-					.key(x => x[3])
+					.key(x => x['Organization Category'].toUpperCase())
 					.entries(catData)
 					.sort((a, b) => a.key < b.key);
 				// pull out just the org types
@@ -128,7 +84,7 @@
 					};
 				});
 				// sort catData by category
-				const sortedCatData = catData.sort((a, b) => a[3] < b[3]);
+				const sortedCatData = catData.sort((a, b) => a['Organization Category'] < b['Organization Category']);
 				return {
 					name: d,
 					data: catData,
@@ -163,8 +119,8 @@
 				const orgData = d.sortedCatData.map(x => {
 					cdepth += 1;
 					return {
-						name: x[1],
-						type: x[3],
+						name: x['Stakeholder'],
+						type: x['Organization Category'].toUpperCase(),
 						innerRadius: innerRadius + roleHeight + (cdepth * orgHeight),
 						outerRadius: innerRadius + roleHeight + ((cdepth + 1) * orgHeight),
 						startAngle: startAngle,
@@ -206,7 +162,7 @@
 			.startAngle(d => d.startAngle + (d.offset || 0.25))
 			.endAngle(d => d.endAngle);
 
-		console.log(catArcs);
+		// console.log(catArcs);
 		// Start by drawing 4 (number of categories) groups, these groups will act in tandem for start and end angles
 		const arcGroups = chart.selectAll('g')
 			.data(catArcs)
@@ -264,7 +220,7 @@
 			.append('path')
 			.attr('d', arc)
 			.style('fill', (d) => {
-				if (d.type === 'UN Organization') {
+				if (d.type.toUpperCase() === 'UN ORGANIZATION') {
 					return UNColor;
 				} else {
 					return NGOColor;
@@ -374,7 +330,7 @@
 
 		coverArcs.append('path')
 			.attr('d', arc)
-			.style('fill', d => (d.type === 'UN Organization') ? UNColor : NGOColor);
+			.style('fill', d => (d.type.toUpperCase() === 'UN ORGANIZATION') ? UNColor : NGOColor);
 
 		coverArcs.append('text')
 			.append('textPath')
@@ -383,11 +339,12 @@
 			.style('font-size', '1.25em')
 			.style('text-anchor', 'start')
 			.classed('cover-arc-labels', true)
-			.text(d => `${d.key}s`);
+			.text(d => `${d.key}`);
 
 		// add a center label
 		chart.append('text')
-			.html(wordWrap(eventName, 15, -50, 0));
+			.style('font-size', '2em')
+			.html(wordWrap(eventName, 15, -85, 0));
 
 		/* STEP N - Helpful functions */
 		function convertOrgName(s) {
