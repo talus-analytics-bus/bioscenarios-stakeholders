@@ -1,6 +1,6 @@
 (() => {
-	App.initTimeline = (selector, rawData, param={}) => {
-		const margin = { top: 25, right: 25, bottom: 25, left: 25 };
+	App.initTimeline = (selector, rawData, policyEventData, param={}) => {
+		const margin = { top: 25, right: 25, bottom: 50, left: 25 };
 		const width = param.width || 1000;
 		const height = width * 0.2;
 
@@ -23,6 +23,7 @@
 		const textBoldColor = '#666666';
 		const pointColor = '#989898';
 		const highlightColor = '#000000';
+		const scatterlineColor = '#2d9de2';
 
 		// add chart to DOM
 		const chart = d3.select(selector)
@@ -217,6 +218,26 @@
 			.call(drag);
 
 		chart.currentSelected = currentSelected;
+
+		// draw the policy graph
+		const scatterline = chart.append('g')
+			.attr('transform', `translate(0, ${height + 10})`);
+
+		scatterline.append("rect")
+			.attr("width", width)
+			.attr("height", height / 8)
+			.attr("fill", 'url(#timeline-gradient)');
+
+		scatterline.append('g')
+			.selectAll('rect')
+			.data(policyEventData)
+			.enter()
+			.append('rect')
+			.attr('x', d => x(d['Timeline Event'].toUpperCase()))
+			.attr('width', 5)
+			.attr('height', height / 8)
+			.style('fill', scatterlineColor);
+
 
 		return chart;
 	};

@@ -30,7 +30,7 @@
 		}
 
 		function initGraphs() {
-			timeline = App.initTimeline('.timeline', timelineData);
+			timeline = App.initTimeline('.timeline', timelineData, policyEventData);
 			conceptMap = App.initConceptMap('.concept-map', timelineData[4]['Timeline Event'], policyEventData, stakeholderData);
 			donut = App.initDonut('.donut-chart', timelineData[4]['Timeline Event'], roleData, stakeholderData);
 		}
