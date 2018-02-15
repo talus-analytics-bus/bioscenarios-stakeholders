@@ -158,12 +158,14 @@
 					endAngle: endAngle,
 					padding: 0.01,
 				};
-				const orgData = d.data.map(x => {
+				cdepth = -1;
+				const orgData = d.data.map((x, j) => {
+					cdepth += 1;
 					return {
 						name: x['Stakeholder'],
 						type: x['Organization Category'].toUpperCase(),
-						innerRadius: innerRadius + roleHeight + (x.level * orgHeight),
-						outerRadius: innerRadius + roleHeight + ((x.level + 1) * orgHeight),
+						innerRadius: j * orgHeight,
+						outerRadius: (j + 1) * orgHeight,
 						startAngle: startAngle,
 						endAngle: endAngle,
 						padding: padding,
@@ -199,8 +201,16 @@
 				.reduce((acc, cval) => acc.concat(cval), []);
 			const orgsByCat = d3.nest()
 				.key(d => d.type)
-				.entries(flatOrgs);
+				.entries(flatOrgs)
+				.map(d => {
+					return {
+						key: d.key,
+						values: d.values,
+						maxHeight: d3.max(d.values, x => x.outerRadius),
+					};
+				});
 			catArcs.orgs = orgsByCat;
+
 			const flatCovers = catArcs.map(d => d.coverArcs)
 				.reduce((acc, cval) => acc.concat(cval), []);
 			const coversByCat = d3.nest()
@@ -239,7 +249,6 @@
 			.startAngle(d => d.startAngle + (d.offset || 0))
 			.endAngle(d => d.endAngle);
 
-		// console.log(catArcs);
 		// Start by drawing 4 (number of categories) groups,
 		// these groups will act in tandem for start and end angles
 		const arcGroups = chart.selectAll('g')
@@ -294,7 +303,8 @@
 						outerRadius: catInnerRadius,
 					});
 				})
-				.style('fill', x => categoryColorScale(x.type.toUpperCase()))
+				// .style('fill', x => categoryColorScale(x.type.toUpperCase()))
+				.style('fill', selectedColor)
 				.each(function(x) {
 					const content = `<div class="tooltip-title">${x.name}</div>`;
 					$(this).tooltipster({
@@ -348,6 +358,8 @@
 				.on('click', function(x) {
 					const covers = d3.selectAll(`[value="cover-${x.name}"]`);
 					const orgs = d3.selectAll(`[cat="${x.name}"]`);
+					// https://groups.google.com/forum/#!topic/d3-js/qJYN2egS6b8
+					const otherCovers = d3.selectAll(`*:not([value="cover-${x.name}"])`);
 					if (selected === x.name) {
 						covers.transition()
 							.duration(500)
@@ -386,8 +398,21 @@
 						orgs.transition()
 							.duration(500)
 							.attrTween('d', function(y) {
-								var interpolateInner = d3.interpolate(x.innerRadius, y.innerRadius);
-								var interpolateOuter = d3.interpolate(x.innerRadius, y.outerRadius);
+								var interpolateInner = d3.interpolate(x.innerRadius, x.innerRadius + y.innerRadius);
+								var interpolateOuter = d3.interpolate(x.innerRadius, x.innerRadius + y.outerRadius);
+								return function(t) {
+									y.innerRadius = interpolateInner(t);
+									y.outerRadius = interpolateOuter(t);
+									return arc(y);
+								};
+							});
+
+						
+						otherCovers.transition()
+							.duration(500)
+							.attrTween('d', function(y) {
+								var interpolateInner = d3.interpolate(y.innerRadius, x.innerRadius + y);
+								var interpolateOuter = d3.interpolate(y.innerRadius, x.innerRadius + y.outerRadius);
 								return function(t) {
 									y.innerRadius = interpolateInner(t);
 									y.outerRadius = interpolateOuter(t);
