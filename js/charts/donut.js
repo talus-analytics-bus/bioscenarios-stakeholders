@@ -16,14 +16,13 @@
 		const width = 900;
 		const height = width;
 		const innerRadius = 100;
-		const roleHeight = 30;   // how "tall" is the innermost ring
-		const orgHeight = 10;    // how "tall" is each org listed
+		const roleHeight = 50;   // how "tall" is the innermost ring
+		const orgHeight = 30;    // how "tall" is each org listed
+		const coverHeight = 30;
 
 		// colours
-		const innerColor = '#4d4e4e';
+		const innerColor = '#756a65';
 		const textColor = '#ffffff';
-		const UNColor = '#a59a95';
-		const NGOColor = '#005272';
 		const selectedColor = '#ccc9c8';
 
 		// parseRawData declarations - gonna bind to these
@@ -34,6 +33,7 @@
 		let orgInfo;
 		let catArcs;
 		let orgPositions;
+		let coverPositions;
 
 		/* STEP ONE => MASSAGE THE DATA */
 		//		  meow
@@ -52,24 +52,24 @@
 				'governance and policy',
 				'safety and security',
 			];
+			const order = {
+				'NATIONAL GOVERNMENT (AFFECTED)': 0,
+				'NATIONAL GOVERNMENT (NON-AFFECTED)': 1,
+				'UN ORGANIZATION': 2,
+				'NGO': 3,
+				'PRIVATE SECTOR': 4,
+			};
 			allCategories = d3.nest()
 				.key(d => d['Organization Category'].toUpperCase())
 				.entries(orgInfo)
 				.map(d => d.key)
-				.sort();
+				.sort((a, b) => order[a] > order[b]);
 
 			allStakeholders = d3.nest()
 				.key(d => d)
 				.entries(data.map(d => d['Stakeholder']))
 				.map(d => d.key);
 
-			const order = {
-				'NATIONAL GOVERNMENT (AFFECTED)': 0,
-				'NATIONAL GOVERNMENT (UNAFFECTED)': 1,
-				'UN ORGANIZATION': 2,
-				'NGO': 3,
-				'PRIVATE SECTOR': 4,
-			};
 			let cdepth;
 			cdepth = 0;
 			orgPositions = orgInfo.map(d => {
@@ -84,6 +84,16 @@
 				d.level = cdepth;
 				cdepth += 1;
 				return d;
+			});
+
+			cdepth = 0;
+			coverPositions = allCategories.map(d => {
+				const newData = {
+					name: d,
+					level: cdepth,
+				};
+				cdepth += 1;
+				return newData;
 			});
 
 			catArcs = allRoles.map(d => {
@@ -159,16 +169,51 @@
 						padding: padding,
 					};
 				});
+
+				const currentCats = d3.nest()
+					.key(x => x.type)
+					.entries(orgData)
+					.map(x => x.key);
+				const covers = coverPositions.filter(x => currentCats.includes(x.name))
+					.map(x => {
+						return {
+							name: x.name,
+							startAngle: startAngle,
+							endAngle: endAngle,
+							padding: padding,
+							innerRadius: innerRadius + roleHeight + (x.level * coverHeight),
+							outerRadius: innerRadius + roleHeight + ((x.level + 1) * coverHeight),
+						};
+					});
+
 				return {
 					startAngle: startAngle,
 					endAngle: endAngle,
 					padding: padding,
 					rootArc: rootData,
 					orgArcs: orgData,
+					coverArcs: covers,
 				};
 			});
+			const flatOrgs = catArcs.map(d => d.orgArcs)
+				.reduce((acc, cval) => acc.concat(cval), []);
+			const orgsByCat = d3.nest()
+				.key(d => d.type)
+				.entries(flatOrgs);
+			catArcs.orgs = orgsByCat;
+			const flatCovers = catArcs.map(d => d.coverArcs)
+				.reduce((acc, cval) => acc.concat(cval), []);
+			const coversByCat = d3.nest()
+				.key(d => d.name)
+				.entries(flatCovers);
+			catArcs.covers = coversByCat;
 		}
 		parseRawData();
+
+		// one more colour after we set data
+		const categoryColorScale = d3.scaleOrdinal()
+			.domain(allCategories)
+			.range(['#66a9d8', '#4682b4', '#2c6993', '#18537a', d3.color('#18537a').darker()]);
 
 		/* STEP TWO => DISPLAY THE DATA */
 		// declare and transform chart
@@ -190,7 +235,8 @@
 		// Arc function responsible for drawing textPath arcs
 		const textArc = d3.arc()
 			.outerRadius(d => d.innerRadius + ((d.outerRadius - d.innerRadius) / 2))
-			.startAngle(d => d.startAngle + (d.offset || 0.25))
+			.innerRadius(d => d.innerRadius + ((d.outerRadius - d.innerRadius) / 2))
+			.startAngle(d => d.startAngle + (d.offset || 0))
 			.endAngle(d => d.endAngle);
 
 		// console.log(catArcs);
@@ -227,146 +273,136 @@
 			.attr('xlink:href', (d, i) => `#inner-arc-label-path-${i}`)
 			.style('fill', textColor)
 			.style('font-size', '1em')
+			.style('text-anchor', 'start')
 			.text(d => d.rootArc.name);
 
-		/* OUTER */
-		// now time for org arcs
-		const orgArcGroup = chart.append('g')
-			.classed('arc-group', true);
-
-		const arcData = catArcs.reduce(function (acc, cval) {
-			return acc.concat(cval.orgArcs);
-		}, []).map(function(d) {
-			d.padding = 0.001;
-			return d;
+		// TIME FOR COVERS
+		var selected = null;
+		catArcs.covers.forEach(d => {
+			chart.append('g')
+				.selectAll('path')
+				.data(d.values)
+				.enter()
+				.append('path')
+				.attr('d', arc)
+				.attr('value', d => `cover-${d.name}`)
+				.style('fill', x => categoryColorScale(x.name))
+				.on('click', function(x) {
+					const cover = d3.selectAll(`[value="cover-${x.name}"]`);
+					if (selected === x.name) {
+						cover.transition()
+							.duration(500)
+							.attrTween('d', function(y) {
+							var interpolate = d3.interpolate(y.innerRadius + 5, y.innerRadius + coverHeight);
+							return function(t) {
+								y.outerRadius = interpolate(t);
+								return arc(y);
+							};
+						});
+						selected = null;
+					} else {
+						cover.transition()
+							.duration(500)
+							.attrTween('d', function(y) {
+							var interpolate = d3.interpolate(y.outerRadius, y.innerRadius + 5);
+							return function(t) {
+								y.outerRadius = interpolate(t);
+								return arc(y);
+							};
+						});
+						selected = x.name;
+					}
+				});
 		});
 
-		orgArcGroup.selectAll('path')
-			.data(arcData)
+		// cover labels
+		chart.append('defs')
+			.selectAll('path')
+			.data(catArcs.covers)
 			.enter()
 			.append('path')
-			.attr('d', arc)
-			.style('fill', (d) => {
-				if (d.type.toUpperCase() === 'UN ORGANIZATION') {
-					return UNColor;
-				} else {
-					return NGOColor;
-				}
-			})
-			.each(function(d) {
-				const content = `<div class="tooltip-title">${d.name}</div>`;
-				$(this).tooltipster({
-					content: content,
-					trigger: 'hover',
-					side: 'right',   // TODO: dynamic positioning of tooltip based on arc location
+			.attr('d', d => {
+				return textArc({
+					startAngle: 0,
+					endAngle: d.values[0].endAngle,
+					innerRadius: d.values[0].innerRadius,
+					outerRadius: d.values[0].outerRadius,
 				});
-			});
+			})
+			.attr('id', (d, i) => `cover-arc-label-path-${i}`);
 
-		// let's get labels on the categories
-		// first need group
-		const arcLabels = chart.append('g')
-			.classed('arc-labels', true);
-
-		// now need paths for the text
-		const outerArcDefs = chart.append('defs')
-			.classed('outer-arc-defs', true);
-		outerArcDefs.selectAll('path')
-			.data(arcData)
-			.enter()
-			.append('path')
-			.attr('d', textArc)
-			.attr('id', (d, i) => `org-arc-label-path-${i}`);
-
-		// now we can add text
-		arcLabels.selectAll('text')
-			.data(arcData)
+		chart.append('g')
+			.selectAll('text')
+			.data(catArcs.covers)
 			.enter()
 			.append('text')
 			.append('textPath')
-			.attr('xlink:href', (d, i) => `#org-arc-label-path-${i}`)
-			.style('fill', textColor)
-			.style('font-size', '0.5em')
+			.attr('xlink:href', (d, i) => `#cover-arc-label-path-${i}`)
+			.style('fill', d => {
+				if (d.values[0].startAngle !== 0) {
+					return 'black';
+				} else {
+					return textColor;
+				}
+			})
+			.style('font-size', '1em')
 			.style('text-anchor', 'start')
-			.text(d => convertOrgName(d.name));
+			.text(d => d.values[0].name);
 
-		// // now add cover for this
-		// const bigArcData = d3.nest()
-		// 	.key(d => d.startAngle)
-		// 	.key(d => d.type)
-		// 	.rollup(d => {
-		// 		return {
-		// 			innerRadius: d[0].innerRadius,
-		// 			outerRadius: d3.max(d, x => x.outerRadius),
-		// 			startAngle: d[0].startAngle,
-		// 			endAngle: d[0].endAngle,
-		// 			type: d[0].type,
-		// 		};
-		// 	})
-		// 	.entries(arcData)
-		// 	.map(d => {
-		// 		return d.values.map(x => {
-		// 			x.startAngle = d.key;
-		// 			Object.keys(x.value).forEach(y => x[y] = x.value[y]);
-		// 			return x;
+		/* OUTER */
+		// now time for org arcs
+		// const orgArcGroup = chart.append('g')
+		// 	.classed('arc-group', true);
+		//
+		// const arcData = catArcs.reduce(function (acc, cval) {
+		// 	return acc.concat(cval.orgArcs);
+		// }, []).map(function(d) {
+		// 	d.padding = 0.001;
+		// 	return d;
+		// });
+		//
+		// orgArcGroup.selectAll('path')
+		// 	.data(arcData)
+		// 	.enter()
+		// 	.append('path')
+		// 	.attr('d', arc)
+		// 	.style('fill', d => categoryColorScale(d.type.toUpperCase()))
+		// 	.each(function(d) {
+		// 		const content = `<div class="tooltip-title">${d.name}</div>`;
+		// 		$(this).tooltipster({
+		// 			content: content,
+		// 			trigger: 'hover',
+		// 			side: 'right',   // TODO: dynamic positioning of tooltip based on arc location
 		// 		});
-		// 	})
-		// 	.reduce((acc, cval) => acc.concat(cval), []);
+		// 	});
 		//
-		// // draw cover Arcs
-		// const coverArcGroup = chart.append('g')
-		// 	.classed('cover-arc-group', true);
+		// // let's get labels on the categories
+		// // first need group
+		// const arcLabels = chart.append('g')
+		// 	.classed('arc-labels', true);
 		//
-		// // labels arcs
-		// const coverDefs = chart.append('defs')
-		// 	.classed('cover-defs', true);
-		// coverDefs.selectAll('path')
-		// 	.data(bigArcData.map(d => {
-		// 		d.offset = 0.01;
-		// 		// d.outerRadius -= orgHeight / 2;
-		// 		return d;
-		// 	}))
+		// // now need paths for the text
+		// const outerArcDefs = chart.append('defs')
+		// 	.classed('outer-arc-defs', true);
+		// outerArcDefs.selectAll('path')
+		// 	.data(arcData)
 		// 	.enter()
 		// 	.append('path')
 		// 	.attr('d', textArc)
-		// 	.attr('id', (d, i) => `cover-arc-labels-${i}`);
+		// 	.attr('id', (d, i) => `org-arc-label-path-${i}`);
 		//
-		// // https://github.com/d3/d3/issues/2644
-		// // tl;dr arrow notation override this *for some reason*
-		// // so upset
-		// // i hate bugs
-		// const coverArcs = coverArcGroup.selectAll('g')
-		// 	.data(bigArcData)
+		// // now we can add text
+		// arcLabels.selectAll('text')
+		// 	.data(arcData)
 		// 	.enter()
-		// 	.append('g')
-		// 	.on('mouseover', function() {
-		// 		d3.select(this)
-		// 			.selectAll('text')
-		// 			.attr('fill-opacity', 0);
-		// 		d3.select(this)
-		// 			.selectAll('path')
-		// 			.attr('fill-opacity', 0);
-		// 	})
-		// 	.on('mouseout', function() {
-		// 		d3.select(this)
-		// 			.selectAll('text')
-		// 			.attr('fill-opacity', 1);
-		// 		d3.select(this)
-		// 			.selectAll('path')
-		// 			.attr('fill-opacity', 1);
-		// 	});
-		//
-		// coverArcs.append('path')
-		// 	.attr('d', arc)
-		// 	.style('fill', d => (d.type.toUpperCase() === 'UN ORGANIZATION') ? UNColor : NGOColor);
-		//
-		// coverArcs.append('text')
+		// 	.append('text')
 		// 	.append('textPath')
-		// 	.attr('xlink:href', (d, i) => `#cover-arc-labels-${i}`)
+		// 	.attr('xlink:href', (d, i) => `#org-arc-label-path-${i}`)
 		// 	.style('fill', textColor)
-		// 	.style('font-size', '1.25em')
+		// 	.style('font-size', '0.5em')
 		// 	.style('text-anchor', 'start')
-		// 	.classed('cover-arc-labels', true)
-		// 	.text(d => `${d.key}`);
+		// 	.text(d => convertOrgName(d.name));
+
 
 		// add a center label
 		chart.append('text')
