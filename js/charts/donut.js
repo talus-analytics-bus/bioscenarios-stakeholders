@@ -276,6 +276,64 @@
 			.style('text-anchor', 'start')
 			.text(d => d.rootArc.name);
 
+		/* OUTER */
+		// now time for org arcs
+		catArcs.orgs.forEach(function(d) {
+			catInnerRadius = catArcs.covers.filter(x => x.key === d.key)[0].values[0].innerRadius;
+			chart.append('g')
+				.selectAll('path')
+				.data(d.values)
+				.enter()
+				.append('path')
+				.attr('cat', d.key)
+				.attr('d', x => {
+					return arc({
+						startAngle: x.startAngle,
+						endAngle: x.endAngle,
+						innerRadius: catInnerRadius,
+						outerRadius: catInnerRadius,
+					});
+				})
+				.style('fill', x => categoryColorScale(x.type.toUpperCase()))
+				.each(function(x) {
+					const content = `<div class="tooltip-title">${x.name}</div>`;
+					$(this).tooltipster({
+						content: content,
+						trigger: 'hover',
+						side: 'right',   // TODO: dynamic positioning of tooltip based on arc location
+					});
+				});
+		});
+
+		// // let's get labels on the categories
+		// // first need group
+		// const arcLabels = chart.append('g')
+		// 	.classed('arc-labels', true);
+		//
+		// // now need paths for the text
+		// const outerArcDefs = chart.append('defs')
+		// 	.classed('outer-arc-defs', true);
+		// outerArcDefs.selectAll('path')
+		// 	.data(arcData)
+		// 	.enter()
+		// 	.append('path')
+		// 	.attr('d', textArc)
+		// 	.attr('id', (d, i) => `org-arc-label-path-${i}`);
+		//
+		// // now we can add text
+		// arcLabels.selectAll('text')
+		// 	.data(arcData)
+		// 	.enter()
+		// 	.append('text')
+		// 	.append('textPath')
+		// 	.attr('xlink:href', (d, i) => `#org-arc-label-path-${i}`)
+		// 	.style('fill', textColor)
+		// 	.style('font-size', '0.5em')
+		// 	.style('text-anchor', 'start')
+		// 	.text(d => convertOrgName(d.name));
+
+
+
 		// TIME FOR COVERS
 		var selected = null;
 		catArcs.covers.forEach(d => {
@@ -288,9 +346,10 @@
 				.attr('value', d => `cover-${d.name}`)
 				.style('fill', x => categoryColorScale(x.name))
 				.on('click', function(x) {
-					const cover = d3.selectAll(`[value="cover-${x.name}"]`);
+					const covers = d3.selectAll(`[value="cover-${x.name}"]`);
+					const orgs = d3.selectAll(`[cat="${x.name}"]`);
 					if (selected === x.name) {
-						cover.transition()
+						covers.transition()
 							.duration(500)
 							.attrTween('d', function(y) {
 							var interpolate = d3.interpolate(y.innerRadius + 5, y.innerRadius + coverHeight);
@@ -299,9 +358,22 @@
 								return arc(y);
 							};
 						});
+
+						orgs.transition()
+							.duration(500)
+							.attrTween('d', function(y) {
+								var interpolateInner = d3.interpolate(y.innerRadius, x.innerRadius);
+								var interpolateOuter = d3.interpolate(y.outerRadius, x.innerRadius);
+								return function(t) {
+									y.innerRadius = interpolateInner(t);
+									y.outerRadius = interpolateOuter(t);
+									return arc(y);
+								};
+							});
+
 						selected = null;
 					} else {
-						cover.transition()
+						covers.transition()
 							.duration(500)
 							.attrTween('d', function(y) {
 							var interpolate = d3.interpolate(y.outerRadius, y.innerRadius + 5);
@@ -310,6 +382,19 @@
 								return arc(y);
 							};
 						});
+
+						orgs.transition()
+							.duration(500)
+							.attrTween('d', function(y) {
+								var interpolateInner = d3.interpolate(x.innerRadius, y.innerRadius);
+								var interpolateOuter = d3.interpolate(x.innerRadius, y.outerRadius);
+								return function(t) {
+									y.innerRadius = interpolateInner(t);
+									y.outerRadius = interpolateOuter(t);
+									return arc(y);
+								};
+							});
+
 						selected = x.name;
 					}
 				});
@@ -348,61 +433,6 @@
 			.style('font-size', '1em')
 			.style('text-anchor', 'start')
 			.text(d => d.values[0].name);
-
-		/* OUTER */
-		// now time for org arcs
-		// const orgArcGroup = chart.append('g')
-		// 	.classed('arc-group', true);
-		//
-		// const arcData = catArcs.reduce(function (acc, cval) {
-		// 	return acc.concat(cval.orgArcs);
-		// }, []).map(function(d) {
-		// 	d.padding = 0.001;
-		// 	return d;
-		// });
-		//
-		// orgArcGroup.selectAll('path')
-		// 	.data(arcData)
-		// 	.enter()
-		// 	.append('path')
-		// 	.attr('d', arc)
-		// 	.style('fill', d => categoryColorScale(d.type.toUpperCase()))
-		// 	.each(function(d) {
-		// 		const content = `<div class="tooltip-title">${d.name}</div>`;
-		// 		$(this).tooltipster({
-		// 			content: content,
-		// 			trigger: 'hover',
-		// 			side: 'right',   // TODO: dynamic positioning of tooltip based on arc location
-		// 		});
-		// 	});
-		//
-		// // let's get labels on the categories
-		// // first need group
-		// const arcLabels = chart.append('g')
-		// 	.classed('arc-labels', true);
-		//
-		// // now need paths for the text
-		// const outerArcDefs = chart.append('defs')
-		// 	.classed('outer-arc-defs', true);
-		// outerArcDefs.selectAll('path')
-		// 	.data(arcData)
-		// 	.enter()
-		// 	.append('path')
-		// 	.attr('d', textArc)
-		// 	.attr('id', (d, i) => `org-arc-label-path-${i}`);
-		//
-		// // now we can add text
-		// arcLabels.selectAll('text')
-		// 	.data(arcData)
-		// 	.enter()
-		// 	.append('text')
-		// 	.append('textPath')
-		// 	.attr('xlink:href', (d, i) => `#org-arc-label-path-${i}`)
-		// 	.style('fill', textColor)
-		// 	.style('font-size', '0.5em')
-		// 	.style('text-anchor', 'start')
-		// 	.text(d => convertOrgName(d.name));
-
 
 		// add a center label
 		chart.append('text')
