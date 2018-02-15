@@ -72,6 +72,7 @@
 
 		/* LINES */
 		const line = d3.line()
+			.curve(d3.curveBasis)
 			.x(d => d.x)
 			.y(d => d.y);
 
@@ -108,7 +109,10 @@
 			.attr('y', innerNodesScale)
 			.attr('height', rectHeight)
 			.attr('width', rectWidth)
-			.style('fill', rectColor);
+			.style('fill', rectColor)
+			.attr('value', d => `rect ${d}`)
+			.on('mouseover', mouseoverRect)
+			.on('mouseout', mouseoutRect);
 
 		rectGroup.append('g')
 			.append('text')
@@ -117,7 +121,26 @@
 			.style('fill', rectTextColor)
 			.style('text-anchor', 'middle')
 			.style('font-size', '0.75em')
-			.html(d => wordWrap(d, rectWidth / 6, 0, innerNodesScale(d) + (rectHeight / 2)));
+			.attr('value', d => `recttext ${d}`)
+			.html(d => wordWrap(d, rectWidth / 6, 0, innerNodesScale(d) + (rectHeight / 2)))
+			.on('mouseover', mouseoverRect)
+			.on('mouseout', mouseoutRect);
+
+		function mouseoverRect(d) {
+			d3.select(`[value="recttext ${d}"`).style('fill', 'black');
+			d3.select(`[value="recttext ${d}"`).style('font-size', '1em');
+			d3.select(`[value="recttext ${d}"`).style('font-weight', '500');
+			d3.select(`[value="rect ${d}"]`).style('fill', selectedRectColor);
+			d3.selectAll(`[end="${d}"]`).style('stroke', selectedRectColor);
+		}
+
+		function mouseoutRect(d) {
+			d3.select(`[value="recttext ${d}"`).style('fill', rectTextColor);
+			d3.select(`[value="recttext ${d}"`).style('font-size', '0.75em');
+			d3.select(`[value="recttext ${d}"`).style('font-weight', '300');
+			d3.select(`[value="rect ${d}"]`).style('fill', rectColor);
+			d3.selectAll(`[end="${d}"]`).style('stroke', lineColor);
+		}
 
 		const leftGroup = chart.append('g')
 			.selectAll('g')
@@ -130,13 +153,22 @@
 			.attr('y', d => leftOrgsScale(d.abbrev))
 			.style('fill', textColor)
 			.style('text-anchor', 'end')
-			.text(d => d.abbrev);
+			.text(d => d.abbrev)
+			.each(function(d) {
+				const content = `<b>${d.name}</b>`;
+				return $(this).tooltipster({
+					content: content,
+					trigger: 'hover',
+					side: 'left',
+				});
+			});
 
 		leftGroup.append('g')
 			.append('circle')
 			.attr('cx', -0.25 * width)
 			.attr('cy', d => leftOrgsScale(d.abbrev) - 5)
 			.attr('r', 5.2)
+			.attr('value', d => d.abbrev)
 			.style('fill', circleColor);
 
 		const rightGroup = chart.append('g')
@@ -150,13 +182,22 @@
 			.attr('y', d => rightOrgsScale(d.abbrev))
 			.style('fill', textColor)
 			.style('text-anchor', 'start')
-			.text(d => d.abbrev);
+			.text(d => d.abbrev)
+			.each(function(d) {
+				const content = `<b>${d.name}</b>`;
+				return $(this).tooltipster({
+					content: content,
+					trigger: 'hover',
+					side: 'right',
+				});
+			});
 
 		rightGroup.append('g')
 			.append('circle')
 			.attr('cx', 0.25 * width)
 			.attr('cy', d => rightOrgsScale(d.abbrev) - 5)
 			.attr('r', 5.2)
+			.attr('value', d => d.abbrev)
 			.style('fill', circleColor);
 
 		// Time to draw lines
@@ -178,20 +219,37 @@
 					scale = rightOrgsScale;
 					sign = 1;
 				}
+				const startx = sign * 0.245 * width;
+				const starty = scale(d.abbrev) - 5;
+				const endx = sign * rectWidth / 2;
+				const endy = innerNodesScale(d['Policy Document']) + (rectHeight / 2);
 				return line([
 					{
-						x: sign * 0.245 * width,
-						y: scale(d.abbrev) - 5,
+						x: startx,
+						y: starty,
 					},
 					{
-						x: sign * rectWidth / 2,
-						y: innerNodesScale(d['Policy Document']) + (rectHeight / 2),
+						x: endx,
+						y: endy,
 					},
 				]);
 			})
+			.attr('start', d => d.abbrev)
+			.attr('end', d => d['Policy Document'])
+			.style('fill-opacity', 0)
 			.style('stroke', lineColor)
 			.style('stroke-width', '2')
 			.style('stroke-opacity', 0.5);
+
+		// TODO use this func below to define our bezier points
+		// //define bezier curve from inner to outer nodes
+		// function diagonal(d) {
+		// 	return 'M' + String(-d.outer.y * Math.sin(projectX(d.outer.x))) + ',' + String(d.outer.y * Math.cos(projectX(d.outer.x)))
+		// 		+ ' ' + 'C'
+		// 		+ ' ' + String((-d.outer.y * Math.sin(projectX(d.outer.x)) + (d.outer.x > 180 ? d.inner.x : d.inner.x + rect_width)) / 2) + ',' + String(d.outer.y * Math.cos(projectX(d.outer.x)))
+		// 		+ ' ' + String((-d.outer.y * Math.sin(projectX(d.outer.x)) + (d.outer.x > 180 ? d.inner.x : d.inner.x + rect_width)) / 2) + ',' + String(d.inner.y + rect_height / 2)
+		// 		+ ' ' + String(d.outer.x > 180 ? d.inner.x : d.inner.x + rect_width) + ',' + String(d.inner.y + rect_height / 2);
+		// }
 
 
 		// var outer = d3.map();
@@ -307,14 +365,6 @@
 		// 	return ((x - 90) / 180 * Math.PI) - (Math.PI / 2);
 		// }
 		//
-		// //define bezier curve from inner to outer nodes
-		// function diagonal(d) {
-		// 	return 'M' + String(-d.outer.y * Math.sin(projectX(d.outer.x))) + ',' + String(d.outer.y * Math.cos(projectX(d.outer.x)))
-		// 		+ ' ' + 'C'
-		// 		+ ' ' + String((-d.outer.y * Math.sin(projectX(d.outer.x)) + (d.outer.x > 180 ? d.inner.x : d.inner.x + rect_width)) / 2) + ',' + String(d.outer.y * Math.cos(projectX(d.outer.x)))
-		// 		+ ' ' + String((-d.outer.y * Math.sin(projectX(d.outer.x)) + (d.outer.x > 180 ? d.inner.x : d.inner.x + rect_width)) / 2) + ',' + String(d.inner.y + rect_height / 2)
-		// 		+ ' ' + String(d.outer.x > 180 ? d.inner.x : d.inner.x + rect_width) + ',' + String(d.inner.y + rect_height / 2);
-		// }
 		//
 		// // add links
 		// var link = svg.append('g').attr('class', 'links').selectAll('.link')

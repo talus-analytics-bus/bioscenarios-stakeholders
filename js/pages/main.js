@@ -26,13 +26,6 @@
 		let donut;
 
 		function init() {
-			// populate dropdown
-			d3.select('.timeline-event-dropdown').selectAll('option')
-				.data(timelineData)
-				.enter()
-				.append('option')
-				.attr('value', d => d['Timeline Event'])
-				.text(d => d['Timeline Event']);
 			initGraphs();
 		}
 

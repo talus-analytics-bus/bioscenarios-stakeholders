@@ -4,7 +4,7 @@
 		const width = param.width || 1000;
 		const height = width * 0.2;
 
-		const cases = [10, 10, 20, 30, 50, 80, 80, 40, 10, 5]
+		const cases = [10, 10, 20, 30, 50, 80, 80, 40, 10, 5];
 		const data = rawData.map((d, i) => {
 			return {
 				eventName: d['Timeline Event'],
