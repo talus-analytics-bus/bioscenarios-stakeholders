@@ -128,7 +128,8 @@
 
 		function mouseoverRect(d) {
 			d3.select(`[value="recttext ${d}"`).style('fill', 'black');
-			d3.select(`[value="recttext ${d}"`).style('font-size', '1em');
+			d3.select(`[value="recttext ${d}"`).style('font-size', '0.75em');
+			// when you mouse over a rectangle, make the font slightly more heavily weighted for emphasis
 			d3.select(`[value="recttext ${d}"`).style('font-weight', '500');
 			d3.select(`[value="rect ${d}"]`).style('fill', selectedRectColor);
 			d3.selectAll(`[end="${d}"]`).style('stroke', selectedRectColor);
