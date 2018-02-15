@@ -51,7 +51,7 @@
   color: black;
   padding: 15px 30px 15px 25px;
   border: 1px solid #999;
-  font-family: 'Open Sans', sans-serif;
+  font-family: 'Raleway', sans-serif;
   font-size: 1.1rem;
   font-weight: 600;
   cursor: pointer;
@@ -104,7 +104,7 @@
   border-right: 1px solid #999;
   border-bottom: 1px solid #999;
   border-left: 1px solid #999;
-  font-family: 'Open Sans', sans-serif;
+  font-family: 'Raleway', sans-serif;
   font-size: 0.85rem;
   color: black;
   cursor: pointer;
@@ -505,7 +505,7 @@ light {
   text-align: center; }
 
 #page-content {
-  padding-top: 30px; }
+  padding-top: 100px; }
 
 .main-page {
   border-left: 1px solid #999;
