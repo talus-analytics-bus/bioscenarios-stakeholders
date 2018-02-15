@@ -16,8 +16,8 @@
 		const width = 900;
 		const height = width;
 		const innerRadius = 100;
-		const roleHeight = 50;   // how "tall" is the innermost ring
-		const orgHeight = 20;    // how "tall" is each org listed
+		const roleHeight = 30;   // how "tall" is the innermost ring
+		const orgHeight = 10;    // how "tall" is each org listed
 
 		// colours
 		const innerColor = '#4d4e4e';
@@ -29,11 +29,20 @@
 		// parseRawData declarations - gonna bind to these
 		let allRoles;
 		let allCategories;
+		let allStakeholders;
 		let data;
 		let orgInfo;
 		let catArcs;
+		let orgPositions;
 
 		/* STEP ONE => MASSAGE THE DATA */
+		//		  meow
+		//   /\_/\
+		//  ( o.o )
+		//   > ^ <
+		//
+		// (there used to be cats here)
+		// (leaving this one)
 		function parseRawData() {
 			data = rawData.filter(d => d['Timeline Event'] === eventName);
 			orgInfo = rawOrgInfo;
@@ -49,13 +58,34 @@
 				.map(d => d.key)
 				.sort();
 
-			//		  meow
-			//   /\_/\
-			//  ( o.o )
-			//   > ^ <
-			//
-			// (cause of all the cats here...)
+			allStakeholders = d3.nest()
+				.key(d => d)
+				.entries(data.map(d => d['Stakeholder']))
+				.map(d => d.key);
+
+			const order = {
+				'NATIONAL GOVERNMENT (AFFECTED)': 0,
+				'NATIONAL GOVERNMENT (UNAFFECTED)': 1,
+				'UN ORGANIZATION': 2,
+				'NGO': 3,
+				'PRIVATE SECTOR': 4,
+			};
 			let cdepth;
+			cdepth = 0;
+			orgPositions = orgInfo.map(d => {
+				d.category = d['Organization Category'].toUpperCase();
+				return d;
+			})
+			.sort((a, b) => order[a.category] > order[b.category])
+			.filter(d => {
+				return allStakeholders.includes(d['Stakeholder Name']);
+			})
+			.map(d => {
+				d.level = cdepth;
+				cdepth += 1;
+				return d;
+			});
+
 			catArcs = allRoles.map(d => {
 				// pull out only the data that is associated with this category
 				// and join with org info for each row
@@ -64,34 +94,37 @@
 					.map((x) => {
 						// making fundamental assumption here that every org in data is
 						// listed in orgInfo
-						const orgType = orgInfo.filter(
-							y => y['Stakeholder Name'] === x['Stakeholder'])[0]['Organization Category'];
-						x['Organization Category'] = orgType;
+						const orgType = orgPositions.filter(
+							y => y['Stakeholder Name'] === x['Stakeholder'])[0];
+						x['Organization Category'] = orgType['Organization Category'];
+						x.level = orgType.level;
 						return x;
 					});
-				// now group by the type of org
-				const catCounts = d3.nest()
-					.key(x => x['Organization Category'].toUpperCase())
-					.entries(catData)
-					.sort((a, b) => a.key < b.key);
-				// pull out just the org types
-				const orgTypes = catCounts.map(x => x.key);
-				// Count how many entries in each
-				const orgHeights = catCounts.map(function (x) {
-					return {
-						name: x.key,
-						height: x.values.length,
-					};
-				});
+				// // now group by the type of org
+				// const catCounts = d3.nest()
+				// 	.key(x => x['Organization Category'].toUpperCase())
+				// 	.entries(catData)
+				// 	.sort((a, b) => a.key < b.key);
+				// // pull out just the org types
+				// const orgTypes = catCounts.map(x => x.key);
+				// // Count how many entries in each
+				// const orgHeights = catCounts.map(function (x) {
+				// 	return {
+				// 		name: x.key,
+				// 		height: x.values.length,
+				// 	};
+				// });
 				// sort catData by category
-				const sortedCatData = catData.sort((a, b) => a['Organization Category'] < b['Organization Category']);
+				// const sortedCatData = catData.sort((a, b) => {
+				// 	return a['Organization Category'] < b['Organization Category'];
+				// });
 				return {
 					name: d,
 					data: catData,
-					orgCounts: catCounts,
-					orgTypes: orgTypes,
-					orgHeights: orgHeights,
-					sortedCatData: sortedCatData,
+					// orgCounts: catCounts,
+					// orgTypes: orgTypes,
+					// orgHeights: orgHeights,
+					// sortedCatData: sortedCatData,
 				};
 			})
 			// pause to sort
@@ -104,7 +137,7 @@
 				// now let's figure out these group-consistent arcs
 				const startAngle = i * arcPortion;
 				const endAngle = (i + 1) * arcPortion;
-				const padding = 0.01;
+				const padding = 0.0;
 				// we have a couple different sub-arcs
 				// role arcs
 				const rootData = {
@@ -113,16 +146,14 @@
 					outerRadius: innerRadius + roleHeight,
 					startAngle: startAngle,
 					endAngle: endAngle,
-					padding: padding,
+					padding: 0.01,
 				};
-				cdepth = -1;
-				const orgData = d.sortedCatData.map(x => {
-					cdepth += 1;
+				const orgData = d.data.map(x => {
 					return {
 						name: x['Stakeholder'],
 						type: x['Organization Category'].toUpperCase(),
-						innerRadius: innerRadius + roleHeight + (cdepth * orgHeight),
-						outerRadius: innerRadius + roleHeight + ((cdepth + 1) * orgHeight),
+						innerRadius: innerRadius + roleHeight + (x.level * orgHeight),
+						outerRadius: innerRadius + roleHeight + ((x.level + 1) * orgHeight),
 						startAngle: startAngle,
 						endAngle: endAngle,
 						padding: padding,
@@ -154,7 +185,7 @@
 			.outerRadius(d => d.outerRadius)
 			.startAngle(d => d.startAngle)
 			.endAngle(d => d.endAngle)
-			.padAngle(0.01);
+			.padAngle(d => d.padding);
 
 		// Arc function responsible for drawing textPath arcs
 		const textArc = d3.arc()
@@ -258,84 +289,84 @@
 			.style('text-anchor', 'start')
 			.text(d => convertOrgName(d.name));
 
-		// now add cover for this
-		const bigArcData = d3.nest()
-			.key(d => d.startAngle)
-			.key(d => d.type)
-			.rollup(d => {
-				return {
-					innerRadius: d[0].innerRadius,
-					outerRadius: d3.max(d, x => x.outerRadius),
-					startAngle: d[0].startAngle,
-					endAngle: d[0].endAngle,
-					type: d[0].type,
-				};
-			})
-			.entries(arcData)
-			.map(d => {
-				return d.values.map(x => {
-					x.startAngle = d.key;
-					Object.keys(x.value).forEach(y => x[y] = x.value[y]);
-					return x;
-				});
-			})
-			.reduce((acc, cval) => acc.concat(cval), []);
-
-		// draw cover Arcs
-		const coverArcGroup = chart.append('g')
-			.classed('cover-arc-group', true);
-
-		// labels arcs
-		const coverDefs = chart.append('defs')
-			.classed('cover-defs', true);
-		coverDefs.selectAll('path')
-			.data(bigArcData.map(d => {
-				d.offset = 0.01;
-				// d.outerRadius -= orgHeight / 2;
-				return d;
-			}))
-			.enter()
-			.append('path')
-			.attr('d', textArc)
-			.attr('id', (d, i) => `cover-arc-labels-${i}`);
-
-		// https://github.com/d3/d3/issues/2644
-		// tl;dr arrow notation override this *for some reason*
-		// so upset
-		// i hate bugs
-		const coverArcs = coverArcGroup.selectAll('g')
-			.data(bigArcData)
-			.enter()
-			.append('g')
-			.on('mouseover', function() {
-				d3.select(this)
-					.selectAll('text')
-					.attr('fill-opacity', 0);
-				d3.select(this)
-					.selectAll('path')
-					.attr('fill-opacity', 0);
-			})
-			.on('mouseout', function() {
-				d3.select(this)
-					.selectAll('text')
-					.attr('fill-opacity', 1);
-				d3.select(this)
-					.selectAll('path')
-					.attr('fill-opacity', 1);
-			});
-
-		coverArcs.append('path')
-			.attr('d', arc)
-			.style('fill', d => (d.type.toUpperCase() === 'UN ORGANIZATION') ? UNColor : NGOColor);
-
-		coverArcs.append('text')
-			.append('textPath')
-			.attr('xlink:href', (d, i) => `#cover-arc-labels-${i}`)
-			.style('fill', textColor)
-			.style('font-size', '1.25em')
-			.style('text-anchor', 'start')
-			.classed('cover-arc-labels', true)
-			.text(d => `${d.key}`);
+		// // now add cover for this
+		// const bigArcData = d3.nest()
+		// 	.key(d => d.startAngle)
+		// 	.key(d => d.type)
+		// 	.rollup(d => {
+		// 		return {
+		// 			innerRadius: d[0].innerRadius,
+		// 			outerRadius: d3.max(d, x => x.outerRadius),
+		// 			startAngle: d[0].startAngle,
+		// 			endAngle: d[0].endAngle,
+		// 			type: d[0].type,
+		// 		};
+		// 	})
+		// 	.entries(arcData)
+		// 	.map(d => {
+		// 		return d.values.map(x => {
+		// 			x.startAngle = d.key;
+		// 			Object.keys(x.value).forEach(y => x[y] = x.value[y]);
+		// 			return x;
+		// 		});
+		// 	})
+		// 	.reduce((acc, cval) => acc.concat(cval), []);
+		//
+		// // draw cover Arcs
+		// const coverArcGroup = chart.append('g')
+		// 	.classed('cover-arc-group', true);
+		//
+		// // labels arcs
+		// const coverDefs = chart.append('defs')
+		// 	.classed('cover-defs', true);
+		// coverDefs.selectAll('path')
+		// 	.data(bigArcData.map(d => {
+		// 		d.offset = 0.01;
+		// 		// d.outerRadius -= orgHeight / 2;
+		// 		return d;
+		// 	}))
+		// 	.enter()
+		// 	.append('path')
+		// 	.attr('d', textArc)
+		// 	.attr('id', (d, i) => `cover-arc-labels-${i}`);
+		//
+		// // https://github.com/d3/d3/issues/2644
+		// // tl;dr arrow notation override this *for some reason*
+		// // so upset
+		// // i hate bugs
+		// const coverArcs = coverArcGroup.selectAll('g')
+		// 	.data(bigArcData)
+		// 	.enter()
+		// 	.append('g')
+		// 	.on('mouseover', function() {
+		// 		d3.select(this)
+		// 			.selectAll('text')
+		// 			.attr('fill-opacity', 0);
+		// 		d3.select(this)
+		// 			.selectAll('path')
+		// 			.attr('fill-opacity', 0);
+		// 	})
+		// 	.on('mouseout', function() {
+		// 		d3.select(this)
+		// 			.selectAll('text')
+		// 			.attr('fill-opacity', 1);
+		// 		d3.select(this)
+		// 			.selectAll('path')
+		// 			.attr('fill-opacity', 1);
+		// 	});
+		//
+		// coverArcs.append('path')
+		// 	.attr('d', arc)
+		// 	.style('fill', d => (d.type.toUpperCase() === 'UN ORGANIZATION') ? UNColor : NGOColor);
+		//
+		// coverArcs.append('text')
+		// 	.append('textPath')
+		// 	.attr('xlink:href', (d, i) => `#cover-arc-labels-${i}`)
+		// 	.style('fill', textColor)
+		// 	.style('font-size', '1.25em')
+		// 	.style('text-anchor', 'start')
+		// 	.classed('cover-arc-labels', true)
+		// 	.text(d => `${d.key}`);
 
 		// add a center label
 		chart.append('text')
