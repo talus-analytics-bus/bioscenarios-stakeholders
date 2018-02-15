@@ -163,7 +163,8 @@
 			.endAngle(d => d.endAngle);
 
 		// console.log(catArcs);
-		// Start by drawing 4 (number of categories) groups, these groups will act in tandem for start and end angles
+		// Start by drawing 4 (number of categories) groups,
+		// these groups will act in tandem for start and end angles
 		const arcGroups = chart.selectAll('g')
 			.data(catArcs)
 			.enter()
@@ -178,29 +179,24 @@
 
 		// need to set offsets
 		// append path for text
-		const innerArcDefs = chart.append('defs')
-			.classed('inner-arc-defs', true);
-
-		innerArcDefs.selectAll('path')
+		chart.append('defs')
+			.selectAll('path')
 			.data(catArcs)
 			.enter()
 			.append('path')
-			.attr('d', textArc)
+			.attr('d', d => textArc(d.rootArc))
 			.attr('id', (d, i) => `inner-arc-label-path-${i}`);
 
 		const innerArcLabels = chart.append('g')
-			.classed('inner-arc-group-labels', true);
-
-		// append text itself
-		innerArcLabels.selectAll('text')
+			.selectAll('text')
 			.data(catArcs)
 			.enter()
 			.append('text')
 			.append('textPath')
 			.attr('xlink:href', (d, i) => `#inner-arc-label-path-${i}`)
 			.style('fill', textColor)
-			.style('font-size', '0.6em')
-			.text(d => d.name);
+			.style('font-size', '1em')
+			.text(d => d.rootArc.name);
 
 		/* OUTER */
 		// now time for org arcs
