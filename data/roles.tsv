@@ -1,146 +1,1 @@
-Timeline Event	Stakeholder	Stakeholder Role
-First case in humans identified	Ministry of Health	public health and medical; governance and policy
-First case in humans identified	Local NGOs	public health and medical
-First case in animals identified	World Organisation for Animal Health (OIE)	public health and medical
-First case in animals identified	Ministry of Agriculture	public health and medical; governance and policy
-First case in animals identified	Ministry of Commerce	governance and policy
-First case in animals identified	Local NGOs	public health and medical
-Agent identified	World Health Organization (WHO)	public health and medical; governance and policy
-Agent identified	Ministry of Health	public health and medical; governance and policy
-Agent identified	Ministry of Agriculture	public health and medical; governance and policy
-Agent identified	Ministry of Commerce	governance and policy
-Agent identified	Local NGOs	public health and medical
-Agent identified	World Organisation for Animal Health (OIE)	public health and medical
-Agent identified	Regional and local law enforcement	safety and security
-Agent identified	Biotechnology Companies	public health and medical
-State request for assistance	Ministry of Health	public health and medical; governance and policy
-State request for assistance	Ministry of Agriculture	public health and medical; governance and policy
-State request for assistance	Ministry of Commerce	governance and policy
-State request for assistance	Regional and local law enforcement	safety and security
-State request for assistance	Local NGOs	public health and medical
-State request for assistance	International NGOs	public health and medical; humanitarian aid
-State request for assistance	World Organisation for Animal Health (OIE)	public health and medical
-State request for assistance	Joint United Nations Environment Programme (UNEP)/OCHA Environment Unit (JEU)	humanitarian aid
-State request for assistance	Food and Agriculture Organization of the United Nations (FAO)	humanitarian aid
-State request for assistance	World Organisation for Animal Health (OIE)	humanitarian aid
-State request for assistance	World Health Organization (WHO)	public health and medical; humanitarian aid
-State request for assistance	World Bank Group (WBG)	humanitarian aid
-State request for assistance	World Customs Organization (WCO)	safety and security; governance and policy
-State request for assistance	United Nations Disaster Assessment and Coordination (UNDAC)	humanitarian aid
-State request for assistance	World Food Programme (WFP)	humanitarian aid
-State request for assistance	United Nations Department for Safety and Security (UNDSS)	safety and security; governance and policy
-State request for assistance	United Nations International Strategy for Disaster Reduction (UNISDR)	governance and policy; safety and security
-State request for assistance	National governments (non-affected)	public health and medical; humanitarian aid
-State request for assistance	National Academies	public health and medical; humanitarian aid; governance and policy
-WHO Public Health Emergency Declared	World Health Organization (WHO)	public health and medical; humanitarian aid; governance and policy
-WHO Public Health Emergency Declared	Ministry of Health	public health and medical; governance and policy
-WHO Public Health Emergency Declared	Ministry of Agriculture	public health and medical; governance and policy
-WHO Public Health Emergency Declared	Ministry of Commerce	governance and policy
-WHO Public Health Emergency Declared	Regional and local law enforcement	safety and security
-WHO Public Health Emergency Declared	Local NGOs	public health and medical
-WHO Public Health Emergency Declared	International NGOs	public health and medical; humanitarian aid
-WHO Public Health Emergency Declared	World Organisation for Animal Health (OIE)	public health and medical
-WHO Public Health Emergency Declared	Joint United Nations Environment Programme (UNEP)/OCHA Environment Unit (JEU)	humanitarian aid
-WHO Public Health Emergency Declared	Food and Agriculture Organization of the United Nations (FAO)	humanitarian aid
-WHO Public Health Emergency Declared	World Organisation for Animal Health (OIE)	humanitarian aid
-WHO Public Health Emergency Declared	World Bank Group (WBG)	humanitarian aid
-WHO Public Health Emergency Declared	World Customs Organization (WCO)	safety and security; governance and policy
-WHO Public Health Emergency Declared	United Nations Disaster Assessment and Coordination (UNDAC)	humanitarian aid
-WHO Public Health Emergency Declared	World Food Programme (WFP)	humanitarian aid
-WHO Public Health Emergency Declared	United Nations Department for Safety and Security (UNDSS)	safety and security; governance and policy
-WHO Public Health Emergency Declared	United Nations International Strategy for Disaster Reduction (UNISDR)	governance and policy; safety and security
-WHO Public Health Emergency Declared	National governments (non-affected)	public health and medical; humanitarian aid
-WHO Public Health Emergency Declared	Gavi, the Vaccine Alliance	public health and medical
-WHO Public Health Emergency Declared	Coalition for Epidemic Preparedness Innovations (CEPI)	public health and medical
-WHO Public Health Emergency Declared	Sabin Vaccine Institute	public health and medical
-WHO Public Health Emergency Declared	National Academies	public health and medical; humanitarian aid; governance and policy
-WHO Public Health Emergency Declared	Pharmaceutical Companies	public health and medical
-WHO Public Health Emergency Declared	Telecommunications Companies	governance and policy
-WHO Public Health Emergency Declared	Biotechnology Companies	public health and medical
-WHO Public Health Emergency Declared	Global Health Security Alliance Private Sector Round Table (GHSA PSRT)	governance and policy; public health and medical; humanitarian aid
-Suspicion of Deliberate Use	United Nations Secretary-General's Mechanism (UNSGM)	governance and policy; safety and security
-Suspicion of Deliberate Use	Organisation for the Prohibition of Chemical Weapons (OPCW)	governance and policy
-Suspicion of Deliberate Use	International Criminal Police Organization (INTERPOL)	safety and security
-Suspicion of Deliberate Use	United Nations Security Council (UNSC) 1540 Committee	safety and security; governance and policy
-Suspicion of Deliberate Use	United Nations Office for Disarmament Affairs (UNODA)	safety and security
-Suspicion of Deliberate Use	Biological Weapons Convention Implementation Support Unit (BWC ISU)	safety and security
-Suspicion of Deliberate Use	United Nations Interregional Crime and Justice Research Institute (UNICRI)	governance and policy
-Suspicion of Deliberate Use	Ministry of Health	public health and medical; governance and policy
-Suspicion of Deliberate Use	Ministry of Agriculture	public health and medical; governance and policy
-Suspicion of Deliberate Use	Ministry of Commerce	governance and policy
-Suspicion of Deliberate Use	National and regional militaries	safety and security; governance and policy
-Suspicion of Deliberate Use	Regional and local law enforcement	safety and security
-Suspicion of Deliberate Use	Local NGOs	public health and medical
-Suspicion of Deliberate Use	International NGOs	public health and medical; humanitarian aid
-Suspicion of Deliberate Use	World Organisation for Animal Health (OIE)	public health and medical
-Suspicion of Deliberate Use	Joint United Nations Environment Programme (UNEP)/OCHA Environment Unit (JEU)	humanitarian aid
-Suspicion of Deliberate Use	Food and Agriculture Organization of the United Nations (FAO)	humanitarian aid
-Suspicion of Deliberate Use	World Customs Organization (WCO)	safety and security; governance and policy
-Suspicion of Deliberate Use	United Nations Disaster Assessment and Coordination (UNDAC)	humanitarian aid
-Suspicion of Deliberate Use	World Food Programme (WFP)	humanitarian aid
-Suspicion of Deliberate Use	United Nations Department for Safety and Security (UNDSS)	safety and security; governance and policy
-Suspicion of Deliberate Use	United Nations International Strategy for Disaster Reduction (UNISDR)	governance and policy; safety and security
-Suspicion of Deliberate Use	National governments (non-affected)	public health and medical; humanitarian aid
-Suspicion of Deliberate Use	GAVI, the Vaccine Alliance	public health and medical
-Suspicion of Deliberate Use	Coalition for Epidemic Preparedness Innovations (CEPI)	public health and medical
-Suspicion of Deliberate Use	Sabin Vaccine Institute	public health and medical
-Suspicion of Deliberate Use	National Academies	public health and medical; humanitarian aid; governance and policy
-Suspicion of Deliberate Use	Pharmaceutical Companies	public health and medical
-Suspicion of Deliberate Use	Biotechnology Companies	public health and medical
-Suspicion of Deliberate Use	Telecommunications Companies	governance and policy
-Suspicion of Deliberate Use	Global Health Security Alliance Private Sector Round Table (GHSA PSRT)	governance and policy; public health and medical; humanitarian aid
-Confirmation of deliberate use	International Committee of the Red Cross (ICRC)	public heath and medical; humanitarian aid
-Confirmation of deliberate use	Ministry of Health	public health and medical; governance and policy
-Confirmation of deliberate use	Ministry of Agriculture	public health and medical; governance and policy
-Confirmation of deliberate use	Ministry of Commerce	governance and policy
-Confirmation of deliberate use	National and regional militaries	safety and security; governance and policy
-Confirmation of deliberate use	Regional and local law enforcement	safety and security
-Confirmation of deliberate use	Local NGOs	public health and medical
-Confirmation of deliberate use	International NGOs	public health and medical; humanitarian aid
-Confirmation of deliberate use	World Organisation for Animal Health (OIE)	public health and medical
-Confirmation of deliberate use	Joint United Nations Environment Programme (UNEP)/OCHA Environment Unit (JEU)	humanitarian aid
-Confirmation of deliberate use	Food and Agriculture Organization of the United Nations (FAO)	humanitarian aid
-Confirmation of deliberate use	World Customs Organization (WCO)	safety and security; governance and policy
-Confirmation of deliberate use	United Nations Disaster Assessment and Coordination (UNDAC)	humanitarian aid
-Confirmation of deliberate use	World Food Programme (WFP)	humanitarian aid
-Confirmation of deliberate use	United Nations Department for Safety and Security (UNDSS)	safety and security; governance and policy
-Confirmation of deliberate use	United Nations International Strategy for Disaster Reduction (UNISDR)	governance and policy; safety and security
-Confirmation of deliberate use	National governments (non-affected)	public health and medical; humanitarian aid
-Confirmation of deliberate use	GAVI, the Vaccine Alliance	public health and medical
-Confirmation of deliberate use	Coalition for Epidemic Preparedness Innovations (CEPI)	public health and medical
-Confirmation of deliberate use	Sabin Vaccine Institute	public health and medical
-Confirmation of deliberate use	National Academies	public health and medical; humanitarian aid; governance and policy
-Confirmation of deliberate use	Pharmaceutical Companies	public health and medical
-Confirmation of deliberate use	Biotechnology Companies	public health and medical
-Confirmation of deliberate use	Telecommunications Companies	governance and policy
-Confirmation of deliberate use	Global Health Security Alliance Private Sector Round Table (GHSA PSRT)	governance and policy; public health and medical; humanitarian aid
-Ongoing response	International Maritime Organization (IMO)	safety and security; governance and policy
-Ongoing response	United Nations High Commissioner for Refugees (UNHCR)	humanitarian aid
-Ongoing response	International Civil Aviation Organization (ICAO)	safety and security; governance and policy
-Ongoing response	International Organization For Migration (IOM)	safety and security; governance and policy; public health and medical
-Ongoing response	International Committee of the Red Cross (ICRC)	public heath and medical; humanitarian aid
-Ongoing response	Ministry of Health	public health and medical; governance and policy
-Ongoing response	Ministry of Agriculture	public health and medical; governance and policy
-Ongoing response	Ministry of Commerce	governance and policy
-Ongoing response	Local NGOs	public health and medical
-Ongoing response	International NGOs	public health and medical; humanitarian aid
-Ongoing response	World Organisation for Animal Health (OIE)	public health and medical
-Ongoing response	Joint United Nations Environment Programme (UNEP)/OCHA Environment Unit (JEU)	humanitarian aid
-Ongoing response	Food and Agriculture Organization of the United Nations (FAO)	humanitarian aid
-Ongoing response	World Customs Organization (WCO)	safety and security; governance and policy
-Ongoing response	United Nations Disaster Assessment and Coordination (UNDAC)	humanitarian aid
-Ongoing response	World Food Programme (WFP)	humanitarian aid
-Ongoing response	United Nations Department for Safety and Security (UNDSS)	safety and security; governance and policy
-Ongoing response	United Nations International Strategy for Disaster Reduction (UNISDR)	governance and policy; safety and security
-Ongoing response	National governments (non-affected)	public health and medical; humanitarian aid
-Ongoing response	National and regional militaries	safety and security; governance and policy
-Ongoing response	Regional and local law enforcement	safety and security
-Ongoing response	GAVI, the Vaccine Alliance	public health and medical
-Ongoing response	Coalition for Epidemic Preparedness Innovations (CEPI)	public health and medical
-Ongoing response	Sabin Vaccine Institute	public health and medical
-Ongoing response	National Academies	public health and medical; humanitarian aid; governance and policy
-Ongoing response	Pharmaceutical Companies	public health and medical
-Ongoing response	Biotechnology Companies	public health and medical
-Ongoing response	Telecommunications Companies	governance and policy
-Ongoing response	Global Health Security Alliance Private Sector Round Table (GHSA PSRT)	governance and policy; public health and medical; humanitarian aid
-Ongoing response	World Economic Forum (WEF)	governance and policy
+Timeline Event	Stakeholder	Stakeholder RoleFirst case in humans identified	Ministry of Health	public health and medical; governance and policyFirst case in humans identified	Local NGOs	public health and medicalFirst case in animals identified	World Organisation for Animal Health (OIE)	public health and medicalFirst case in animals identified	Ministry of Agriculture	public health and medical; governance and policyFirst case in animals identified	Ministry of Commerce	governance and policyFirst case in animals identified	Local NGOs	public health and medicalAgent identified	World Health Organization (WHO)	public health and medical; governance and policyAgent identified	Ministry of Health	public health and medical; governance and policyAgent identified	Ministry of Agriculture	public health and medical; governance and policyAgent identified	Ministry of Commerce	governance and policyAgent identified	Local NGOs	public health and medicalAgent identified	World Organisation for Animal Health (OIE)	public health and medicalAgent identified	Regional and local law enforcement	safety and securityAgent identified	Biotechnology Companies	public health and medicalState request for assistance	Ministry of Health	public health and medical; governance and policyState request for assistance	Ministry of Agriculture	public health and medical; governance and policyState request for assistance	Ministry of Commerce	governance and policyState request for assistance	Regional and local law enforcement	safety and securityState request for assistance	Local NGOs	public health and medicalState request for assistance	International NGOs	public health and medical; humanitarian aidState request for assistance	World Organisation for Animal Health (OIE)	public health and medicalState request for assistance	Joint United Nations Environment Programme (UNEP)/OCHA Environment Unit (JEU)	humanitarian aidState request for assistance	Food and Agriculture Organization of the United Nations (FAO)	humanitarian aidState request for assistance	World Organisation for Animal Health (OIE)	humanitarian aidState request for assistance	World Health Organization (WHO)	public health and medical; humanitarian aidState request for assistance	World Bank Group (WBG)	humanitarian aidState request for assistance	World Customs Organization (WCO)	safety and security; governance and policyState request for assistance	United Nations Disaster Assessment and Coordination (UNDAC)	humanitarian aidState request for assistance	World Food Programme (WFP)	humanitarian aidState request for assistance	United Nations Department for Safety and Security (UNDSS)	safety and security; governance and policyState request for assistance	United Nations International Strategy for Disaster Reduction (UNISDR)	governance and policy; safety and securityState request for assistance	National governments (non-affected)	public health and medical; humanitarian aidState request for assistance	National Academies	public health and medical; humanitarian aid; governance and policyWHO Public Health Emergency Declared	World Health Organization (WHO)	public health and medical; humanitarian aid; governance and policyWHO Public Health Emergency Declared	Ministry of Health	public health and medical; governance and policyWHO Public Health Emergency Declared	Ministry of Agriculture	public health and medical; governance and policyWHO Public Health Emergency Declared	Ministry of Commerce	governance and policyWHO Public Health Emergency Declared	Regional and local law enforcement	safety and securityWHO Public Health Emergency Declared	Local NGOs	public health and medicalWHO Public Health Emergency Declared	International NGOs	public health and medical; humanitarian aidWHO Public Health Emergency Declared	World Organisation for Animal Health (OIE)	public health and medicalWHO Public Health Emergency Declared	Joint United Nations Environment Programme (UNEP)/OCHA Environment Unit (JEU)	humanitarian aidWHO Public Health Emergency Declared	Food and Agriculture Organization of the United Nations (FAO)	humanitarian aidWHO Public Health Emergency Declared	World Organisation for Animal Health (OIE)	humanitarian aidWHO Public Health Emergency Declared	World Bank Group (WBG)	humanitarian aidWHO Public Health Emergency Declared	World Customs Organization (WCO)	safety and security; governance and policyWHO Public Health Emergency Declared	United Nations Disaster Assessment and Coordination (UNDAC)	humanitarian aidWHO Public Health Emergency Declared	World Food Programme (WFP)	humanitarian aidWHO Public Health Emergency Declared	United Nations Department for Safety and Security (UNDSS)	safety and security; governance and policyWHO Public Health Emergency Declared	United Nations International Strategy for Disaster Reduction (UNISDR)	governance and policy; safety and securityWHO Public Health Emergency Declared	National governments (non-affected)	public health and medical; humanitarian aidWHO Public Health Emergency Declared	"Gavi, the Vaccine Alliance"	public health and medicalWHO Public Health Emergency Declared	Coalition for Epidemic Preparedness Innovations (CEPI)	public health and medicalWHO Public Health Emergency Declared	Sabin Vaccine Institute	public health and medicalWHO Public Health Emergency Declared	National Academies	public health and medical; humanitarian aid; governance and policyWHO Public Health Emergency Declared	Pharmaceutical Companies	public health and medicalWHO Public Health Emergency Declared	Telecommunications Companies	governance and policyWHO Public Health Emergency Declared	Biotechnology Companies	public health and medicalWHO Public Health Emergency Declared	Global Health Security Alliance Private Sector Round Table (GHSA PSRT)	governance and policy; public health and medical; humanitarian aidSuspicion of Deliberate Use	United Nations Secretary-General's Mechanism (UNSGM)	governance and policy; safety and securitySuspicion of Deliberate Use	Organisation for the Prohibition of Chemical Weapons (OPCW)	governance and policySuspicion of Deliberate Use	International Criminal Police Organization (INTERPOL)	safety and securitySuspicion of Deliberate Use	United Nations Security Council (UNSC) 1540 Committee	safety and security; governance and policySuspicion of Deliberate Use	United Nations Office for Disarmament Affairs (UNODA)	safety and securityConfirmation of deliberate use	United Nations Disaster Assessment and Coordination (UNDAC)	humanitarian aidConfirmation of deliberate use	World Food Programme (WFP)	humanitarian aidConfirmation of deliberate use	United Nations Department for Safety and Security (UNDSS)	safety and security; governance and policyConfirmation of deliberate use	United Nations International Strategy for Disaster Reduction (UNISDR)	governance and policy; safety and securityConfirmation of deliberate use	National governments (non-affected)	public health and medical; humanitarian aidConfirmation of deliberate use	"GAVI, the Vaccine Alliance"	public health and medicalConfirmation of deliberate use	Coalition for Epidemic Preparedness Innovations (CEPI)	public health and medicalConfirmation of deliberate use	Sabin Vaccine Institute	public health and medicalConfirmation of deliberate use	National Academies	public health and medical; humanitarian aid; governance and policyConfirmation of deliberate use	Pharmaceutical Companies	public health and medicalConfirmation of deliberate use	Biotechnology Companies	public health and medicalConfirmation of deliberate use	Telecommunications Companies	governance and policyConfirmation of deliberate use	Global Health Security Alliance Private Sector Round Table (GHSA PSRT)	governance and policy; public health and medical; humanitarian aidOngoing response	International Maritime Organization (IMO)	safety and security; governance and policyOngoing response	United Nations High Commissioner for Refugees (UNHCR)	humanitarian aidOngoing response	International Civil Aviation Organization (ICAO)	safety and security; governance and policyOngoing response	International Organization For Migration (IOM)	safety and security; governance and policy; public health and medicalOngoing response	International Committee of the Red Cross (ICRC)	public heath and medical; humanitarian aidOngoing response	Ministry of Health	public health and medical; governance and policyOngoing response	Ministry of Agriculture	public health and medical; governance and policyOngoing response	Ministry of Commerce	governance and policyOngoing response	Local NGOs	public health and medicalOngoing response	International NGOs	public health and medical; humanitarian aidOngoing response	World Organisation for Animal Health (OIE)	public health and medicalOngoing response	Joint United Nations Environment Programme (UNEP)/OCHA Environment Unit (JEU)	humanitarian aidOngoing response	Food and Agriculture Organization of the United Nations (FAO)	humanitarian aidOngoing response	World Customs Organization (WCO)	safety and security; governance and policyOngoing response	United Nations Disaster Assessment and Coordination (UNDAC)	humanitarian aidOngoing response	World Food Programme (WFP)	humanitarian aidOngoing response	United Nations Department for Safety and Security (UNDSS)	safety and security; governance and policyOngoing response	United Nations International Strategy for Disaster Reduction (UNISDR)	governance and policy; safety and securityOngoing response	National governments (non-affected)	public health and medical; humanitarian aidOngoing response	National and regional militaries	safety and security; governance and policyOngoing response	Regional and local law enforcement	safety and securityOngoing response	"GAVI, the Vaccine Alliance"	public health and medicalOngoing response	Coalition for Epidemic Preparedness Innovations (CEPI)	public health and medicalOngoing response	Sabin Vaccine Institute	public health and medicalOngoing response	National Academies	public health and medical; humanitarian aid; governance and policyOngoing response	Pharmaceutical Companies	public health and medicalOngoing response	Biotechnology Companies	public health and medicalOngoing response	Telecommunications Companies	governance and policyOngoing response	Global Health Security Alliance Private Sector Round Table (GHSA PSRT)	governance and policy; public health and medical; humanitarian aidOngoing response	World Economic Forum (WEF)	governance and policy		fdsa	fdafda	fdasfdsaf
