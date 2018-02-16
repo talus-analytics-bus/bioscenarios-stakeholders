@@ -301,14 +301,6 @@
 				});
 		});
 
-		const orgDefs = chart.append('defs');
-		orgDefs.selectAll('text')
-			.data(d.values)
-			.enter()
-			.append('path')
-			.attr('d', textArc)
-			.attr('id', (d, V) => `org-arc-label-path-${i}`)
-
 		// TIME FOR COVERS
 		var selected = null;
 		catArcs.covers.forEach(d => {
