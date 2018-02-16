@@ -463,7 +463,6 @@
 									y.innerRadius = y.originalInner;
 									y.outerRadius = y.originalOuter;
 								}
-								console.log(y);
 								var interpolateInner = d3.interpolate(x.innerRadius, x.innerRadius + y.innerRadius);
 								var interpolateOuter = d3.interpolate(x.innerRadius, x.innerRadius + y.outerRadius);
 								return function(t) {

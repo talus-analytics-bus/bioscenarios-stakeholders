@@ -27,12 +27,29 @@
 
 		function init() {
 			initGraphs();
+			initListeners();
 		}
 
 		function initGraphs() {
 			timeline = App.initTimeline('.timeline', timelineData, policyEventData);
 			conceptMap = App.initConceptMap('.concept-map', timelineData[4]['Timeline Event'], policyEventData, stakeholderData);
 			donut = App.initDonut('.donut-chart', timelineData[4]['Timeline Event'], roleData, stakeholderData);
+		}
+
+		function initListeners() {
+			// https://stackoverflow.com/questions/15657686/jquery-event-detect-changes-to-the-html-text-of-a-div
+			// TODO: deprecated?
+			var previousEvent = null;
+			$('body').on('DOMSubtreeModified', '.what-event-is-it', function() {
+				const event = d3.select(this).attr('value');
+				if ((event !== null) && (event !== previousEvent)) {
+					d3.select('.concept-map').select('svg').remove();
+					d3.select('.donut-chart').select('svg').remove();
+					conceptMap = App.initConceptMap('.concept-map', event, policyEventData, stakeholderData);
+					donut = App.initDonut('.donut-chart', event, roleData, stakeholderData);
+					previousEvent = event;
+				}
+			});
 		}
 
 

@@ -10,6 +10,7 @@
 				return abbrev[1];
 			}
 		}
+		console.log(eventName);
 		/* FORMAT DATA */
 		// get event data
 		const data = rawData.filter(d => d['Timeline Event'] === eventName);

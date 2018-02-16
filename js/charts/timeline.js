@@ -1,6 +1,6 @@
 (() => {
-	App.initTimeline = (selector, rawData, policyEventData, param={}) => {
-		const margin = { top: 25, right: 25, bottom: 50, left: 25 };
+	App.initTimeline = (selector, rawData, policyEventData, param = {}) => {
+		const margin = {top: 25, right: 25, bottom: 50, left: 25};
 		const width = param.width || 1000;
 		const height = width * 0.2;
 
@@ -15,9 +15,10 @@
 
 		// TODO => rationalize data
 		const eventLabels = data.map(d => d.eventName.toUpperCase());
+		const eventLabelsLower = data.map(d => d.eventName);
 
 		// Colours
-		const backgroundColors    = ['#cccab8', '#ededee'];
+		const backgroundColors = ['#cccab8', '#ededee'];
 		const legendColor = '#c9c9c9';
 		const textColor = '#333333';
 		const textBoldColor = '#666666';
@@ -31,7 +32,7 @@
 			.attr('width', width + margin.left + margin.right)
 			.attr('height', height + margin.top + margin.bottom)
 			.append('g')
-				.attr('transform', `translate(${margin.left}, ${margin.top})`);
+			.attr('transform', `translate(${margin.left}, ${margin.top})`);
 
 		const defs = chart.append('defs');
 
@@ -65,7 +66,7 @@
 
 		// Labelling Rectangle contents
 		chart.append('text')
-			.attr('transform', 'translate(20,'+String(height-10)+')rotate(-90)')
+			.attr('transform', 'translate(20,' + String(height - 10) + ')rotate(-90)')
 			.attr('fill', textColor)
 			.attr('font-style', 'italic')
 			.style('font-weight', '600')
@@ -85,7 +86,8 @@
 			.attr('fill', textBoldColor)
 			.attr('font-style', 'italic')
 			.style('font-size', '0.8em')
-			.text(eventLabels[0]);
+			.attr('event', eventLabelsLower[0])
+			.text(eventLabelsLower[0]);
 
 		// day label
 		const whatDay = chart.append('text')
@@ -106,9 +108,9 @@
 			.domain([x(eventLabels[0]), x(eventLabels[eventLabels.length - 1]) - 100])
 			.range(eventLabels);
 
-		const dayScale = d3.scaleLinear()
-			.domain([0, width])
-			.rangeRound([1, 30 * eventLabels.length])
+		const dayScale = d3.scaleOrdinal()
+			.domain(eventLabels)
+			.range([1, 2, 10, 30, 50, 55, 75, 80, 91, 100]);
 
 		const y = d3.scaleLinear()
 			.domain([0, 100])
@@ -117,107 +119,18 @@
 		// graph line
 		var line = d3.line()
 			.curve(d3.curveCardinal)
-			.x(function(d) {return x(d[0])})
-			.y(function(d) {return y(d[1])});
+			.x(function (d) {
+				return x(d[0])
+			})
+			.y(function (d) {
+				return y(d[1])
+			});
+
 		chart.append('path')
 			.attr('fill', 'none')
 			.style('stroke', 'white')
 			.datum(data.map(d => [d.eventName.toUpperCase(), d.numCases]))
 			.attr('d', line);
-
-		// graph points
-		const curvePoints = chart.append('g')
-			.attr('class', 'curve-points');
-
-		curvePoints.selectAll('circle')
-			.data(data)
-			.enter()
-			.append('circle')
-			.attr('cx', d => x(d.eventName.toUpperCase()))
-			.attr('cy', d => y(d.numCases))
-			.attr('r', '4')
-			.attr('fill', pointColor);
-
-		// graph point lines
-		const curveDashLines = chart.append('g')
-			.attr('class', 'curve-dash-lines');
-
-		curveDashLines.selectAll('line')
-			.data(data)
-			.enter()
-			.append('line')
-			.attr('x1', d => x(d.eventName.toUpperCase()))
-			.attr('x2', d => x(d.eventName.toUpperCase()))
-			.attr('y1', height)
-			.attr('y2', d => y(d.numCases))
-			.attr('stroke-width', 1)
-			.attr('stroke', pointColor)
-			.style('stroke-dasharray', ('3, 3'));
-
-		// label each point
-		const curveLabelGroup = chart.append('g')
-			.attr('class', 'curve-labels');
-
-		const epiCurveLabels = curveLabelGroup.selectAll('text')
-			.data(data)
-			.enter()
-			.append('text')
-			.attr('fill', (d, i) => (i === 0) ? 'black' : textColor)
-			.attr('text-anchor', 'middle')
-			.style('font-size', (d, i) => (i === 0) ? '1em' : '0.75em')
-			.html(function(d) {
-				return wordWrap(
-					d.eventName,
-					20,
-					x(d.eventName.toUpperCase()),
-					y(d.numCases) - 20)
-			})
-
-		// draw indicator
-		const indicatorGroup = chart.append('g')
-			.attr('class', 'indicator-group');
-
-		// click vs. drag
-		// https://bl.ocks.org/mbostock/a84aeb78fea81e1ad806<Paste>
-		var currentSelected = eventLabels[0];
-		const drag = d3.drag()
-			.on('drag', function(d) {
-				// TODO: better math around newX
-				var newX = d3.event.sourceEvent.x + d3.event.dx - 80 - margin.left;
-				newX = Math.max(0, newX);
-				newX = Math.min(width - margin.right - 160, newX);
-				indicatorGroup.selectAll('rect')
-					.attr('x', newX);
-
-				indicatorGroup.attr('value', reverseX(newX));
-				currentSelected = reverseX(newX);
-
-				d3.select('.what-day-is-it')
-					.text(`Day ${dayScale(newX)}`);
-
-				d3.select('.what-event-is-it')
-					.text(`${reverseX(newX)}`);
-
-				$('.timeline-event-dropdown').val(reverseX(newX));
-
-				// TODO: make overlap checking work
-				checkOverlap = (d) => (Math.abs(x(d.eventName.toUpperCase()) - newX - 50) < 45);
-				curveLabelGroup.selectAll('text')
-					.attr('fill', d => (checkOverlap(d)) ? 'black' : textColor)
-					.style('font-size', d => (checkOverlap(d)) ? '1em' : '0.75em');
-			});
-
-		const indicatorBox = indicatorGroup.append('rect')
-			.attr('transform', `translate(50)`)
-			.attr('x', 0)
-			.attr('y', 0)
-			.attr('width', 100)
-			.attr('height', height)
-			.style('fill', highlightColor)
-			.style('fill-opacity', 0.15)
-			.call(drag);
-
-		chart.currentSelected = currentSelected;
 
 		// draw the policy graph
 		const scatterline = chart.append('g')
@@ -227,12 +140,6 @@
 			.attr('width', width)
 			.attr('height', height / 8)
 			.attr('fill', 'url(#timeline-gradient)');
-		//
-		// scatterline.append('rect')
-		// 	.attr('width', 60)
-		// 	.attr('height', height / 8)
-		// 	.attr('fill', legendColor)
-		// 	.attr('fill-opacity', 0.5);
 
 		scatterline.append('text')
 			.attr('transform', 'translate(2, 18)')
@@ -251,6 +158,79 @@
 			.attr('height', height / 8)
 			.style('fill', scatterlineColor);
 
+
+		// Group for each event
+		const eventGroup = chart.append('g')
+			.selectAll('g')
+			.data(data)
+			.enter()
+			.append('g')
+			.attr('class', (d, i) => `event-group-${i}`);
+
+		// graph points
+		eventGroup.append('circle')
+			.attr('cx', d => x(d.eventName.toUpperCase()))
+			.attr('cy', d => y(d.numCases))
+			.attr('r', '4')
+			.attr('fill', pointColor);
+
+		// graph point lines
+		eventGroup.append('line')
+			.attr('x1', d => x(d.eventName.toUpperCase()))
+			.attr('x2', d => x(d.eventName.toUpperCase()))
+			.attr('y1', height)
+			.attr('y2', d => y(d.numCases))
+			.attr('stroke-width', 1)
+			.attr('stroke', pointColor)
+			.style('stroke-dasharray', ('3, 3'));
+
+		// label each point
+		eventGroup.append('text')
+			.attr('class', 'event-label')
+			.attr('fill', (d, i) => (i === 0) ? 'black' : textColor)
+			.attr('text-anchor', 'middle')
+			.style('font-size', (d, i) => (i === 0) ? '1em' : '0.75em')
+			.html(function (d) {
+				return wordWrap(
+					d.eventName,
+					20,
+					x(d.eventName.toUpperCase()),
+					y(d.numCases) - 20)
+			});
+
+		const rectWidth = 120;
+		eventGroup.append('rect')
+			.attr('x', d => x(d.eventName.toUpperCase()) - (rectWidth / 2))
+			.attr('width', rectWidth)
+			.attr('height', height + 10 + (height / 8))
+			.attr('class', 'event-highlight-rect')
+			.attr('value', d => d.eventName.toUpperCase())
+			.style('fill', highlightColor)
+			.style('fill-opacity', 0.)
+			.on('click', function(d, i) {
+				// reset all changes
+				d3.selectAll('.event-highlight-rect')
+					.style('fill-opacity', 0);
+				d3.selectAll('.event-label')
+					.style('fill', textColor)
+					.style('font-size', '0.75em');
+				// now set text
+				const group = d3.select(`.event-group-${i}`);
+				group.selectAll('text')
+					.style('font-size', '1em')
+					.style('fill', 'black');
+				// now set rect
+				d3.select(this)
+					.style('fill-opacity', 0.15);
+
+				// now update labels
+				whatEvent.text(d.eventName)
+					.attr('value', d.eventName);
+				whatDay.text(`Day ${dayScale(d.eventName.toUpperCase())}`);
+			});
+
+		d3.select(`[value="${eventLabels[0]}"]`)
+			.style('fill-opacity', 0.15);
 
 		return chart;
 	};
