@@ -51,31 +51,31 @@
 			.attr('offset', '100%');
 
 		// fill background
-		chart.append("rect")
-			.attr("width", width)
-			.attr("height", height)
-			.attr("fill", 'url(#timeline-gradient)');
+		chart.append('rect')
+			.attr('width', width)
+			.attr('height', height)
+			.attr('fill', 'url(#timeline-gradient)');
 
 		// small labelling rectangle on the left
-		chart.append("rect")
-			.attr("width", 30)
-			.attr("height", height)
-			.attr("fill", legendColor)
+		chart.append('rect')
+			.attr('width', 30)
+			.attr('height', height)
+			.attr('fill', legendColor)
 			.attr('fill-opacity', 0.5);
 
 		// Labelling Rectangle contents
-		chart.append("text")
-			.attr("transform", "translate(20,"+String(height-10)+")rotate(-90)")
-			.attr("fill", textColor)
-			.attr("font-style", "italic")
-			.style("font-weight", "600")
-			.text("Number of cases");
+		chart.append('text')
+			.attr('transform', 'translate(20,'+String(height-10)+')rotate(-90)')
+			.attr('fill', textColor)
+			.attr('font-style', 'italic')
+			.style('font-weight', '600')
+			.text('Number of cases');
 
 		// Upper left label
 		const title = chart.append('text')
 			.attr('transform', 'translate(35, 20)')
 			.attr('fill', textBoldColor)
-			.style("font-size", "0.8em")
+			.style('font-size', '0.8em')
 			.text('EPIDEMIOLOGICAL CURVE');
 
 		// Event Label
@@ -83,8 +83,8 @@
 			.attr('class', 'what-event-is-it')
 			.attr('transform', 'translate(35, 40)')
 			.attr('fill', textBoldColor)
-			.attr("font-style", "italic")
-			.style("font-size", "0.8em")
+			.attr('font-style', 'italic')
+			.style('font-size', '0.8em')
 			.text(eventLabels[0]);
 
 		// day label
@@ -92,8 +92,8 @@
 			.attr('class', 'what-day-is-it')
 			.attr('transform', 'translate(35, 60)')
 			.attr('fill', textBoldColor)
-			.attr("font-style", "italic")
-			.style("font-size", "0.8em")
+			.attr('font-style', 'italic')
+			.style('font-size', '0.8em')
 			.text('Day 1');
 
 		// define scales
@@ -119,11 +119,11 @@
 			.curve(d3.curveCardinal)
 			.x(function(d) {return x(d[0])})
 			.y(function(d) {return y(d[1])});
-		chart.append("path")
-			.attr("fill", "none")
-			.style("stroke", "white")
+		chart.append('path')
+			.attr('fill', 'none')
+			.style('stroke', 'white')
 			.datum(data.map(d => [d.eventName.toUpperCase(), d.numCases]))
-			.attr("d", line);
+			.attr('d', line);
 
 		// graph points
 		const curvePoints = chart.append('g')
@@ -152,7 +152,7 @@
 			.attr('y2', d => y(d.numCases))
 			.attr('stroke-width', 1)
 			.attr('stroke', pointColor)
-			.style("stroke-dasharray", ("3, 3"));
+			.style('stroke-dasharray', ('3, 3'));
 
 		// label each point
 		const curveLabelGroup = chart.append('g')
@@ -162,9 +162,9 @@
 			.data(data)
 			.enter()
 			.append('text')
-			.attr("fill", (d, i) => (i === 0) ? 'black' : textColor)
-			.attr("text-anchor", 'middle')
-			.style("font-size", (d, i) => (i === 0) ? '1em' : "0.75em")
+			.attr('fill', (d, i) => (i === 0) ? 'black' : textColor)
+			.attr('text-anchor', 'middle')
+			.style('font-size', (d, i) => (i === 0) ? '1em' : '0.75em')
 			.html(function(d) {
 				return wordWrap(
 					d.eventName,
@@ -204,7 +204,7 @@
 				checkOverlap = (d) => (Math.abs(x(d.eventName.toUpperCase()) - newX - 50) < 45);
 				curveLabelGroup.selectAll('text')
 					.attr('fill', d => (checkOverlap(d)) ? 'black' : textColor)
-					.style("font-size", d => (checkOverlap(d)) ? '1em' : '0.75em');
+					.style('font-size', d => (checkOverlap(d)) ? '1em' : '0.75em');
 			});
 
 		const indicatorBox = indicatorGroup.append('rect')
@@ -223,10 +223,23 @@
 		const scatterline = chart.append('g')
 			.attr('transform', `translate(0, ${height + 10})`);
 
-		scatterline.append("rect")
-			.attr("width", width)
-			.attr("height", height / 8)
-			.attr("fill", 'url(#timeline-gradient)');
+		scatterline.append('rect')
+			.attr('width', width)
+			.attr('height', height / 8)
+			.attr('fill', 'url(#timeline-gradient)');
+		//
+		// scatterline.append('rect')
+		// 	.attr('width', 60)
+		// 	.attr('height', height / 8)
+		// 	.attr('fill', legendColor)
+		// 	.attr('fill-opacity', 0.5);
+
+		scatterline.append('text')
+			.attr('transform', 'translate(2, 18)')
+			.attr('fill', textColor)
+			.attr('font-style', 'italic')
+			.style('font-weight', '600')
+			.text('Policies');
 
 		scatterline.append('g')
 			.selectAll('rect')

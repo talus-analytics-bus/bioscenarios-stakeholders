@@ -256,7 +256,12 @@
 			.data(catArcs)
 			.enter()
 			.append('path')
-			.attr('d', d => textArc(d.rootArc))
+			.attr('d', d => textArc({
+				startAngle: d.rootArc.startAngle + 0.15,
+				endAngle: d.rootArc.endAngle,
+				innerRadius: d.rootArc.innerRadius,
+				outerRadius: d.rootArc.outerRadius,
+			}))
 			.attr('id', (d, i) => `inner-arc-label-path-${i}`);
 
 		const innerArcLabels = chart.append('g')
@@ -275,11 +280,14 @@
 		// now time for org arcs
 		catArcs.orgs.forEach(function(d) {
 			catInnerRadius = catArcs.covers.filter(x => x.key === d.key)[0].values[0].innerRadius;
-			chart.append('g')
-				.selectAll('path')
+
+			const orgGroup = chart.append('g')
+				.selectAll('g')
 				.data(d.values)
 				.enter()
-				.append('path')
+				.append('g');
+
+			orgGroup.append('path')
 				.attr('cat', d.key)
 				.attr('d', x => {
 					return arc({
@@ -289,7 +297,6 @@
 						outerRadius: catInnerRadius,
 					});
 				})
-				// .style('fill', x => categoryColorScale(x.type.toUpperCase()))
 				.style('fill', selectedColor)
 				.each(function(x) {
 					const content = `<div class="tooltip-title">${x.name}</div>`;
@@ -299,6 +306,29 @@
 						side: 'right',   // TODO: dynamic positioning of tooltip based on arc location
 					});
 				});
+
+			// Org label paths
+			orgGroup.append('path')
+				.attr('label-cat', d.key)
+				.style('stroke', 'red')
+				.style('stroke-width', '0')
+				.attr('d', x => {
+					return textArc({
+						innerRadius: catInnerRadius,
+						outerRadius: catInnerRadius,
+						startAngle: x.startAngle + 0.2,
+						endAngle: x.startAngle + 0.2,
+					});
+				})
+				.attr('id', (x, i) => `org-label-path-${d.key}-${i}`);
+
+			orgGroup.append('text')
+				.append('textPath')
+				.attr('xlink:href', (x, i) => `#org-label-path-${d.key}-${i}`)
+				.style('fill', textColor)
+				.style('font-size', '0.8em')
+				.style('text-anchor', 'start')
+				.text(x => x.name);
 		});
 
 		// TIME FOR COVERS
@@ -316,6 +346,7 @@
 				.on('click', function(x) {
 					const covers = d3.selectAll(`[value="cover-${x.name}"]`);
 					const orgs = d3.selectAll(`[cat="${x.name}"]`);
+					const orgLabels = d3.selectAll(`[label-cat="${x.name}"]`);
 					// https://groups.google.com/forum/#!topic/d3-js/qJYN2egS6b8
 					const otherCovers = d3.selectAll(`.cover-arc:not([value="cover-${x.name}"])`);
 					const otherCoversLabels = d3.selectAll(`.cover-arc-label:not([value="${x.name}"])`);
@@ -346,6 +377,23 @@
 									y.innerRadius = interpolateInner(t);
 									y.outerRadius = interpolateOuter(t);
 									return arc(y);
+								};
+							});
+
+						// org labels follow
+						orgLabels.transition()
+							.duration(500)
+							.attrTween('d', function(y) {
+								var interpolateInner = d3.interpolate(y.innerRadius, x.innerRadius);
+								var interpolateOuter = d3.interpolate(y.outerRadius, x.innerRadius);
+								var interpolateStart = d3.interpolate(y.startAngle, y.startAngle);
+								var interpolateEnd = d3.interpolate(y.startAngle, y.startAngle);
+								return function(t) {
+									y.innerRadius = interpolateInner(t);
+									y.outerRadius = interpolateOuter(t);
+									y.startAngle = interpolateStart(t);
+									y.endAngle = interpolateEnd(t);
+									return textArc(y);
 								};
 							});
 
@@ -415,12 +463,30 @@
 									y.innerRadius = y.originalInner;
 									y.outerRadius = y.originalOuter;
 								}
+								console.log(y);
 								var interpolateInner = d3.interpolate(x.innerRadius, x.innerRadius + y.innerRadius);
 								var interpolateOuter = d3.interpolate(x.innerRadius, x.innerRadius + y.outerRadius);
 								return function(t) {
 									y.innerRadius = interpolateInner(t);
 									y.outerRadius = interpolateOuter(t);
 									return arc(y);
+								};
+							});
+
+						// org labels follow
+						orgLabels.transition()
+							.duration(500)
+							.attrTween('d', function(y) {
+								var interpolateInner = d3.interpolate(x.innerRadius, x.innerRadius + y.innerRadius);
+								var interpolateOuter = d3.interpolate(x.innerRadius, x.innerRadius + y.outerRadius);
+								var interpolateStart = d3.interpolate(x.startAngle, y.startAngle);
+								var interpolateEnd = d3.interpolate(x.startAngle, y.endAngle);
+								return function(t) {
+									y.innerRadius = interpolateInner(t);
+									y.outerRadius = interpolateOuter(t);
+									y.startAngle = interpolateStart(t);
+									y.endAngle = interpolateEnd(t);
+									return textArc(y);
 								};
 							});
 
@@ -498,8 +564,8 @@
 
 		// add a center label
 		chart.append('text')
-			.style('font-size', '2em')
-			.html(wordWrap(eventName, 15, -85, 0));
+			.style('font-size', '1.5em')
+			.html(wordWrap(eventName, 15, -60, 0));
 
 		/* STEP N - Helpful functions */
 		function convertOrgName(s) {
