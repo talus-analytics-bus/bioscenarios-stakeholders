@@ -19,6 +19,7 @@
 				name: d['Stakeholder Name'],
 				category: d['Organization Category'],
 				abbrev: convertOrgName(d['Stakeholder Name']),
+				role: d['Overall Role']
 			};
 		});
 
@@ -156,7 +157,7 @@
 			.style('text-anchor', 'end')
 			.text(d => d.abbrev)
 			.each(function(d) {
-				const content = `<b>${d.name}</b>`;
+				const content = `<b>${d.name} <br> Overall Role: ${d.role}</b>`;
 				return $(this).tooltipster({
 					content: content,
 					trigger: 'hover',
@@ -185,7 +186,7 @@
 			.style('text-anchor', 'start')
 			.text(d => d.abbrev)
 			.each(function(d) {
-				const content = `<b>${d.name}</b>`;
+				const content = `<b>${d.name} <br> Overall Role: ${d.role}</b>`;
 				return $(this).tooltipster({
 					content: content,
 					trigger: 'hover',
