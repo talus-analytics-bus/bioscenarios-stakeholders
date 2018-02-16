@@ -196,6 +196,10 @@
 				.entries(flatCovers)
 				.map(d => {
 					d.maxHeight = orgsByCat.filter(x => x.key === d.key)[0].maxHeight;
+					d.startAngle = 0;
+					d.endAngle = d.values[0].endAngle;
+					d.innerRadius = d.values[0].innerRadius;
+					d.outerRadius = d.values[0].outerRadius;
 					return d;
 				});
 			catArcs.covers = coversByCat;
@@ -297,34 +301,13 @@
 				});
 		});
 
-		// // let's get labels on the categories
-		// // first need group
-		// const arcLabels = chart.append('g')
-		// 	.classed('arc-labels', true);
-		//
-		// // now need paths for the text
-		// const outerArcDefs = chart.append('defs')
-		// 	.classed('outer-arc-defs', true);
-		// outerArcDefs.selectAll('path')
-		// 	.data(arcData)
-		// 	.enter()
-		// 	.append('path')
-		// 	.attr('d', textArc)
-		// 	.attr('id', (d, i) => `org-arc-label-path-${i}`);
-		//
-		// // now we can add text
-		// arcLabels.selectAll('text')
-		// 	.data(arcData)
-		// 	.enter()
-		// 	.append('text')
-		// 	.append('textPath')
-		// 	.attr('xlink:href', (d, i) => `#org-arc-label-path-${i}`)
-		// 	.style('fill', textColor)
-		// 	.style('font-size', '0.5em')
-		// 	.style('text-anchor', 'start')
-		// 	.text(d => convertOrgName(d.name));
-
-
+		const orgDefs = chart.append('defs');
+		orgDefs.selectAll('text')
+			.data(d.values)
+			.enter()
+			.append('path')
+			.attr('d', textArc)
+			.attr('id', (d, V) => `org-arc-label-path-${i}`)
 
 		// TIME FOR COVERS
 		var selected = null;
@@ -343,6 +326,7 @@
 					const orgs = d3.selectAll(`[cat="${x.name}"]`);
 					// https://groups.google.com/forum/#!topic/d3-js/qJYN2egS6b8
 					const otherCovers = d3.selectAll(`.cover-arc:not([value="cover-${x.name}"])`);
+					const otherCoversLabels = d3.selectAll(`.cover-arc-label:not([value="${x.name}"])`);
 					const maxHeight = d.maxHeight;
 					if (selected === x.name) {
 						// clicked cover moves back out
@@ -386,6 +370,23 @@
 									y.innerRadius = interpolateInner(t);
 									y.outerRadius = interpolateOuter(t);
 									return arc(y);
+								};
+							});
+
+						// Labels follow the covers that move
+						otherCoversLabels.transition()
+							.duration(500)
+							.attrTween('d', function(y) {
+								// if it's on the inside, just leave it there
+								if (y.innerRadius < x.innerRadius) {
+									return t => textArc(y);
+								}
+								var interpolateInner = d3.interpolate(y.innerRadius, y.originalInner);
+								var interpolateOuter = d3.interpolate(y.outerRadius, y.originalOuter);
+								return function(t) {
+									y.innerRadius = interpolateInner(t);
+									y.outerRadius = interpolateOuter(t);
+									return textArc(y);
 								};
 							});
 
@@ -450,6 +451,25 @@
 								};
 							});
 
+						// Labels follow the covers that move
+						otherCoversLabels.transition()
+							.duration(500)
+							.attrTween('d', function(y) {
+								// if it's on the inside, just leave it there
+								if (y.innerRadius < x.innerRadius) {
+									return t => textArc(y);
+								}
+								y.originalInner = y.innerRadius;
+								y.originalOuter = y.outerRadius;
+								var interpolateInner = d3.interpolate(y.innerRadius, y.innerRadius + maxHeight - coverHeight);
+								var interpolateOuter = d3.interpolate(y.outerRadius, y.outerRadius + maxHeight - coverHeight);
+								return function(t) {
+									y.innerRadius = interpolateInner(t);
+									y.outerRadius = interpolateOuter(t);
+									return textArc(y);
+								};
+							});
+
 						selected = x.name;
 					}
 				});
@@ -461,14 +481,9 @@
 			.data(catArcs.covers)
 			.enter()
 			.append('path')
-			.attr('d', d => {
-				return textArc({
-					startAngle: 0,
-					endAngle: d.values[0].endAngle,
-					innerRadius: d.values[0].innerRadius,
-					outerRadius: d.values[0].outerRadius,
-				});
-			})
+			.attr('class', 'cover-arc-label')
+			.attr('value', d => d.key)
+			.attr('d', textArc)
 			.attr('id', (d, i) => `cover-arc-label-path-${i}`);
 
 		chart.append('g')
