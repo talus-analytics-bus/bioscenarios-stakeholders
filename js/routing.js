@@ -15,9 +15,9 @@ const Routing = {};
 		crossroads.addRoute('/', () => {
 			loadPage('main', App.initMain);
 		});
-		/*crossroads.addRoute('/', () => {
-			loadPage('home', App.initHome);
-		});*/
+		crossroads.addRoute('/background', () => {
+			loadPage('background');
+		});
 
 		// setup hasher for subscribing to hash changes and browser history
 		hasher.prependHash = '';
