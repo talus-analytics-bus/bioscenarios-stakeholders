@@ -415,10 +415,15 @@
 						orgs.transition()
 							.duration(500)
 							.attrTween('d', function(y) {
+								if (y.originalInner === undefined) {
+									y.originalInner = y.innerRadius;
+									y.originalOuter = y.outerRadius;
+								} else {
+									y.innerRadius = y.originalInner;
+									y.outerRadius = y.originalOuter;
+								}
 								var interpolateInner = d3.interpolate(x.innerRadius, x.innerRadius + y.innerRadius);
 								var interpolateOuter = d3.interpolate(x.innerRadius, x.innerRadius + y.outerRadius);
-								y.originalInner = y.innerRadius;
-								y.originalOuter = x.outerRadius;
 								return function(t) {
 									y.innerRadius = interpolateInner(t);
 									y.outerRadius = interpolateOuter(t);
@@ -426,15 +431,16 @@
 								};
 							});
 
-						// not clicked covers move out
+						// not clicked covers move out to make room for the expanded section
 						otherCovers.transition()
 							.duration(500)
 							.attrTween('d', function(y) {
+								// if it's on the inside, just leave it there
 								if (y.innerRadius < x.innerRadius) {
 									return t => arc(y);
 								}
-								var interpolateInner = d3.interpolate(y.innerRadius, y.innerRadius + maxHeight);
-								var interpolateOuter = d3.interpolate(y.outerRadius, y.outerRadius + maxHeight);
+								var interpolateInner = d3.interpolate(y.innerRadius, y.innerRadius + maxHeight - coverHeight);
+								var interpolateOuter = d3.interpolate(y.outerRadius, y.outerRadius + maxHeight - coverHeight);
 								y.originalInner = y.innerRadius;
 								y.originalOuter = y.outerRadius;
 								return function(t) {
