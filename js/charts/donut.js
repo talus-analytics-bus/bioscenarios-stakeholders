@@ -44,7 +44,7 @@
 		// (there used to be cats here)
 		// (leaving this one)
 		function parseRawData() {
-			data = rawData.filter(d => d['Timeline Event'] === eventName);
+			data = rawData.filter(d => d['Timeline Event'].toLowerCase() === eventName.toLowerCase());
 			orgInfo = rawOrgInfo;
 			allRoles = [
 				'public health and medical',

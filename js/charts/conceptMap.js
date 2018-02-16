@@ -10,10 +10,9 @@
 				return abbrev[1];
 			}
 		}
-		console.log(eventName);
 		/* FORMAT DATA */
 		// get event data
-		const data = rawData.filter(d => d['Timeline Event'] === eventName);
+		const data = rawData.filter(d => d['Timeline Event'].toLowerCase() === eventName.toLowerCase());
 
 		const allOrgs = stakeholderData.map(d => {
 			return {

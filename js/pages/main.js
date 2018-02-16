@@ -32,8 +32,8 @@
 
 		function initGraphs() {
 			timeline = App.initTimeline('.timeline', timelineData, policyEventData);
-			conceptMap = App.initConceptMap('.concept-map', timelineData[4]['Timeline Event'], policyEventData, stakeholderData);
-			donut = App.initDonut('.donut-chart', timelineData[4]['Timeline Event'], roleData, stakeholderData);
+			conceptMap = App.initConceptMap('.concept-map', timelineData[0]['Timeline Event'], policyEventData, stakeholderData);
+			donut = App.initDonut('.donut-chart', timelineData[0]['Timeline Event'], roleData, stakeholderData);
 		}
 
 		function initListeners() {
