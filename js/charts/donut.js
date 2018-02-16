@@ -110,31 +110,9 @@
 						x.level = orgType.level;
 						return x;
 					});
-				// // now group by the type of org
-				// const catCounts = d3.nest()
-				// 	.key(x => x['Organization Category'].toUpperCase())
-				// 	.entries(catData)
-				// 	.sort((a, b) => a.key < b.key);
-				// // pull out just the org types
-				// const orgTypes = catCounts.map(x => x.key);
-				// // Count how many entries in each
-				// const orgHeights = catCounts.map(function (x) {
-				// 	return {
-				// 		name: x.key,
-				// 		height: x.values.length,
-				// 	};
-				// });
-				// sort catData by category
-				// const sortedCatData = catData.sort((a, b) => {
-				// 	return a['Organization Category'] < b['Organization Category'];
-				// });
 				return {
 					name: d,
 					data: catData,
-					// orgCounts: catCounts,
-					// orgTypes: orgTypes,
-					// orgHeights: orgHeights,
-					// sortedCatData: sortedCatData,
 				};
 			})
 			// pause to sort
@@ -215,7 +193,11 @@
 				.reduce((acc, cval) => acc.concat(cval), []);
 			const coversByCat = d3.nest()
 				.key(d => d.name)
-				.entries(flatCovers);
+				.entries(flatCovers)
+				.map(d => {
+					d.maxHeight = orgsByCat.filter(x => x.key === d.key)[0].maxHeight;
+					return d;
+				});
 			catArcs.covers = coversByCat;
 		}
 		parseRawData();
@@ -353,24 +335,32 @@
 				.enter()
 				.append('path')
 				.attr('d', arc)
+				.attr('class', 'cover-arc')
 				.attr('value', d => `cover-${d.name}`)
 				.style('fill', x => categoryColorScale(x.name))
 				.on('click', function(x) {
 					const covers = d3.selectAll(`[value="cover-${x.name}"]`);
 					const orgs = d3.selectAll(`[cat="${x.name}"]`);
 					// https://groups.google.com/forum/#!topic/d3-js/qJYN2egS6b8
-					const otherCovers = d3.selectAll(`*:not([value="cover-${x.name}"])`);
+					const otherCovers = d3.selectAll(`.cover-arc:not([value="cover-${x.name}"])`);
+					const maxHeight = d.maxHeight;
 					if (selected === x.name) {
+						// clicked cover moves back out
 						covers.transition()
 							.duration(500)
 							.attrTween('d', function(y) {
-							var interpolate = d3.interpolate(y.innerRadius + 5, y.innerRadius + coverHeight);
-							return function(t) {
-								y.outerRadius = interpolate(t);
-								return arc(y);
-							};
-						});
+								var interpolateStart = d3.interpolate(y.startAngle, y.originalStart);
+								var interpolateEnd = d3.interpolate(y.endAngle, y.originalEnd);
+								var interpolateOuter = d3.interpolate(y.outerRadius, y.originalOuter);
+								return function(t) {
+									y.startAngle = interpolateStart(t);
+									y.endAngle = interpolateEnd(t);
+									y.outerRadius = interpolateOuter(t);
+									return arc(y);
+								};
+							});
 
+						// Org arcs move back in
 						orgs.transition()
 							.duration(500)
 							.attrTween('d', function(y) {
@@ -383,23 +373,15 @@
 								};
 							});
 
-						selected = null;
-					} else {
-						covers.transition()
+						// not clicked covers move back to original spot
+						otherCovers.transition()
 							.duration(500)
 							.attrTween('d', function(y) {
-							var interpolate = d3.interpolate(y.outerRadius, y.innerRadius + 5);
-							return function(t) {
-								y.outerRadius = interpolate(t);
-								return arc(y);
-							};
-						});
-
-						orgs.transition()
-							.duration(500)
-							.attrTween('d', function(y) {
-								var interpolateInner = d3.interpolate(x.innerRadius, x.innerRadius + y.innerRadius);
-								var interpolateOuter = d3.interpolate(x.innerRadius, x.innerRadius + y.outerRadius);
+								if (y.innerRadius < x.innerRadius) {
+									return t => arc(y);
+								}
+								var interpolateInner = d3.interpolate(y.innerRadius, y.originalInner);
+								var interpolateOuter = d3.interpolate(y.outerRadius, y.originalOuter);
 								return function(t) {
 									y.innerRadius = interpolateInner(t);
 									y.outerRadius = interpolateOuter(t);
@@ -407,12 +389,54 @@
 								};
 							});
 
-						
+						selected = null;
+					} else {
+						// clicked cover moves in
+						covers.transition()
+							.duration(500)
+							.attrTween('d', function(y) {
+								var interpolateStart = d3.interpolate(y.startAngle, 0);
+								var interpolateEnd = d3.interpolate(y.endAngle, Math.PI / 40);
+								var interpolateOuter = d3.interpolate(y.outerRadius, y.innerRadius + maxHeight);
+								if (y.originalStart === undefined) {
+									y.originalStart = y.startAngle;
+									y.originalEnd = y.endAngle;
+									y.originalOuter = y.outerRadius;
+								}
+								return function(t) {
+									y.startAngle = interpolateStart(t);
+									y.endAngle = interpolateEnd(t);
+									y.outerRadius = interpolateOuter(t);
+									return arc(y);
+								};
+							});
+
+						// Org arcs move out
+						orgs.transition()
+							.duration(500)
+							.attrTween('d', function(y) {
+								var interpolateInner = d3.interpolate(x.innerRadius, x.innerRadius + y.innerRadius);
+								var interpolateOuter = d3.interpolate(x.innerRadius, x.innerRadius + y.outerRadius);
+								y.originalInner = y.innerRadius;
+								y.originalOuter = x.outerRadius;
+								return function(t) {
+									y.innerRadius = interpolateInner(t);
+									y.outerRadius = interpolateOuter(t);
+									return arc(y);
+								};
+							});
+
+						// not clicked covers move out
 						otherCovers.transition()
 							.duration(500)
 							.attrTween('d', function(y) {
-								var interpolateInner = d3.interpolate(y.innerRadius, x.innerRadius + y);
-								var interpolateOuter = d3.interpolate(y.innerRadius, x.innerRadius + y.outerRadius);
+								if (y.innerRadius < x.innerRadius) {
+									return t => arc(y);
+								}
+								var interpolateInner = d3.interpolate(y.innerRadius, y.innerRadius + maxHeight);
+								var interpolateOuter = d3.interpolate(y.outerRadius, y.outerRadius + maxHeight);
+								y.originalInner = y.innerRadius;
+								y.originalOuter = y.outerRadius;
 								return function(t) {
 									y.innerRadius = interpolateInner(t);
 									y.outerRadius = interpolateOuter(t);
