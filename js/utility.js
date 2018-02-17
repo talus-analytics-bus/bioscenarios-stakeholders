@@ -63,4 +63,12 @@ const Util = {};
 			}
 		}
 	};
+
+	// unique entries from list
+	Util.unique = some_list => {
+		return d3.nest()
+			.key(d => d)
+			.entries(some_list)
+			.map(d => d.key);
+	};
 })();

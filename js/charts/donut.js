@@ -41,8 +41,7 @@
 		//  ( o.o )
 		//   > ^ <
 		//
-		// (there used to be cats here)
-		// (leaving this one)
+		// (there are cats here)
 		function parseRawData() {
 			data = rawData.filter(d => d['Timeline Event'].toLowerCase() === eventName.toLowerCase());
 			orgInfo = rawOrgInfo;
@@ -73,18 +72,18 @@
 			let cdepth;
 			cdepth = 0;
 			orgPositions = orgInfo.map(d => {
-				d.category = d['Organization Category'].toUpperCase();
-				return d;
-			})
-			.sort((a, b) => order[a.category] > order[b.category])
-			.filter(d => {
-				return allStakeholders.includes(d['Stakeholder Name']);
-			})
-			.map(d => {
-				d.level = cdepth;
-				cdepth += 1;
-				return d;
-			});
+					d.category = d['Organization Category'].toUpperCase();
+					return d;
+				})
+				.sort((a, b) => order[a.category] > order[b.category])
+				.filter(d => {
+					return allStakeholders.includes(d['Stakeholder Name']);
+				})
+				.map(d => {
+					d.level = cdepth;
+					cdepth += 1;
+					return d;
+				});
 
 			cdepth = 0;
 			coverPositions = allCategories.map(d => {
@@ -278,7 +277,7 @@
 
 		/* OUTER */
 		// now time for org arcs
-		catArcs.orgs.forEach(function(d) {
+		catArcs.orgs.forEach(function (d) {
 			catInnerRadius = catArcs.covers.filter(x => x.key === d.key)[0].values[0].innerRadius;
 
 			const orgGroup = chart.append('g')
@@ -298,7 +297,7 @@
 					});
 				})
 				.style('fill', selectedColor)
-				.each(function(x) {
+				.each(function (x) {
 					const content = `<div class="tooltip-title">${x.name}</div>`;
 					$(this).tooltipster({
 						content: content,
@@ -343,7 +342,7 @@
 				.attr('class', 'cover-arc')
 				.attr('value', d => `cover-${d.name}`)
 				.style('fill', x => categoryColorScale(x.name))
-				.on('click', function(x) {
+				.on('click', function (x) {
 					const covers = d3.selectAll(`[value="cover-${x.name}"]`);
 					const orgs = d3.selectAll(`[cat="${x.name}"]`);
 					const orgLabels = d3.selectAll(`[label-cat="${x.name}"]`);
@@ -355,11 +354,11 @@
 						// clicked cover moves back out
 						covers.transition()
 							.duration(500)
-							.attrTween('d', function(y) {
+							.attrTween('d', function (y) {
 								var interpolateStart = d3.interpolate(y.startAngle, y.originalStart);
 								var interpolateEnd = d3.interpolate(y.endAngle, y.originalEnd);
 								var interpolateOuter = d3.interpolate(y.outerRadius, y.originalOuter);
-								return function(t) {
+								return function (t) {
 									y.startAngle = interpolateStart(t);
 									y.endAngle = interpolateEnd(t);
 									y.outerRadius = interpolateOuter(t);
@@ -370,10 +369,10 @@
 						// Org arcs move back in
 						orgs.transition()
 							.duration(500)
-							.attrTween('d', function(y) {
+							.attrTween('d', function (y) {
 								var interpolateInner = d3.interpolate(y.innerRadius, x.innerRadius);
 								var interpolateOuter = d3.interpolate(y.outerRadius, x.innerRadius);
-								return function(t) {
+								return function (t) {
 									y.innerRadius = interpolateInner(t);
 									y.outerRadius = interpolateOuter(t);
 									return arc(y);
@@ -383,12 +382,12 @@
 						// org labels follow
 						orgLabels.transition()
 							.duration(500)
-							.attrTween('d', function(y) {
+							.attrTween('d', function (y) {
 								var interpolateInner = d3.interpolate(y.innerRadius, x.innerRadius);
 								var interpolateOuter = d3.interpolate(y.outerRadius, x.innerRadius);
 								var interpolateStart = d3.interpolate(y.startAngle, y.startAngle);
 								var interpolateEnd = d3.interpolate(y.startAngle, y.startAngle);
-								return function(t) {
+								return function (t) {
 									y.innerRadius = interpolateInner(t);
 									y.outerRadius = interpolateOuter(t);
 									y.startAngle = interpolateStart(t);
@@ -400,13 +399,13 @@
 						// not clicked covers move back to original spot
 						otherCovers.transition()
 							.duration(500)
-							.attrTween('d', function(y) {
+							.attrTween('d', function (y) {
 								if (y.innerRadius < x.innerRadius) {
 									return t => arc(y);
 								}
 								var interpolateInner = d3.interpolate(y.innerRadius, y.originalInner);
 								var interpolateOuter = d3.interpolate(y.outerRadius, y.originalOuter);
-								return function(t) {
+								return function (t) {
 									y.innerRadius = interpolateInner(t);
 									y.outerRadius = interpolateOuter(t);
 									return arc(y);
@@ -416,14 +415,14 @@
 						// Labels follow the covers that move
 						otherCoversLabels.transition()
 							.duration(500)
-							.attrTween('d', function(y) {
+							.attrTween('d', function (y) {
 								// if it's on the inside, just leave it there
 								if (y.innerRadius < x.innerRadius) {
 									return t => textArc(y);
 								}
 								var interpolateInner = d3.interpolate(y.innerRadius, y.originalInner);
 								var interpolateOuter = d3.interpolate(y.outerRadius, y.originalOuter);
-								return function(t) {
+								return function (t) {
 									y.innerRadius = interpolateInner(t);
 									y.outerRadius = interpolateOuter(t);
 									return textArc(y);
@@ -435,7 +434,7 @@
 						// clicked cover moves in
 						covers.transition()
 							.duration(500)
-							.attrTween('d', function(y) {
+							.attrTween('d', function (y) {
 								var interpolateStart = d3.interpolate(y.startAngle, 0);
 								var interpolateEnd = d3.interpolate(y.endAngle, Math.PI / 40);
 								var interpolateOuter = d3.interpolate(y.outerRadius, y.innerRadius + maxHeight);
@@ -444,7 +443,7 @@
 									y.originalEnd = y.endAngle;
 									y.originalOuter = y.outerRadius;
 								}
-								return function(t) {
+								return function (t) {
 									y.startAngle = interpolateStart(t);
 									y.endAngle = interpolateEnd(t);
 									y.outerRadius = interpolateOuter(t);
@@ -455,7 +454,7 @@
 						// Org arcs move out
 						orgs.transition()
 							.duration(500)
-							.attrTween('d', function(y) {
+							.attrTween('d', function (y) {
 								if (y.originalInner === undefined) {
 									y.originalInner = y.innerRadius;
 									y.originalOuter = y.outerRadius;
@@ -465,7 +464,7 @@
 								}
 								var interpolateInner = d3.interpolate(x.innerRadius, x.innerRadius + y.innerRadius);
 								var interpolateOuter = d3.interpolate(x.innerRadius, x.innerRadius + y.outerRadius);
-								return function(t) {
+								return function (t) {
 									y.innerRadius = interpolateInner(t);
 									y.outerRadius = interpolateOuter(t);
 									return arc(y);
@@ -475,12 +474,12 @@
 						// org labels follow
 						orgLabels.transition()
 							.duration(500)
-							.attrTween('d', function(y) {
+							.attrTween('d', function (y) {
 								var interpolateInner = d3.interpolate(x.innerRadius, x.innerRadius + y.innerRadius);
 								var interpolateOuter = d3.interpolate(x.innerRadius, x.innerRadius + y.outerRadius);
 								var interpolateStart = d3.interpolate(x.startAngle, y.startAngle);
 								var interpolateEnd = d3.interpolate(x.startAngle, y.endAngle);
-								return function(t) {
+								return function (t) {
 									y.innerRadius = interpolateInner(t);
 									y.outerRadius = interpolateOuter(t);
 									y.startAngle = interpolateStart(t);
@@ -492,7 +491,7 @@
 						// not clicked covers move out to make room for the expanded section
 						otherCovers.transition()
 							.duration(500)
-							.attrTween('d', function(y) {
+							.attrTween('d', function (y) {
 								// if it's on the inside, just leave it there
 								if (y.innerRadius < x.innerRadius) {
 									return t => arc(y);
@@ -501,7 +500,7 @@
 								var interpolateOuter = d3.interpolate(y.outerRadius, y.outerRadius + maxHeight - coverHeight);
 								y.originalInner = y.innerRadius;
 								y.originalOuter = y.outerRadius;
-								return function(t) {
+								return function (t) {
 									y.innerRadius = interpolateInner(t);
 									y.outerRadius = interpolateOuter(t);
 									return arc(y);
@@ -511,7 +510,7 @@
 						// Labels follow the covers that move
 						otherCoversLabels.transition()
 							.duration(500)
-							.attrTween('d', function(y) {
+							.attrTween('d', function (y) {
 								// if it's on the inside, just leave it there
 								if (y.innerRadius < x.innerRadius) {
 									return t => textArc(y);
@@ -520,7 +519,7 @@
 								y.originalOuter = y.outerRadius;
 								var interpolateInner = d3.interpolate(y.innerRadius, y.innerRadius + maxHeight - coverHeight);
 								var interpolateOuter = d3.interpolate(y.outerRadius, y.outerRadius + maxHeight - coverHeight);
-								return function(t) {
+								return function (t) {
 									y.innerRadius = interpolateInner(t);
 									y.outerRadius = interpolateOuter(t);
 									return textArc(y);
@@ -580,9 +579,9 @@
 
 		// http://bl.ocks.org/mbostock/5100636
 		function arcTween(newAngle) {
-			return function(d) {
+			return function (d) {
 				const interpolate = d3.interpolate(d.endAngle, newAngle);
-				return function(t) {
+				return function (t) {
 					d.endAngle = interpolate(t);
 					return arc(d);
 				};

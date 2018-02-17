@@ -14,26 +14,26 @@
 		// get event data
 		const data = rawData.filter(d => d['Timeline Event'].toLowerCase() === eventName.toLowerCase());
 
+		const includedOrgs = data.map(d => d['Policy Stakeholder'].toLowerCase());
+
 		const allOrgs = stakeholderData.map(d => {
 			return {
 				name: d['Stakeholder Name'],
 				category: d['Organization Category'],
 				abbrev: convertOrgName(d['Stakeholder Name']),
-				role: d['Overall Role']
+				role: d['Overall Role'],
 			};
-		});
+		}).filter(d => includedOrgs.includes(d.name.toLowerCase()));
 
 		const allCategories = d3.nest()
 			.key(d => d.category.toUpperCase())
 			.entries(allOrgs)
-			.map(d => d.key)
-			.sort();
+			.map(d => d.key);
 
 		const allPolicies = d3.nest()
 			.key(d => d['Policy Document'])
 			.entries(data)
-			.map(d => d.key)
-			.sort();
+			.map(d => d.key);
 
 		const allUNOrgs = allOrgs
 			.filter(d => d.category.toUpperCase() === 'UN ORGANIZATION')
@@ -48,6 +48,9 @@
 		const width = 1.2 * height;
 		const rectHeight = 50;
 		const rectWidth = 200;
+
+		const leftCircleRadius = width / 2;
+		const rightCircleRadius = 5 * width / 8;
 
 		/* COLOURS */
 		const titleColor = '#076eb5';
@@ -71,6 +74,18 @@
 			.domain(allNonUNOrgs)
 			.range([-0.35 * height, 0.35 * height]);
 
+		const leftCircle = d3.arc()
+			.innerRadius(leftCircleRadius)
+			.outerRadius(leftCircleRadius)
+			.startAngle(-(1 / 4) * Math.PI)
+			.endAngle(-(3 / 4) * Math.PI);
+
+		const rightCircle = d3.arc()
+			.innerRadius(rightCircleRadius)
+			.outerRadius(rightCircleRadius)
+			.startAngle((1 / 4) * Math.PI)
+			.endAngle((3 / 4) * Math.PI);
+
 		/* LINES */
 		const line = d3.line()
 			.curve(d3.curveBasis)
@@ -85,6 +100,16 @@
 			.attr('height', height)
 			.append('g')
 			.attr('transform', `translate(${3 * width / 8},${height / 2})`);
+
+		// chart.append('path')
+		// 	.attr('transform', `translate(${width / 4})`)
+		// 	.attr('d', leftCircle)
+		// 	.style('stroke', 'red');
+		//
+		// chart.append('path')
+		// 	.attr('transform', `translate(-${width / 3})`)
+		// 	.attr('d', rightCircle)
+		// 	.style('stroke', 'red');
 
 		// add event title
 		// chart.append('text')
@@ -102,10 +127,10 @@
 		const rectGroup = chart.append('g')
 			.selectAll('g')
 			.data(allPolicies)
-			.enter();
+			.enter()
+			.append('g');
 
-		rectGroup.append('g')
-			.append('rect')
+		rectGroup.append('rect')
 			.attr('x', -rectWidth / 2)
 			.attr('y', innerNodesScale)
 			.attr('height', rectHeight)
@@ -115,8 +140,7 @@
 			.on('mouseover', mouseoverRect)
 			.on('mouseout', mouseoutRect);
 
-		rectGroup.append('g')
-			.append('text')
+		rectGroup.append('text')
 			.attr('x', 0)
 			.attr('y', d => innerNodesScale(d) + (rectHeight / 2))
 			.style('fill', rectTextColor)
@@ -151,13 +175,13 @@
 
 		leftGroup.append('g')
 			.append('text')
-			.attr('x', -0.26 * width)
+			.attr('x', d => -0.26 * width)
 			.attr('y', d => leftOrgsScale(d.abbrev))
 			.style('fill', textColor)
 			.style('text-anchor', 'end')
 			.text(d => d.abbrev)
 			.each(function(d) {
-				const content = `<b>${d.name} <br> Overall Role: ${d.role}</b>`;
+				const content = `<b>${d.name}</b> <br> Overall Role: ${d.role}`;
 				return $(this).tooltipster({
 					content: content,
 					trigger: 'hover',
@@ -165,13 +189,19 @@
 				});
 			});
 
-		leftGroup.append('g')
-			.append('circle')
-			.attr('cx', -0.25 * width)
-			.attr('cy', d => leftOrgsScale(d.abbrev) - 5)
+		const leftCircles  = leftGroup.append('g')
+			.attr('transform', d => `translate(${-0.25 * width}, ${leftOrgsScale(d.abbrev) - 5})`);
+
+		leftCircles.append('circle')
 			.attr('r', 5.2)
 			.attr('value', d => d.abbrev)
 			.style('fill', circleColor);
+
+		leftCircles.append('circle')
+			.attr('r', 3)
+			.classed('center-circle', true)
+			.attr('value', d => d.abbrev)
+			.style('fill', 'white');
 
 		const rightGroup = chart.append('g')
 			.selectAll('g')
@@ -186,7 +216,7 @@
 			.style('text-anchor', 'start')
 			.text(d => d.abbrev)
 			.each(function(d) {
-				const content = `<b>${d.name} <br> Overall Role: ${d.role}</b>`;
+				const content = `<b>${d.name} </b><br> Overall Role: ${d.role}`;
 				return $(this).tooltipster({
 					content: content,
 					trigger: 'hover',
@@ -194,13 +224,20 @@
 				});
 			});
 
-		rightGroup.append('g')
-			.append('circle')
-			.attr('cx', 0.25 * width)
-			.attr('cy', d => rightOrgsScale(d.abbrev) - 5)
+		const rightCircles = rightGroup.append('g')
+			.attr('transform', d => `translate(${0.25 * width}, ${rightOrgsScale(d.abbrev) - 5})`);
+
+		rightCircles.append('circle')
 			.attr('r', 5.2)
 			.attr('value', d => d.abbrev)
 			.style('fill', circleColor);
+
+		rightCircles.append('circle')
+			.attr('r', 3)
+			.classed('center-circle', true)
+			.attr('value', d => d.abbrev)
+			.style('fill', 'white');
+
 
 		// Time to draw lines
 		const lineGroup = chart.append('g')
@@ -231,6 +268,14 @@
 						y: starty,
 					},
 					{
+						x: startx + (-sign * 75),
+						y: starty,
+					},
+					{
+						x: endx + (sign * 75),
+						y: endy,
+					},
+					{
 						x: endx,
 						y: endy,
 					},
@@ -244,14 +289,14 @@
 			.style('stroke-opacity', 0.5);
 
 		// TODO use this func below to define our bezier points
-		// //define bezier curve from inner to outer nodes
-		// function diagonal(d) {
-		// 	return 'M' + String(-d.outer.y * Math.sin(projectX(d.outer.x))) + ',' + String(d.outer.y * Math.cos(projectX(d.outer.x)))
-		// 		+ ' ' + 'C'
-		// 		+ ' ' + String((-d.outer.y * Math.sin(projectX(d.outer.x)) + (d.outer.x > 180 ? d.inner.x : d.inner.x + rect_width)) / 2) + ',' + String(d.outer.y * Math.cos(projectX(d.outer.x)))
-		// 		+ ' ' + String((-d.outer.y * Math.sin(projectX(d.outer.x)) + (d.outer.x > 180 ? d.inner.x : d.inner.x + rect_width)) / 2) + ',' + String(d.inner.y + rect_height / 2)
-		// 		+ ' ' + String(d.outer.x > 180 ? d.inner.x : d.inner.x + rect_width) + ',' + String(d.inner.y + rect_height / 2);
-		// }
+		//define bezier curve from inner to outer nodes
+		function diagonal(d) {
+			return 'M' + String(-d.outer.y * Math.sin(projectX(d.outer.x))) + ',' + String(d.outer.y * Math.cos(projectX(d.outer.x)))
+				+ ' ' + 'C'
+				+ ' ' + String((-d.outer.y * Math.sin(projectX(d.outer.x)) + (d.outer.x > 180 ? d.inner.x : d.inner.x + rect_width)) / 2) + ',' + String(d.outer.y * Math.cos(projectX(d.outer.x)))
+				+ ' ' + String((-d.outer.y * Math.sin(projectX(d.outer.x)) + (d.outer.x > 180 ? d.inner.x : d.inner.x + rect_width)) / 2) + ',' + String(d.inner.y + rect_height / 2)
+				+ ' ' + String(d.outer.x > 180 ? d.inner.x : d.inner.x + rect_width) + ',' + String(d.inner.y + rect_height / 2);
+		}
 
 
 		// var outer = d3.map();
