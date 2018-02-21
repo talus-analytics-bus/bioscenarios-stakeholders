@@ -6,6 +6,8 @@ const App = {};
 	};
 
 
+
+
 	/* ------------------ Vendor Defaults ------------------- */
 	// tooltipster defaults
 	$.tooltipster.setDefaults({

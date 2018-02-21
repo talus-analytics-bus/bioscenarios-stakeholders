@@ -14,6 +14,8 @@
 		// get event data
 		const data = rawData.filter(d => d['Timeline Event'].toLowerCase() === eventName.toLowerCase());
 
+
+
 		const includedOrgs = data.map(d => d['Policy Stakeholder'].toLowerCase());
 
 		const allOrgs = stakeholderData.map(d => {
@@ -48,6 +50,32 @@
 		const width = 1.2 * height;
 		const rectHeight = 50;
 		const rectWidth = 200;
+
+        const timelineEvents = ['Case in humans', ...new Set(rawData.map(d => {return d['Timeline Event'];}))];
+
+        // these are the gradients behind the time line events. these will be used in the policy documents and stakeholders graphic
+        const timelineEventGradients = [
+            ['#f7f8fa', '#f4f6f9'],
+            ['#f4f6f9', '#e9ecf3'],
+            ['#e9ecf3', '#dfe2ed'],
+            ['#dfe2ed', '#d6dbe7'],
+            ['#d6dbe7', '#ced4e3'],
+            ['#ced4e3', '#c8cedf'],
+            ['#c8cedf', '#c1c9dc'],
+            ['#c1c9dc', '#bcc4d9'],
+            ['#bcc4d9', '#b5bed5'],
+        ];
+
+		function getGradient(eventName) {
+            let index = -1;
+            if (eventName) {
+				index = timelineEvents.findIndex(d => {
+                    return d === eventName;
+                });
+            }
+
+            return index; // -1 is found
+		}
 
 		const leftCircleRadius = width / 2;
 		const rightCircleRadius = 5 * width / 8;
@@ -101,6 +129,25 @@
 			.append('g')
 			.attr('transform', `translate(${3 * width / 8},${height / 2})`);
 
+        const defs = chart.append('defs');
+        timelineEventGradients.forEach( (item, index, array) => {
+            let gradient = defs.append('linearGradient')
+                .attr('id', `timeline-gradient-${index}`)
+                .attr('x1', '0%')
+                .attr('x2', '100%')
+                .attr('y1', '0%')
+                .attr('y2', '0%');
+
+            gradient.append('stop')
+                .attr('stop-color', item[1])
+                .attr('stop-opacity', 1)
+                .attr('offset', '0%');
+
+            gradient.append('stop')
+                .attr('stop-color', item[0])
+                .attr('stop-opacity', 178 / 255)
+                .attr('offset', '100%');
+        });
 		// chart.append('path')
 		// 	.attr('transform', `translate(${width / 4})`)
 		// 	.attr('d', leftCircle)
@@ -130,12 +177,13 @@
 			.enter()
 			.append('g');
 
+		let gradientIndex = getGradient(eventName);
 		rectGroup.append('rect')
 			.attr('x', -rectWidth / 2)
 			.attr('y', innerNodesScale)
 			.attr('height', rectHeight)
 			.attr('width', rectWidth)
-			.style('fill', rectColor)
+			.style('fill', (d, i) => `url(#timeline-gradient-${gradientIndex})`)
 			.attr('value', d => `rect ${d}`)
 			.on('mouseover', mouseoverRect)
 			.on('mouseout', mouseoutRect);

@@ -103,8 +103,7 @@
 					.map((x) => {
 						// making fundamental assumption here that every org in data is
 						// listed in orgInfo
-						const orgType = orgPositions.filter(
-							y => y['Stakeholder Name'] === x['Stakeholder'])[0];
+						const orgType = orgPositions.filter(y => y['Stakeholder Name'] === x['Stakeholder'])[0];
 						x['Organization Category'] = orgType['Organization Category'];
 						x.level = orgType.level;
 						return x;
@@ -547,6 +546,8 @@
 			.data(catArcs.covers)
 			.enter()
 			.append('text')
+			.attr('class', 'inner-text')
+			.attr('dy', 5)
 			.append('textPath')
 			.attr('xlink:href', (d, i) => `#cover-arc-label-path-${i}`)
 			.style('fill', d => {
@@ -557,7 +558,8 @@
 				}
 			})
 			.style('font-size', '1em')
-			.style('text-anchor', 'start')
+			//.style('text-anchor', 'start')
+            .style('text-anchor', 'start')
 			.text(d => d.values[0].name);
 
 		// add a center label
@@ -588,4 +590,5 @@
 			};
 		}
 	};
+
 })();

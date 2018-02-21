@@ -12,18 +12,21 @@
 			.defer(d3.tsv, 'data/roles.tsv')
 			.defer(d3.tsv, 'data/stakeholders.tsv')
 			.defer(d3.tsv, 'data/timeline.tsv')
-			.await((error, rawPolicyData, rawPolicyEventData, rawRoleData, rawStakeholderData, rawTimelineData) => {
+			.await((error, rawPolicyData, rawPolicyEventData, rawRoleData, rawStakeholderData,
+					rawTimelineData) => {
 				policyEventData = rawPolicyEventData;
 				stakeholderData = rawStakeholderData;
 				timelineData = rawTimelineData;
 				policyData = rawPolicyData;
 				roleData = rawRoleData;
+
 				init();
 			});
 
 		let conceptMap;
 		let timeline;
 		let donut;
+
 
 		function init() {
 			initGraphs();
@@ -47,6 +50,7 @@
 					d3.select('.donut-chart').select('svg').remove();
 					conceptMap = App.initConceptMap('.concept-map', event, policyEventData, stakeholderData);
 					donut = App.initDonut('.donut-chart', event, roleData, stakeholderData);
+
 					previousEvent = event;
 				}
 			});
