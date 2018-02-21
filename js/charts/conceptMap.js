@@ -81,7 +81,8 @@
 		const rightCircleRadius = 5 * width / 8;
 
 		/* COLOURS */
-		const titleColor = '#076eb5';
+		//const titleColor = '#076eb5';
+        const titleColor = '#000000';
 		const rectColor = '#e6e6e5';
 		const selectedRectColor = '#2d9de2';
 		const rectTextColor = '#808080';
@@ -159,16 +160,17 @@
 		// 	.style('stroke', 'red');
 
 		// add event title
-		// chart.append('text')
-		// 	.attr('x', 0)
-		// 	.attr('y', -height / 2 + 200)
-		// 	.attr('dy', 0.35)
-		// 	.attr('text-anchor', 'middle')
-		// 	.style('font-size', '25px')
-		// 	.style('font-weight', '600')
-		// 	.style('fill', titleColor)
-		// 	.text(eventName.toUpperCase())
-		// 	.call(wrap, 340);
+		 chart.append('g').attr('class', 'main-title')
+			 .append('text')
+		 	.attr('x', 25)
+		 	.attr('y', -470)
+		 	.attr('dy', 0.35)
+		 	.attr('text-anchor', 'middle')
+		 	.style('font-size', '18px')
+		 	.style('font-weight', '600')
+		 	.style('fill', titleColor)
+		 	.text(eventName.toUpperCase())
+		 	.call(wrap, 340);
 
 		// Inner Nodes
 		const rectGroup = chart.append('g')

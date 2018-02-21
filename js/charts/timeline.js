@@ -4,18 +4,35 @@
 		const width = param.width || 1000;
 		const height = width * 0.3;
 
-		const cases = [10, 10, 20, 30, 50, 70, 70, 40, 10, 5];
-		const data = rawData.map((d, i) => {
+		//const cases = [10, 10, 20, 30, 50, 70, 70, 40, 10, 5];
+        const cases = [10, 10, 20, 30, 50, 70, 70, 40, 10, 5];
+		const data = rawData//.filter( (x) => x['Has associated policies'] !== 'FALSE')
+            .map((d, i) => {
 			return {
 				eventName: d['Timeline Event'],
 				eventDescription: d['Timeline Event Description'],
 				numCases: cases[i],
+                alwaysOccurs: d['Always occurs'],
+                hasAssociatedPolicies: d['Has associated policies'],
 			};
 		});
+        let caseNumber = 10;
+		const filterData = rawData.filter( (x) => x['Has associated policies'] !== 'FALSE')
+            .map((d, i) => {
+                return {
+                    eventName: d['Timeline Event'],
+                    eventDescription: d['Timeline Event Description'],
+                    numCases: cases[i],
 
+                    alwaysOccurs: d['Always occurs'],
+                    hasAssociatedPolicies: d['Has associated policies'],
+                };
+            });
 		// TODO => rationalize data
-		const eventLabels = data.map(d => d.eventName.toUpperCase());
-		const eventLabelsLower = data.map(d => d.eventName);
+		const eventLabels = data.filter( (x) => x.hasAssociatedPolicies !== 'FALSE')
+            .map(d => d.eventName.toUpperCase());
+		const eventLabelsLower = data.filter( (x) => x.hasAssociatedPolicies !== 'FALSE')
+            .map(d => d.eventName);
 
 		// Colours
 		const backgroundColors = ['#94A0C3', 'white'];
@@ -23,6 +40,7 @@
 		const textColor = '#333333';
 		const textBoldColor = '#666666';
 		const pointColor = '#989898';
+        const alwaysOccursPointColor = '#000000';
 		const selectedPointColor = '#C91414';
 		const highlightColor = '#000000';
 		const scatterlineColor = '#2d9de2';
@@ -108,9 +126,6 @@
 			.range([0, width])
 			.padding(1);
 
-		const reverseX = d3.scaleQuantize()
-			.domain([x(eventLabels[0]), x(eventLabels[eventLabels.length - 1]) - 100])
-			.range(eventLabels);
 
 		const dayScale = d3.scaleOrdinal()
 			.domain(eventLabels)
@@ -133,7 +148,7 @@
 		chart.append('path')
 			.attr('fill', 'none')
 			.style('stroke', 'white')
-			.datum(data.map(d => [d.eventName.toUpperCase(), d.numCases]))
+			.datum(filterData.map(d => [d.eventName.toUpperCase(), d.numCases]))
 			.attr('d', line);
 
 		// draw the policy graph
@@ -174,7 +189,7 @@
 
         markerLine.append('g')
             .selectAll('g')
-            .data(data)
+            .data(filterData)
             .enter()
 			.append('line').attr('class', 'event-line-mark')
             .attr('x1', d => x(d.eventName.toUpperCase()))
@@ -188,18 +203,29 @@
 		// Group for each event
 		const eventGroup = chart.append('g')
 			.selectAll('g')
-			.data(data)
+			.data(filterData)
 			.enter()
 			.append('g')
 			.attr('class', (d, i) => `event-group-${i}`);
 
-		// graph points
+		// graph points on the line
 		eventGroup.append('circle')
 			.attr('cx', d => x(d.eventName.toUpperCase()))
 			.attr('cy', d => y(d.numCases))
 			.attr('r', '4')
 			.attr('class', (d, i) => (i === 0) ? 'selected-circle' : '')
-			.attr('fill', (d,i) => (i === 0) ? selectedPointColor : pointColor);
+			.attr('fill', (d, i) => {
+                if (i === 0) {
+			      return selectedPointColor;
+                } else {
+                    if (d.alwaysOccurs.toUpperCase() === 'ALWAYS OCCURS') {
+			            return alwaysOccursPointColor;
+                    }
+                    else {
+			            return pointColor;
+                    }
+                }
+			});
 
 		// graph point lines
 		eventGroup.append('line')
@@ -209,8 +235,19 @@
 			.attr('y2', d => y(d.numCases))
 			.attr('stroke-width', 1)
             .attr('class', (d, i) => (i === 0) ? 'selected-line' : '')
-			.attr('stroke', (d,i) => (i === 0) ? selectedPointColor : pointColor)
-			.style('stroke-dasharray', ('3, 3'));
+			.attr('stroke', (d, i) => {
+                if (i === 0) {
+                    return selectedPointColor;
+                } else {
+                    if (d.alwaysOccurs.toUpperCase() === 'ALWAYS OCCURS') {
+                        return alwaysOccursPointColor;
+                    }
+                    else {
+                        return pointColor;
+                    }
+                }
+            })
+            .style('stroke-dasharray', ('3, 3'));
 
 		// label each point
 		eventGroup.append('text')
