@@ -1,35 +1,7 @@
 (() => {
 	App.initDonut = (selector, eventName, rawData, rawOrgInfo) => {
 
-		/*
-		 * Sooo helpful https://bl.ocks.org/kerryrodden/477c1bfb081b783f80ad
-		 *
-		 */
-
-		/* In order to display this data, we need the associated 'heights'
-		 * for each bar. We have 3 heights to establish:
-		 * 1. Category height (innermost) -> static
-		 * 2. Org Category height -> determined by number of orgs
-		 * 3. Org height -> How big is each org -> static
-		 */
-		// chart constants
-		const innerRadius = 100;
-		const roleHeight = 50;   // how "tall" is the innermost ring
-		const orgHeight = 30;    // how "tall" is each org listed
-		const coverHeight = 30;
-
-		// colours
-		const innerColor = '#756a65';
-		const textColor = '#ffffff';
-		const selectedColor = '#ccc9c8';
-
-		// parseRawData declarations - gonna bind to these
-		let allStakeholders;
 		let data;
-		let orgInfo;
-		let catArcs;
-		let orgPositions;
-		let coverPositions;
 
 		const margin = {top: 25, right: 25, bottom: 50, left: 25};
 		const width = 900;
@@ -414,7 +386,7 @@
 		};
 
 		const simulation = d3.forceSimulation(nodes)
-			.force('collide', d3.forceCollide(d => d.radius))
+			.force('collide', d3.forceCollide(d => d.radius - 2))
 			.force('x', d3.forceX(d => forceCluster(d, 'x'))
 				.strength(2))
 			.force('y', d3.forceY(d => forceCluster(d, 'y'))
