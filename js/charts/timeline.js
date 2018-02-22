@@ -29,7 +29,7 @@
 			[xTmpCorrd += 32, yTmpCoord-= 9], // begin epidemiological investigation
             // humanitarian response
             [xTmpCorrd += 60, yTmpCoord-= 16], // define and identify cases
-            [xTmpCorrd += 17, yTmpCoord-= 5], // implement control and prevention measures
+            [xTmpCorrd += 17, yTmpCoord-= 6], // implement control and prevention measures
             // suspicion of deliberate use
             [xTmpCorrd += 78, yTmpCoord-= 37.5], // monitor and treat new cases
             // investigative response
