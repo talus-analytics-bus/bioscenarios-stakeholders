@@ -39,16 +39,45 @@
 				.filter(d => d.category.toUpperCase() === 'UN ORGANIZATIONS')
 				.map(d => d.abbrev));
 
-		const allNonUNOrgs = allOrgs
+		var nonUNTitles = [
+			{
+				category: 'Affected Member State',
+			},
+			{
+				category: 'Non-affected Member States',
+			},
+			{
+				category: 'Non-UN International Organizations',
+			},
+			{
+				category: 'NGOs',
+			},
+			{
+				category: 'Private Sector',
+			},
+		];
+		const allNonUNOrgs = allOrgs.concat(nonUNTitles)
 			.filter(d => !allUNOrgs.includes(d.abbrev))
-			.sort((a, b) => a.category > b.category)
-			.map(d => d.abbrev);
+			.sort((a, b) => {
+				if (a.category === b.category) {
+					if (b.abbrev === undefined) {
+						return true;
+					} else {
+						return a.abbrev < b.abbrev;
+					}
+				} else {
+					return a.category > b.category;
+				}
+			})
+			.map(d => d.abbrev || d.category);
+
+		nonUNTitles = nonUNTitles.map(d => d.category);
 
 		/* CONSTANTS */
 		const height = 1000;
 		const width = 1.2 * height;
 		const rectHeight = 40;
-		const rectWidth = 300;
+		const rectWidth = 400;
 
 		const timelineEvents = ['Case in humans', ...new Set(rawData.map(d => {
 			return d['Timeline Event'];
@@ -90,7 +119,9 @@
 		//const titleColor = '#076eb5';
 		const titleColor = '#000000';
 		const rectColor = '#e6e6e5';
-		const selectedRectColor = '#2d9de2';
+		// const selectedRectColor = '#2d9de2';
+		const selectedRectColor = '#94A0C3';
+		const selectedLineColor = 'black';
 		const rectTextColor = '#808080';
 		const textColor = '#989898';
 		const circleColor = '#cccbcb';
@@ -165,10 +196,10 @@
 		chart.append('g').attr('class', 'main-title')
 			.append('text')
 			.attr('x', 25)
-			.attr('y', -470)
+			.attr('y', -(innerRange + 25))
 			.attr('dy', 0.35)
 			.attr('text-anchor', 'middle')
-			.style('font-size', '18px')
+			.style('font-size', '16px')
 			.style('font-weight', '600')
 			.style('fill', titleColor)
 			.text(eventName.toUpperCase())
@@ -183,7 +214,7 @@
 
 		let gradientIndex = getGradient(eventName);
 		rectGroup.append('rect')
-			.attr('transform', 'translate(10)')
+			.attr('transform', 'translate(25)')
 			.attr('x', -rectWidth / 2)
 			.attr('y', innerNodesScale)
 			.attr('height', rectHeight)
@@ -194,14 +225,15 @@
 			.on('mouseout', mouseoutRect);
 
 		rectGroup.append('text')
+			.attr('transform', 'translate(25)')
 			.attr('x', 0)
 			.attr('y', d => innerNodesScale(d) + (rectHeight / 2))
 			.style('fill', rectTextColor)
 			.style('text-anchor', 'middle')
-			.style('font-size', '0.75em')
+			.style('font-size', '0.9')
 			.attr('value', d => `recttext ${d}`)
 			.html(d => {
-				const wrapped = wordWrap(d, rectWidth / 6, 0, innerNodesScale(d) + (rectHeight / 2));
+				const wrapped = wordWrap(d, rectWidth / 8, 0, innerNodesScale(d) + (rectHeight / 2));
 				if (wrapped.split('tspan').length === 7) {  // if there are 3 lines of text, shift it lower
 					const newWrapped = wordWrap(d, rectWidth / 6, 0, innerNodesScale(d) + (rectHeight / 2) + 6);
 					return newWrapped;
@@ -214,21 +246,19 @@
 
 		function mouseoverRect(d) {
 			d3.select(`[value="recttext ${d}"`).style('fill', 'black');
-			d3.select(`[value="recttext ${d}"`).style('font-size', '0.75em');
 			// when you mouse over a rectangle, make the font slightly more heavily weighted for emphasis
 			d3.select(`[value="recttext ${d}"`).style('font-weight', '500');
 			d3.select(`[value="rect ${d}"]`).style('fill', selectedRectColor);
-			d3.selectAll(`[end="${d}"]`).style('stroke', selectedRectColor);
+			d3.selectAll(`[end="${d}"]`).style('stroke', selectedLineColor);
 
 			d3.selectAll(`[end="${d}"]`).each(function() {
 				const circleName = d3.select(this).attr('start');
-				d3.selectAll(`[value="${circleName}"]`).style('fill', selectedRectColor);
+				d3.selectAll(`[value="${circleName}"]`).style('fill', selectedLineColor);
 			});
 		}
 
 		function mouseoutRect(d, i) {
 			d3.select(`[value="recttext ${d}"`).style('fill', rectTextColor);
-			d3.select(`[value="recttext ${d}"`).style('font-size', '0.75em');
 			d3.select(`[value="recttext ${d}"`).style('font-weight', '300');
 			d3.select(`[value="rect ${d}"]`).style('fill', `url(#timeline-gradient-${gradientIndex})`);
 			d3.selectAll(`[end="${d}"]`).style('stroke', lineColor);
@@ -239,11 +269,16 @@
 			});
 		}
 
+		// EDGE NODES
+		// LEFT
 		const leftGroup = chart.append('g')
 			.attr('class', 'left-group')
 			.selectAll('g')
 			.data(['UN Organizations', ...allOrgs.filter(d => allUNOrgs.includes(d.abbrev))])
-			.enter();
+			.enter()
+			.append('g')
+			.on('mouseover', mouseoverOrg)
+			.on('mouseout', mouseoutOrg);
 
 		leftGroup.append('g')
 			.append('text')
@@ -278,18 +313,26 @@
 			.style('stroke-width', 2);
 
 		const rightGroup = chart.append('g')
+			.attr('class', 'right-group')
 			.selectAll('g')
-			.data(allOrgs.filter(d => allNonUNOrgs.includes(d.abbrev)))
-			.enter();
+			.data(nonUNTitles.concat(allOrgs.filter(d => allNonUNOrgs.includes(d.abbrev))))
+			.enter()
+			.append('g')
+			.on('mouseover', mouseoverOrg)
+			.on('mouseout', mouseoutOrg);
 
-		rightGroup.append('g').attr('class', 'right-group')
+		rightGroup.append('g')
 			.append('text')
-			.attr('x', d => rightOrgsCurve(d.abbrev))
-			.attr('y', d => rightOrgsScale(d.abbrev))
-			.style('fill', textColor)
+			.attr('x', d => rightOrgsCurve(d.abbrev || d))
+			.attr('y', d => rightOrgsScale(d.abbrev || d))
+			.style('fill', d => (d.abbrev === undefined) ? 'black' : textColor)
+			.style('font-weight', d => (d.abbrev === undefined) ? 600 : 300)
 			.style('text-anchor', 'start')
-			.text(d => d.abbrev)
+			.text(d => d.abbrev || d)
 			.each(function (d) {
+				if (nonUNTitles.includes(d)) {
+					return;
+				}
 				const content = `<b>${d.name} </b><br> Overall Role: ${d.role}`;
 				return $(this).tooltipster({
 					content: content,
@@ -309,6 +352,28 @@
 			.style('fill-opacity', 1)
 			.style('stroke', circleColor)
 			.style('stroke-width', 2);
+
+		// ORG MOUSE EVENTS
+		function mouseoverOrg(d) {
+			d3.select(`[value="${d.abbrev}"]`).style('fill', 'black');
+			d3.selectAll(`[start="${d.abbrev}"]`).style('stroke', selectedLineColor);
+			d3.selectAll(`[start="${d.abbrev}"]`).each(function() {
+				const policyName = d3.select(this).attr('end');
+				d3.selectAll(`[value="rect ${policyName}"]`).style('fill', selectedRectColor);
+				d3.selectAll(`[value="recttext ${policyName}"]`).style('fill', 'black');
+			});
+		}
+
+		function mouseoutOrg(d) {
+			d3.select(`[value="${d.abbrev}"]`).style('fill', 'white');
+			d3.selectAll(`[start="${d.abbrev}"]`).style('stroke', lineColor);
+			d3.selectAll(`[start="${d.abbrev}"]`).each(function() {
+				const policyName = d3.select(this).attr('end');
+				d3.selectAll(`[value="rect ${policyName}"]`).style('fill', `url(#timeline-gradient-${gradientIndex})`);
+				d3.selectAll(`[value="recttext ${policyName}"]`).style('fill', textColor);
+			});
+		}
+
 
 		// Time to draw lines
 		const lineGroup = chart.append('g')
@@ -334,7 +399,7 @@
 				}
 				const startx = xscale(d.abbrev) - (sign * 13);
 				const starty = yscale(d.abbrev) - 5;
-				const endx = sign * rectWidth / 2 + 10;
+				const endx = sign * rectWidth / 2 + 25;
 				const endy = innerNodesScale(d['Policy Document']) + (rectHeight / 2);
 				return line([
 					{

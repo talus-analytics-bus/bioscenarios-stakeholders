@@ -19,19 +19,19 @@
         5 // ongoing response and recovery
         ];
 
-        let xTmpCorrd = 200;
-        let yTmpCoord = 222;
+        let xTmpCorrd = 208;
+        let yTmpCoord = 221;
         // This data set statically places the noTimeCase circles onto the line. To move the circles, you need to
 		// manipulate the coordinates here. These are relative to the case events.
 		const noTimeCases = [
 			[xTmpCorrd, yTmpCoord], // notification of cases
-			[xTmpCorrd += 22, yTmpCoord-= 3.2], // coordinated medical response initiated
-			[xTmpCorrd += 32, yTmpCoord-= 9], // begin epidemiological investigation
+			[xTmpCorrd += 15, yTmpCoord-= 2], // coordinated medical response initiated
+			[xTmpCorrd += 14, yTmpCoord-= 3], // begin epidemiological investigation
             // humanitarian response
-            [xTmpCorrd += 60, yTmpCoord-= 16], // define and identify cases
-            [xTmpCorrd += 17, yTmpCoord-= 6], // implement control and prevention measures
+            [xTmpCorrd += 70, yTmpCoord-= 20], // define and identify cases
+            [xTmpCorrd += 30, yTmpCoord-= 10], // implement control and prevention measures
             // suspicion of deliberate use
-            [xTmpCorrd += 78, yTmpCoord-= 37.5], // monitor and treat new cases
+            [xTmpCorrd += 78, yTmpCoord-= 38], // monitor and treat new cases
             // investigative response
             [xTmpCorrd = 500, yTmpCoord= 95], // continued medical response to cases
             // state request for assistance
@@ -165,7 +165,7 @@
 		// Upper left label
 		const title = chart.append('text')
 			.attr('class', 'top-description-title')
-			.attr('transform', 'translate(10, 40)')
+			.attr('transform', 'translate(35, 40)')
 			.attr('fill', textBoldColor)
 			.style('font-size', '0.8em')
 			.text('EPIDEMIOLOGICAL CURVE');
@@ -173,7 +173,7 @@
 		// Event Label
 		const whatEvent = chart.append('text')
 			.attr('class', 'what-event-is-it')
-			.attr('transform', 'translate(10, 53)')
+			.attr('transform', 'translate(35, 53)')
 			.attr('fill', textBoldColor)
 			.attr('font-style', 'italic')
 			.style('font-size', '0.8em')
@@ -183,7 +183,7 @@
 		// day label
 		const whatDay = chart.append('text')
 			.attr('class', 'what-day-is-it')
-			.attr('transform', 'translate(10, 66)')
+			.attr('transform', 'translate(35, 66)')
 			.attr('fill', textBoldColor)
 			.attr('font-style', 'italic')
 			.style('font-size', '0.8em')
@@ -410,9 +410,8 @@
 					.style('fill', selectedPointColor);
 
 				// now update labels
-				whatEvent.attr('value', d.eventName)
-					.text(d.eventName)
-
+				whatEvent.text(d.eventName)
+					.attr('value', d.eventName);
 				whatDay.text(`Day ${dayScale(d.eventName.toUpperCase())}`);
 			});
 

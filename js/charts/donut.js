@@ -1,5 +1,5 @@
 (() => {
-	App.initDonut = (selector, eventName, rawData, rawOrgInfo) => {
+	App.initDonut = (selector, eventName, rawData, rawOrgInfo, nodeScaling=2) => {
 		let data;
 		let allCategories;
 		let allRoles;
@@ -33,10 +33,10 @@
 		function parseData() {
 			allCategories = [
 				'UN Organizations',
-				'International Organizations',
+				'Non-UN International Organizations',
 				'NGOs',
-				'Member States (non-affected)',
-				'Member State (affected)',
+				'Non-affected Member States',
+				'Affected Member State',
 				'Private Sector',
 			];
 			allRoles = [
@@ -76,8 +76,15 @@
 				roleAnchors[k.toLowerCase()] = roleAnchors[k];
 			});
 
-			data = rawData.filter(d => d['Timeline Event'].toLowerCase() === eventName.toLowerCase())
-				.map(old => {
+			let filteredData;
+			if (eventName === null) {
+				filteredData = rawData;
+			} else {
+				filteredData = rawData
+					.filter(d => d['Timeline Event'].toLowerCase() === eventName.toLowerCase());
+			}
+
+			data = filteredData.map(old => {
 					var d = Object.assign({}, old);
 					const orgName = d['Stakeholder'].toLowerCase();
 					const orgRow = rawOrgInfo.filter(o => o['Stakeholder Name'].toLowerCase() === orgName);
@@ -100,12 +107,18 @@
 		}
 		parseData();
 
+		let minRadius;
+		if (eventName === null) {
+			minRadius = 2;
+		} else {
+			minRadius = 20;
+		}
 		const nodes = data.map((d, i) => {
 			return {
 				index: i,
 				type: d.type,
 				cluster: d.roles,
-				radius: Math.pow(d.size, 2) * baseNodeSize + 20,
+				radius: Math.pow(d.size, nodeScaling) * baseNodeSize + minRadius,
 				text: d.name,
 				x: 0,
 				y: 0,
@@ -281,11 +294,11 @@
 		};
 
 		const simulation = d3.forceSimulation(nodes)
-			.force('collide', d3.forceCollide(d => d.radius - (d.radius / 10)).strength(0.5)) // dynamic collision 10%
+			.force('collide', d3.forceCollide(d => d.radius - (d.radius / 10)).strength(2)) // dynamic collision 10%
 			.force('x', d3.forceX(d => forceCluster(d, 'x'))
-				.strength(1))
+				.strength(0.75))
 			.force('y', d3.forceY(d => forceCluster(d, 'y'))
-				.strength(1))
+				.strength(0.75))
 			.force('edge-collision', edgeCollision())
 			.alphaMin(0.001);
 
@@ -305,9 +318,11 @@
 			.style('stroke', d => d3.color(nodeColors(d.type)).darker())
 			.style('stroke-opacity', 1);
 
-		nodeGroup.append('text')
-			.style('fill', 'white')
-			.style('text-anchor', 'middle');
+		if (eventName !== null) {
+			nodeGroup.append('text')
+				.style('fill', 'white')
+				.style('text-anchor', 'middle');
+		}
 
 		nodeGroup.each(function(d, i) {
 			const content = `<b>${d.text}</b><br><i>${d.type}</i><br>${d.cluster}<br><b>Number of Mandates</b> ${d.size}`;
@@ -323,23 +338,25 @@
 				.attr('cx', d => d.x)
 				.attr('cy', d => d.y);
 
-			nodeGroup.selectAll('text')
-				.attr('x', d => {
-					return d.x;
-				})
-				.attr('y', d => {
-					return d.y;
-				})
-				.html(d => {
-					if (d.radius > 60) {
-						return wordWrap(d.text, 30, d.x, d.y);
-					} else {
-						const shortName = getShortName(d.text);
-						if (shortName !== d.text) {
-							return shortName;
+			if (eventName !== null) {
+				nodeGroup.selectAll('text')
+					.attr('x', d => {
+						return d.x;
+					})
+					.attr('y', d => {
+						return d.y;
+					})
+					.html(d => {
+						if (d.radius > 60) {
+							return wordWrap(d.text, 30, d.x, d.y);
+						} else {
+							const shortName = getShortName(d.text);
+							if (shortName !== d.text) {
+								return shortName;
+							}
 						}
-					}
-				});
+					});
+			}
 		};
 
 		simulation
