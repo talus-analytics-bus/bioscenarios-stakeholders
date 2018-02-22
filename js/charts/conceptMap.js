@@ -230,7 +230,7 @@
 			.attr('y', d => innerNodesScale(d) + (rectHeight / 2))
 			.style('fill', rectTextColor)
 			.style('text-anchor', 'middle')
-			.style('font-size', '0.9')
+			.style('font-size', '0.9em')
 			.attr('value', d => `recttext ${d}`)
 			.html(d => {
 				const wrapped = wordWrap(d, rectWidth / 8, 0, innerNodesScale(d) + (rectHeight / 2));
