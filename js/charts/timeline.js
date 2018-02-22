@@ -120,7 +120,7 @@
 			.attr('width', width + margin.left + margin.right)
 			.attr('height', height + margin.top + margin.bottom)
 			.append('g')
-			.attr('transform', `translate(${margin.left}, ${margin.top})`);
+			.attr('transform', `translate(${margin.left}, ${margin.top})`); // don't position to the left. We are keeping the graphic tight on the left side
 
 		const defs = chart.append('defs');
 
@@ -163,6 +163,7 @@
 
 		// Upper left label
 		const title = chart.append('text')
+			.attr('class', 'top-description-title')
 			.attr('transform', 'translate(35, 40)')
 			.attr('fill', textBoldColor)
 			.style('font-size', '0.8em')
@@ -171,7 +172,7 @@
 		// Event Label
 		const whatEvent = chart.append('text')
 			.attr('class', 'what-event-is-it')
-			.attr('transform', 'translate(35, 60)')
+			.attr('transform', 'translate(35, 53)')
 			.attr('fill', textBoldColor)
 			.attr('font-style', 'italic')
 			.style('font-size', '0.8em')
@@ -181,7 +182,7 @@
 		// day label
 		const whatDay = chart.append('text')
 			.attr('class', 'what-day-is-it')
-			.attr('transform', 'translate(35, 80)')
+			.attr('transform', 'translate(35, 66)')
 			.attr('fill', textBoldColor)
 			.attr('font-style', 'italic')
 			.style('font-size', '0.8em')
