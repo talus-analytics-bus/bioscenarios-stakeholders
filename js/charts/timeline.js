@@ -92,6 +92,7 @@
             .map(d => d.eventName);
 
 
+        //Fix the bug where in the policy document count. We need to lowercase all text comparisons.
         const policyData = eventLabelsLower.map((d, i) => {
             return {
                 count: policyEventData.filter( (x) => d.toLowerCase() === x['Timeline Event'].toLowerCase()).length,
