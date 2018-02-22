@@ -32,11 +32,13 @@
 		// 		'type': 'Private Sector'}];
 		function parseData() {
 			allCategories = [
-				'United Nations Organizations',
-				'National Goverment (affected)',
-				'Non-Governmental Organizations',
+				'UN Organizations',
+				'International Organizations',
+				'International Organization',
+				'NGOs',
+				'Member States (non-affected)',
+				'Member State (affected)',
 				'Private Sector',
-				'National Government (non-affected)',
 			];
 			allRoles = [
 				'Public Health and Medical',
@@ -76,20 +78,23 @@
 			});
 
 			data = rawData.filter(d => d['Timeline Event'].toLowerCase() === eventName.toLowerCase())
-				.map(d => {
+				.map(old => {
+					var d = Object.assign({}, old);
 					const orgName = d['Stakeholder'].toLowerCase();
 					const orgRow = rawOrgInfo.filter(o => o['Stakeholder Name'].toLowerCase() === orgName);
 					if (orgRow.length === 0) {
-						console.log(`error, ${orgName} has no associated data`);
+						console.log(`error, ${orgName} has no associated data.... skipping`);
+						console.log(d);
 					} else {
 						Object.assign(d, orgRow[0]);
+						d.name = d['Stakeholder'];
+						d.roles = d['Stakeholder Role'].split(';').map(String.trim);
+						d.size = d['Mandates'].split(';').length;
+						d.type = d['Organization Category'];
+						return d;
 					}
-					d.name = d['Stakeholder'];
-					d.roles = d['Stakeholder Role'].split(';').map(String.trim);
-					d.size = d['Mandates'].split(';').length;
-					d.type = d['Organization Category'];
-					return d;
-				});
+				})
+				.filter(d => d !== undefined);
 		}
 		parseData();
 
@@ -98,7 +103,7 @@
 				index: i,
 				type: d.type,
 				cluster: d.roles,
-				radius: Math.pow(d.size, 2) * baseNodeSize + 15,
+				radius: Math.pow(d.size, 2) * baseNodeSize + 20,
 				text: d.name,
 				x: 0,
 				y: 0,
@@ -108,7 +113,27 @@
 
 		const nodeColors = d3.scaleOrdinal()
 			.domain(allCategories)
-			.range(['#667eae', '#c5443c', '#e89372', '#99c2a9', '#8e87b6']);
+			.range([
+				'#8dd3c7',
+				'#ffffb3',
+				'#bebada',
+				'#80b1d3',
+				'#fdb462',
+				'#fb8072',
+				'#b3de69',
+			]);
+			// .range([
+			// 	// '#667eae',
+			// 	'#082b84',
+			// 	// '#e89372',
+			// 	'#ff6d00',
+			// 	// '#99c2a9',
+			// 	'#0c6b0c',
+			// 	'#8e87b6',
+			// 	// '#3f1d63',
+			// 	// '#c5443c',
+			// 	'#c91414',
+			// ]);
 
 		const chart = d3.select(selector)
 			.append('svg')
@@ -151,12 +176,12 @@
 			.style('stroke-opacity', 1);
 
 		legendGroup.append('text')
-			.attr('transform', 'translate(25, 400)')
+			.attr('transform', 'translate(25, 450)')
 			.style('font-weight', 600)
 			.html(wordWrap('Circle Size = Number of Policies Stakeholder is mandated by', 40, 0, 0));
 
 		const legendCircleGroup = legendGroup.append('g')
-			.attr('transform', 'translate(80, 450)')
+			.attr('transform', 'translate(80, 500)')
 			.selectAll('g')
 			.data([1, 2, 4])
 			.enter()
@@ -309,13 +334,19 @@
 				.attr('cy', d => d.y);
 
 			nodeGroup.selectAll('text')
+				.attr('x', d => {
+					return d.x;
+				})
+				.attr('y', d => {
+					return d.y;
+				})
 				.html(d => {
 					if (d.radius > 60) {
 						return wordWrap(d.text, 30, d.x, d.y);
 					} else {
 						const shortName = getShortName(d.text);
 						if (shortName !== d.text) {
-							return wordWrap(getShortName(d.text), 30, d.x, d.y);
+							return shortName;
 						}
 					}
 				});
@@ -342,7 +373,7 @@
 	};
 
 	function getShortName(s) {
-		const shortname = /^.*\(([A-Z]+)\)$/.exec(s);
+		const shortname = /\(([A-Z]+)\)/.exec(s);
 		if (shortname === null) {
 			return s;
 		} else {
