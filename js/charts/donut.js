@@ -33,10 +33,10 @@
 		function parseData() {
 			allCategories = [
 				'UN Organizations',
-				'International Organizations',
+				'Non-UN International Organizations',
 				'NGOs',
-				'Member States (non-affected)',
-				'Member State (affected)',
+				'Non-affected Member States',
+				'Affected Member State',
 				'Private Sector',
 			];
 			allRoles = [
