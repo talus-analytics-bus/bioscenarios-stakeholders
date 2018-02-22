@@ -223,7 +223,7 @@
 			.data(allOrgs.filter(d => d.category.toUpperCase() === 'UN ORGANIZATION'))
 			.enter();
 
-		leftGroup.append('g')
+		leftGroup.append('g').attr('class', 'left-group')
 			.append('text')
 			.attr('x', d => -0.26 * width)
 			.attr('y', d => leftOrgsScale(d.abbrev))
@@ -258,7 +258,7 @@
 			.data(allOrgs.filter(d => d.category.toUpperCase() !== 'UN ORGANIZATION'))
 			.enter();
 
-		rightGroup.append('g')
+		rightGroup.append('g').attr('class', 'right-group')
 			.append('text')
 			.attr('x', 0.26 * width)
 			.attr('y', d => rightOrgsScale(d.abbrev))
