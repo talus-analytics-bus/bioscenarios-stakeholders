@@ -123,7 +123,7 @@
 		const selectedRectColor = '#94A0C3';
 		const selectedLineColor = 'black';
 		const rectTextColor = '#808080';
-		const textColor = '#989898';
+		const textColor = '#6c6d6d';
 		const circleColor = '#cccbcb';
 		const lineColor = '#cccbcb';
 

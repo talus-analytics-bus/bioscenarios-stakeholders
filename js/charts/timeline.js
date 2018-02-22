@@ -335,7 +335,7 @@
 					d.eventName,
 					20,
 					x(d.eventName.toUpperCase()),
-					y(d.numCases) - 20);
+					y(d.numCases) - 30);
 			});
 
 
@@ -345,7 +345,8 @@
         let previousSelectedPointColor = pointColor;
 
         const rectWidth = 120;
-        const rectHeight = 300;
+        // const rectHeight = 300;
+		const rectHeight = height + 10 + 45;
         const markerWidth = 60;
         const markerHeight = 25;
 

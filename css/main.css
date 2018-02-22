@@ -526,4 +526,10 @@ light {
 .timeline-label {
   display: inline-flex; }
 
+.noshow {
+  opacity: 0; }
+
+.show-all-div {
+  padding-left: 300px; }
+
 /*# sourceMappingURL=main.css.map */

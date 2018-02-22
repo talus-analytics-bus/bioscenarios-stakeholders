@@ -5,7 +5,7 @@
 		let allRoles;
 		let roleAnchors;
 
-		const margin = {top: 25, right: 25, bottom: 50, left: 300};
+		const margin = {top: 0, right: 25, bottom: 50, left: 300};
 		const width = 800;
 		const height = width;
 		const baseNodeSize = 10;
@@ -48,26 +48,30 @@
 
 			roleAnchors = {
 				'Public Health and Medical': {
-					labelX: 75,
-					labelY: 25,
+					labelX: 20,
+					labelY: 30,
+					align: 'start',
 					x: width / 7,
 					y: height / 7,
 				},
 				'Humanitarian Aid': {
-					labelX: width - 75,
-					labelY: 25,
+					labelX: width - 20,
+					labelY: 30,
+					align: 'end',
 					x: 6 * width / 7,
 					y: height / 7,
 				},
 				'Safety and Security': {
-					labelX: 75,
-					labelY: height - 25,
+					labelX: 20,
+					labelY: height - 30,
+					align: 'start',
 					x: width / 7,
 					y: 6 * height / 7,
 				},
 				'Governance and Policy': {
-					labelX: width - 75,
-					labelY: height - 25,
+					labelX: width - 20,
+					labelY: height - 30,
+					align: 'end',
 					x: 6 * width / 7,
 					y: 6 * height / 7,
 				},
@@ -149,27 +153,28 @@
 			.attr('class', 'legend-group');
 
 		const categoryLabelGroup = legendGroup.append('g')
-			.attr('transform', 'translate(0, 50)');
+			.attr('transform', 'translate(0, 40)');
 
 		categoryLabelGroup.append('text')
-			.attr('transform', 'translate(25, -25)')
+			.attr('transform', 'translate(0, -25)')
 			.style('font-weight', 600)
 			.text('Color = Organization Type');
 
 		const categoryLabels = categoryLabelGroup.selectAll('g')
 			.data(allCategories)
 			.enter()
-			.append('g');
+			.append('g')
+			.attr('transform', 'translate(0, 10)');
 
 		categoryLabels.append('text')
-			.attr('transform', (d, i) => `translate(100, ${i * 50})`)
+			.attr('transform', (d, i) => `translate(25, ${i * 30})`)
 			.style('font-size', '1.1em')
-			.html(d => wordWrap(d, 20, 0, 0));
+			.text(d => d);
 
 		categoryLabels.append('rect')
-			.attr('transform', (d, i) => `translate(25, ${(i * 50) - 12})`)
-			.attr('width', 40)
-			.attr('height', 40)
+			.attr('transform', (d, i) => `translate(0, ${(i * 30) - 16})`)
+			.attr('width', 20)
+			.attr('height', 20)
 			.attr('rx', 6)
 			.attr('ry', 6)
 			.style('fill', d => nodeColors(d))
@@ -178,12 +183,12 @@
 			.style('stroke-opacity', 1);
 
 		legendGroup.append('text')
-			.attr('transform', 'translate(25, 450)')
+			.attr('transform', 'translate(0, 250)')
 			.style('font-weight', 600)
 			.html(wordWrap('Circle Size = Number of Policies Stakeholder is mandated by', 40, 0, 0));
 
 		const legendCircleGroup = legendGroup.append('g')
-			.attr('transform', 'translate(80, 500)')
+			.attr('transform', 'translate(55, 287)')
 			.selectAll('g')
 			.data([1, 2, 4])
 			.enter()
@@ -294,11 +299,11 @@
 		};
 
 		const simulation = d3.forceSimulation(nodes)
-			.force('collide', d3.forceCollide(d => d.radius - (d.radius / 10)).strength(2)) // dynamic collision 10%
+			.force('collide', d3.forceCollide(d => d.radius - (d.radius / 10)).strength(1)) // dynamic collision 10%
 			.force('x', d3.forceX(d => forceCluster(d, 'x'))
-				.strength(0.75))
+				.strength(0.5))
 			.force('y', d3.forceY(d => forceCluster(d, 'y'))
-				.strength(0.75))
+				.strength(0.5))
 			.force('edge-collision', edgeCollision())
 			.alphaMin(0.001);
 
@@ -373,8 +378,8 @@
 			.append('text')
 			.style('font-size', '1.2em')
 			.style('font-weight', 600)
-			.style('text-anchor', 'middle')
-			.html(d => wordWrap(d, 20, roleAnchors[d].labelX, roleAnchors[d].labelY));
+			.style('text-anchor', d => roleAnchors[d].align)
+			.html(d => wordWrap(d, 14, roleAnchors[d].labelX, roleAnchors[d].labelY));
 
 
 	};
