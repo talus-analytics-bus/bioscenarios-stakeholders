@@ -94,12 +94,12 @@
 
         const policyData = eventLabelsLower.map((d, i) => {
             return {
-                count: policyEventData.filter( (x) => d === x['Timeline Event']).length,
+                count: policyEventData.filter( (x) => d.toLowerCase() === x['Timeline Event'].toLowerCase()).length,
 				eventName: d
             };
 		});
 
-        let a = policyEventData.filter( d=> d['Timeline Event'] == 'Case identified by medical professionals');
+
 		// Colours
 		const backgroundColors = ['#94A0C3', 'white'];
 		const legendColor = '#f7f8fa';
