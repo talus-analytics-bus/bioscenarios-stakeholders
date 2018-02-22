@@ -31,12 +31,17 @@
             [xTmpCorrd += 60, yTmpCoord-= 15], // define and identify cases
             [xTmpCorrd += 30, yTmpCoord-= 12], // implement control and prevention measures
             // suspicion of deliberate use
-            [xTmpCorrd += 63, yTmpCoord-= 3], // monitor and treat new cases
-            [xTmpCorrd=383, yTmpCoord= 190], 
-            [xTmpCorrd = 500, yTmpCoord= 152], 
-            [xTmpCorrd += 12, yTmpCoord -= 7],
-            [xTmpCorrd += 12, yTmpCoord-= 6], 
-            [xTmpCorrd = 605, yTmpCoord = 100], 
+            [xTmpCorrd += 78, yTmpCoord-= 38], // monitor and treat new cases
+            // investigative response
+            [xTmpCorrd = 500, yTmpCoord= 95], // continued medical response to cases
+            // state request for assistance
+            // WHO PHE declared
+            [xTmpCorrd = 660, yTmpCoord= 123], // continued epidemiological investigation
+            [xTmpCorrd = 680, yTmpCoord = 136], // increased prevention and control measures
+            // Response and recovery
+            [xTmpCorrd = 765, yTmpCoord = 185], // monitor for new cases
+            // Confirmation of deliberate use
+            [xTmpCorrd = 850, yTmpCoord = 221], // Sanctions issued
             [xTmpCorrd =710, yTmpCoord=68],
             [xTmpCorrd += 12, yTmpCoord-= 1], 
             [xTmpCorrd = 820, yTmpCoord = 99],
