@@ -107,12 +107,18 @@
 		}
 		parseData();
 
+		let minRadius;
+		if (eventName === null) {
+			minRadius = 2;
+		} else {
+			minRadius = 20;
+		}
 		const nodes = data.map((d, i) => {
 			return {
 				index: i,
 				type: d.type,
 				cluster: d.roles,
-				radius: Math.pow(d.size, nodeScaling) * baseNodeSize + 20,
+				radius: Math.pow(d.size, nodeScaling) * baseNodeSize + minRadius,
 				text: d.name,
 				x: 0,
 				y: 0,
@@ -312,9 +318,11 @@
 			.style('stroke', d => d3.color(nodeColors(d.type)).darker())
 			.style('stroke-opacity', 1);
 
-		nodeGroup.append('text')
-			.style('fill', 'white')
-			.style('text-anchor', 'middle');
+		if (eventName !== null) {
+			nodeGroup.append('text')
+				.style('fill', 'white')
+				.style('text-anchor', 'middle');
+		}
 
 		nodeGroup.each(function(d, i) {
 			const content = `<b>${d.text}</b><br><i>${d.type}</i><br>${d.cluster}<br><b>Number of Mandates</b> ${d.size}`;
@@ -330,23 +338,25 @@
 				.attr('cx', d => d.x)
 				.attr('cy', d => d.y);
 
-			nodeGroup.selectAll('text')
-				.attr('x', d => {
-					return d.x;
-				})
-				.attr('y', d => {
-					return d.y;
-				})
-				.html(d => {
-					if (d.radius > 60) {
-						return wordWrap(d.text, 30, d.x, d.y);
-					} else {
-						const shortName = getShortName(d.text);
-						if (shortName !== d.text) {
-							return shortName;
+			if (eventName !== null) {
+				nodeGroup.selectAll('text')
+					.attr('x', d => {
+						return d.x;
+					})
+					.attr('y', d => {
+						return d.y;
+					})
+					.html(d => {
+						if (d.radius > 60) {
+							return wordWrap(d.text, 30, d.x, d.y);
+						} else {
+							const shortName = getShortName(d.text);
+							if (shortName !== d.text) {
+								return shortName;
+							}
 						}
-					}
-				});
+					});
+			}
 		};
 
 		simulation

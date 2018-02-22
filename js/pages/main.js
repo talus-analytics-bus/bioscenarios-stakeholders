@@ -54,6 +54,29 @@
 					previousEvent = event;
 				}
 			});
+
+			$('input[type=checkbox][value=alignbox]').on('change', function() {
+				const isChecked = $(this).prop('checked');
+				if (isChecked) {
+					d3.select('.donut-chart').select('svg').remove();
+					donut = App.initDonut(
+						'.donut-chart',
+						null,
+						roleData,
+						stakeholderData,
+						0.8
+					);
+				} else {
+					d3.select('.donut-chart').select('svg').remove();
+					donut = App.initDonut(
+						'.donut-chart',
+						previousEvent || timelineData[0]['Timeline Event'],
+						roleData,
+						stakeholderData,
+						2
+					);
+				}
+			});
 		}
 
 
