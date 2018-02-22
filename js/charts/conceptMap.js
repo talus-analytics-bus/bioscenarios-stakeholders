@@ -270,11 +270,16 @@
 			});
 		}
 
+		// EDGE NODES
+		// LEFT
 		const leftGroup = chart.append('g')
 			.attr('class', 'left-group')
 			.selectAll('g')
 			.data(['UN Organizations', ...allOrgs.filter(d => allUNOrgs.includes(d.abbrev))])
-			.enter();
+			.enter()
+			.append('g')
+			.on('mouseover', mouseoverOrg)
+			.on('mouseout', mouseoutOrg);
 
 		leftGroup.append('g')
 			.append('text')
@@ -312,7 +317,10 @@
 			.attr('class', 'right-group')
 			.selectAll('g')
 			.data(nonUNTitles.concat(allOrgs.filter(d => allNonUNOrgs.includes(d.abbrev))))
-			.enter();
+			.enter()
+			.append('g')
+			.on('mouseover', mouseoverOrg)
+			.on('mouseout', mouseoutOrg);
 
 		rightGroup.append('g')
 			.append('text')
@@ -345,6 +353,28 @@
 			.style('fill-opacity', 1)
 			.style('stroke', circleColor)
 			.style('stroke-width', 2);
+
+		// ORG MOUSE EVENTS
+		function mouseoverOrg(d) {
+			d3.select(`[value="${d.abbrev}"]`).style('fill', 'black');
+			d3.selectAll(`[start="${d.abbrev}"]`).style('stroke', selectedLineColor);
+			d3.selectAll(`[start="${d.abbrev}"]`).each(function() {
+				const policyName = d3.select(this).attr('end');
+				d3.selectAll(`[value="rect ${policyName}"]`).style('fill', selectedRectColor);
+				d3.selectAll(`[value="recttext ${policyName}"]`).style('fill', 'black');
+			});
+		}
+
+		function mouseoutOrg(d) {
+			d3.select(`[value="${d.abbrev}"]`).style('fill', 'white');
+			d3.selectAll(`[start="${d.abbrev}"]`).style('stroke', lineColor);
+			d3.selectAll(`[start="${d.abbrev}"]`).each(function() {
+				const policyName = d3.select(this).attr('end');
+				d3.selectAll(`[value="rect ${policyName}"]`).style('fill', `url(#timeline-gradient-${gradientIndex})`);
+				d3.selectAll(`[value="recttext ${policyName}"]`).style('fill', textColor);
+			});
+		}
+
 
 		// Time to draw lines
 		const lineGroup = chart.append('g')
