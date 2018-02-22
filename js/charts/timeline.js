@@ -163,7 +163,7 @@
 		// Upper left label
 		const title = chart.append('text')
 			.attr('class', 'top-description-title')
-			.attr('transform', 'translate(35, 40)')
+			.attr('transform', 'translate(10, 40)')
 			.attr('fill', textBoldColor)
 			.style('font-size', '0.8em')
 			.text('EPIDEMIOLOGICAL CURVE');
@@ -171,7 +171,7 @@
 		// Event Label
 		const whatEvent = chart.append('text')
 			.attr('class', 'what-event-is-it')
-			.attr('transform', 'translate(35, 53)')
+			.attr('transform', 'translate(10, 53)')
 			.attr('fill', textBoldColor)
 			.attr('font-style', 'italic')
 			.style('font-size', '0.8em')
@@ -181,7 +181,7 @@
 		// day label
 		const whatDay = chart.append('text')
 			.attr('class', 'what-day-is-it')
-			.attr('transform', 'translate(35, 66)')
+			.attr('transform', 'translate(10, 66)')
 			.attr('fill', textBoldColor)
 			.attr('font-style', 'italic')
 			.style('font-size', '0.8em')
