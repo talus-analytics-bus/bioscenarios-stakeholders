@@ -80,8 +80,6 @@
             });
 
 
-
-		// TODO => rationalize data
 		const eventLabels = data.filter( (x) => x.hasAssociatedPolicies !== 'FALSE')
             .map(d => d.eventName.toUpperCase());
 		const eventLabelsLower = data.filter( (x) => x.hasAssociatedPolicies !== 'FALSE')
@@ -280,6 +278,8 @@
 			.attr('cy', d => y(d.numCases))
 			.attr('r', '4')
 			.attr('class', (d, i) => (i === 0) ? 'selected-circle' : '')
+			.attr('stroke', noTimeEventColor)
+            .attr('stroke-width', 0.75)
 			.attr('fill', (d, i) => {
                 if (i === 0) {
 			      return selectedPointColor;
