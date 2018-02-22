@@ -2,11 +2,22 @@
 	App.initTimeline = (selector, rawData, policyEventData, param = {}) => {
 		const margin = {top: 25, right: 25, bottom: 50, left: 25};
 		const width = param.width || 1000;
-		const height = width * 0.3;
+		const height = width * 0.25;
 
-		//const cases = [10, 10, 20, 30, 50, 70, 70, 40, 10, 5];
+
         const cases = [10, 10, 20, 30, 50, 70, 70, 40, 10, 5];
-		const data = rawData//.filter( (x) => x['Has associated policies'] !== 'FALSE')
+        let xTmpCorrd = 243;
+        let yTmpCoord = 222;
+        // This data set statically places the noTimeCase circles onto the line. To move the circles, you need to
+		// manipulate the coordinates here. These are relative to the case events.
+		const noTimeCases = [
+			[xTmpCorrd, yTmpCoord], [xTmpCorrd += 12, yTmpCoord-=1], [xTmpCorrd += 12, yTmpCoord-=2],
+            [xTmpCorrd += 12, yTmpCoord-= 3], [xTmpCorrd += 12, yTmpCoord-= 4], [xTmpCorrd += 12, yTmpCoord-= 3],
+            [xTmpCorrd=383, yTmpCoord= 190], [xTmpCorrd = 500, yTmpCoord= 152], [xTmpCorrd += 12, yTmpCoord -= 7],
+            [xTmpCorrd += 12, yTmpCoord-= 6], [xTmpCorrd = 605, yTmpCoord = 100], [xTmpCorrd =710, yTmpCoord=68],
+            [xTmpCorrd += 12, yTmpCoord-= 1], [xTmpCorrd = 820, yTmpCoord = 99],
+			];
+		const data = rawData
             .map((d, i) => {
 			return {
 				eventName: d['Timeline Event'],
@@ -16,7 +27,22 @@
                 hasAssociatedPolicies: d['Has associated policies'],
 			};
 		});
-        let caseNumber = 10;
+
+		// The noTimeline case details are here
+		const noCaseEventCircles = rawData.filter( (x) => x['Has associated policies'] !== 'TRUE')
+            .map((d, i) => {
+                return {
+                    eventName: d['Timeline Event'],
+                    eventDescription: d['Timeline Event Description'],
+                    //numCases: i,
+					position: i,
+
+                    alwaysOccurs: d['Always occurs'],
+                    hasAssociatedPolicies: d['Has associated policies'],
+                };
+            });
+
+
 		const filterData = rawData.filter( (x) => x['Has associated policies'] !== 'FALSE')
             .map((d, i) => {
                 return {
@@ -28,12 +54,24 @@
                     hasAssociatedPolicies: d['Has associated policies'],
                 };
             });
+
+
+
 		// TODO => rationalize data
 		const eventLabels = data.filter( (x) => x.hasAssociatedPolicies !== 'FALSE')
             .map(d => d.eventName.toUpperCase());
 		const eventLabelsLower = data.filter( (x) => x.hasAssociatedPolicies !== 'FALSE')
             .map(d => d.eventName);
 
+
+        const policyData = eventLabelsLower.map((d, i) => {
+            return {
+                count: policyEventData.filter( (x) => d === x['Timeline Event']).length,
+				eventName: d
+            };
+		});
+
+        let a = policyEventData.filter( d=> d['Timeline Event'] == 'Case identified by medical professionals');
 		// Colours
 		const backgroundColors = ['#94A0C3', 'white'];
 		const legendColor = '#f7f8fa';
@@ -43,8 +81,9 @@
         const alwaysOccursPointColor = '#000000';
 		const selectedPointColor = '#C91414';
 		const highlightColor = '#000000';
-		const scatterlineColor = '#2d9de2';
+		const scatterlineColor = '#082B84';
 		const selectedTimelineGroup = '#C91414';
+		const noTimeEventColor = '#000000';
 
 
 		// add chart to DOM
@@ -152,10 +191,11 @@
 			.attr('d', line);
 
 		// draw the policy graph
-		const scatterline = chart.append('g')
+		const scatterline = chart.append('g').attr('class', 'policy-tract-group')
 			.attr('transform', `translate(0, ${height + 5})`);
 
 		scatterline.append('rect')
+			.attr('class', 'policy-tract-container')
 			.attr('width', width)
 			.attr('height', 45)
 			.attr('fill', 'url(#timeline-gradient)');
@@ -169,12 +209,14 @@
 			.text('Policies');
 
 		scatterline.append('g')
+			.attr('class', 'policy-tract-markers')
 			.selectAll('rect')
-			.data(policyEventData)
+			.data(policyData)
 			.enter()
 			.append('rect')
-			.attr('x', d => x(d['Timeline Event'].toUpperCase()))
-			.attr('width', 5)
+			.attr('class', (d, i) => `policy-tract-${i}`)
+			.attr('x', d => x(d.eventName.toUpperCase()) - d.count)
+			.attr('width', d=> d.count*2)
 			.attr('height', 45)
 			.style('fill', scatterlineColor);
 
@@ -254,7 +296,7 @@
 			.attr('class', 'event-label')
 			.attr('fill', (d, i) => (i === 0) ? 'black' : textColor)
 			.attr('text-anchor', 'middle')
-			.style('font-size', (d, i) => (i === 0) ? '1.1em' : '0.75em')
+			.style('font-size', (d, i) => (i === 0) ? '0.9em' : '0.70em')
 			.style('font-weight', (d, i) => (i === 0) ? 600 : '')
 			.html(function (d) {
 				return wordWrap(
@@ -264,16 +306,21 @@
 					y(d.numCases) - 20);
 			});
 
-		const rectWidth = 120;
-		const markerWidth = rectWidth / 2;
-		const markerHeight = height / 12;
 
-		let previousSelectedPointColor = pointColor;
+
+        // you need to remember the previous color so that you can reset it
+        // once it is deselected
+        let previousSelectedPointColor = pointColor;
+
+        const rectWidth = 120;
+        const rectHeight = 300;
+        const markerWidth = 60;
+        const markerHeight = 25;
 
 		eventGroup.append('rect')
 			.attr('x', d => x(d.eventName.toUpperCase()) - (rectWidth / 2))
 			.attr('width', rectWidth)
-			.attr('height', height + 10 + (height / 8))
+			.attr('height', rectHeight)
 			.attr('class', 'event-highlight-rect')
 			.attr('value', d => d.eventName.toUpperCase())
 			.style('fill', highlightColor)
@@ -285,10 +332,13 @@
 					.style('fill-opacity', 0);
 				d3.selectAll('.event-label')
 					.style('fill', textColor)
-					.style('font-size', '0.75em');
+					.style('font-size', '0.70em');
 
                 d3.selectAll('.event-marker-highlight-icon')
                     .style('visibility', 'hidden');
+
+                d3.selectAll('.policy-tract-markers rect')
+					.style('fill', scatterlineColor);
 
                 d3.select('.selected-circle')
 					.attr('class', '')
@@ -300,7 +350,7 @@
 				// now set text
 				const group = d3.select(`.event-group-${i}`);
 				group.selectAll('text')
-					.style('font-size', '1.1em')
+					.style('font-size', '0.9em')
 					.style('fill', 'black')
 					.style('font-weight', 600);
 				// now set rect
@@ -322,6 +372,10 @@
 				// Set red marker
                 d3.select(this.nextElementSibling)
                    .style('visibility', 'visible');
+
+                // Set the policy rectangle red as well
+				d3.select(`.policy-tract-${i}`)
+					.style('fill', selectedPointColor);
 
 				// now update labels
 				whatEvent.text(d.eventName)
@@ -368,8 +422,34 @@
             .attr('stroke-width', 1)
             .attr('stroke', 'white');
 
+        // Add the circles to the line. These are statically placed. These only show the event name within the tooltip
+        const noTimelineEvent = chart.append('g').attr('class', 'no-timeline-event-details')
+            .selectAll('g')
+            .data(noCaseEventCircles)
+            .enter()
+            .append('g')
+            .attr('class', (d, i) => `no-timeline-event-group-${i}`);
+        noTimelineEvent.append('circle')
+            .attr('cx', d => noTimeCases[d.position][0])
+            .attr('cy', d => noTimeCases[d.position][1])
+            .attr('r', '4')
+            .attr('class', '')
+            .attr('stroke', noTimeEventColor)
+			.attr('fill', '#e6e9f1')
+            .each(function(d) {
+                const content = `<b>${d.eventName}</b>`;
+                return $(this).tooltipster({
+                    content: content,
+                    trigger: 'hover',
+                    side: 'bottom',
+                });
+            });
+
         d3.selectAll('.event-marker-highlight-icon')
             .style('visibility', 'hidden'); // start with all of the red marker widgets hidden
+
+		d3.select('.policy-tract-0')
+			.style('fill', selectedPointColor);
 
 		d3.select('.event-marker-highlight-icon')
             .style('visibility', 'visible');
