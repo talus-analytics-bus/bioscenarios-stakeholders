@@ -1,7 +1,7 @@
 (() => {
 	App.initTimeline = (selector, rawData, policyEventData, param = {}) => {
-		const margin = {top: 25, right: 25, bottom: 50, left: 25};
-		const width = param.width || 1000;
+		const margin = {top: 25, right: 25, bottom: 50, left: 0};
+		const width = param.width || 1125;
 		const height = width * 0.25;
 
 		// How high should the y axis be?
@@ -327,8 +327,8 @@
 			.attr('class', 'event-label')
 			.attr('fill', (d, i) => (i === 0) ? 'black' : textColor)
 			.attr('text-anchor', 'middle')
-			.style('font-size', (d, i) => (i === 0) ? '0.70em' : '0.70em')
-			.style('font-weight', (d, i) => (i === 0) ? 600 : '')
+			.style('font-size', '1em')
+			.style('font-weight', 300)
 			.html(function (d) {
 				return wordWrap(
 					d.eventName,
@@ -363,7 +363,8 @@
 					.style('fill-opacity', 0);
 				d3.selectAll('.event-label')
 					.style('fill', textColor)
-					.style('font-size', '0.70em');
+					.style('font-size', '1em')
+					.style('font-weight', 300);
 
                 d3.selectAll('.event-marker-highlight-icon')
                     .style('visibility', 'hidden');
@@ -381,7 +382,7 @@
 				// now set text
 				const group = d3.select(`.event-group-${i}`);
 				group.selectAll('text')
-					.style('font-size', '0.7em')
+					.style('font-size', '1em')
 					.style('fill', 'black')
 					.style('font-weight', 600);
 				// now set rect

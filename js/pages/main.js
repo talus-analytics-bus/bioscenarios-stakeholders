@@ -64,7 +64,7 @@
 						null,
 						roleData,
 						stakeholderData,
-						0.8
+						1.5
 					);
 				} else {
 					d3.select('.donut-chart').select('svg').remove();
