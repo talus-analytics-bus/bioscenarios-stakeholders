@@ -77,7 +77,7 @@
 		const height = 1000;
 		const width = 1.2 * height;
 		const rectHeight = 40;
-		const rectWidth = 300;
+		const rectWidth = 400;
 
 		const timelineEvents = ['Case in humans', ...new Set(rawData.map(d => {
 			return d['Timeline Event'];
@@ -196,10 +196,10 @@
 		chart.append('g').attr('class', 'main-title')
 			.append('text')
 			.attr('x', 25)
-			.attr('y', -470)
+			.attr('y', -(innerRange + 25))
 			.attr('dy', 0.35)
 			.attr('text-anchor', 'middle')
-			.style('font-size', '18px')
+			.style('font-size', '16px')
 			.style('font-weight', '600')
 			.style('fill', titleColor)
 			.text(eventName.toUpperCase())
@@ -214,7 +214,7 @@
 
 		let gradientIndex = getGradient(eventName);
 		rectGroup.append('rect')
-			.attr('transform', 'translate(10)')
+			.attr('transform', 'translate(25)')
 			.attr('x', -rectWidth / 2)
 			.attr('y', innerNodesScale)
 			.attr('height', rectHeight)
@@ -225,14 +225,15 @@
 			.on('mouseout', mouseoutRect);
 
 		rectGroup.append('text')
+			.attr('transform', 'translate(25)')
 			.attr('x', 0)
 			.attr('y', d => innerNodesScale(d) + (rectHeight / 2))
 			.style('fill', rectTextColor)
 			.style('text-anchor', 'middle')
-			.style('font-size', '0.75em')
+			.style('font-size', '0.9')
 			.attr('value', d => `recttext ${d}`)
 			.html(d => {
-				const wrapped = wordWrap(d, rectWidth / 6, 0, innerNodesScale(d) + (rectHeight / 2));
+				const wrapped = wordWrap(d, rectWidth / 8, 0, innerNodesScale(d) + (rectHeight / 2));
 				if (wrapped.split('tspan').length === 7) {  // if there are 3 lines of text, shift it lower
 					const newWrapped = wordWrap(d, rectWidth / 6, 0, innerNodesScale(d) + (rectHeight / 2) + 6);
 					return newWrapped;
@@ -245,7 +246,6 @@
 
 		function mouseoverRect(d) {
 			d3.select(`[value="recttext ${d}"`).style('fill', 'black');
-			d3.select(`[value="recttext ${d}"`).style('font-size', '0.75em');
 			// when you mouse over a rectangle, make the font slightly more heavily weighted for emphasis
 			d3.select(`[value="recttext ${d}"`).style('font-weight', '500');
 			d3.select(`[value="rect ${d}"]`).style('fill', selectedRectColor);
@@ -259,7 +259,6 @@
 
 		function mouseoutRect(d, i) {
 			d3.select(`[value="recttext ${d}"`).style('fill', rectTextColor);
-			d3.select(`[value="recttext ${d}"`).style('font-size', '0.75em');
 			d3.select(`[value="recttext ${d}"`).style('font-weight', '300');
 			d3.select(`[value="rect ${d}"]`).style('fill', `url(#timeline-gradient-${gradientIndex})`);
 			d3.selectAll(`[end="${d}"]`).style('stroke', lineColor);
@@ -400,7 +399,7 @@
 				}
 				const startx = xscale(d.abbrev) - (sign * 13);
 				const starty = yscale(d.abbrev) - 5;
-				const endx = sign * rectWidth / 2 + 10;
+				const endx = sign * rectWidth / 2 + 25;
 				const endy = innerNodesScale(d['Policy Document']) + (rectHeight / 2);
 				return line([
 					{

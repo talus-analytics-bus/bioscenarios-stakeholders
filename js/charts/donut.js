@@ -294,11 +294,11 @@
 		};
 
 		const simulation = d3.forceSimulation(nodes)
-			.force('collide', d3.forceCollide(d => d.radius - (d.radius / 10)).strength(0.5)) // dynamic collision 10%
+			.force('collide', d3.forceCollide(d => d.radius - (d.radius / 10)).strength(2)) // dynamic collision 10%
 			.force('x', d3.forceX(d => forceCluster(d, 'x'))
-				.strength(1))
+				.strength(0.75))
 			.force('y', d3.forceY(d => forceCluster(d, 'y'))
-				.strength(1))
+				.strength(0.75))
 			.force('edge-collision', edgeCollision())
 			.alphaMin(0.001);
 
