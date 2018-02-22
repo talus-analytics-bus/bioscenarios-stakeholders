@@ -41,6 +41,7 @@
 
 		const allNonUNOrgs = allOrgs
 			.filter(d => !allUNOrgs.includes(d.abbrev))
+			.sort((a, b) => a.category > b.category)
 			.map(d => d.abbrev);
 
 		/* CONSTANTS */
@@ -53,7 +54,8 @@
 			return d['Timeline Event'];
 		}))];
 
-		// these are the gradients behind the time line events. these will be used in the policy documents and stakeholders graphic
+		// these are the gradients behind the time line events.
+		// these will be used in the policy documents and stakeholders graphic
 		const timelineEventGradients = [
 			['#f7f8fa', '#f4f6f9'],
 			['#f4f6f9', '#e9ecf3'],
@@ -210,30 +212,44 @@
 			d3.select(`[value="recttext ${d}"`).style('font-weight', '500');
 			d3.select(`[value="rect ${d}"]`).style('fill', selectedRectColor);
 			d3.selectAll(`[end="${d}"]`).style('stroke', selectedRectColor);
+
+			d3.selectAll(`[end="${d}"]`).each(function() {
+				const circleName = d3.select(this).attr('start');
+				d3.selectAll(`[value="${circleName}"]`).style('fill', selectedRectColor);
+			});
 		}
 
-		function mouseoutRect(d) {
+		function mouseoutRect(d, i) {
 			d3.select(`[value="recttext ${d}"`).style('fill', rectTextColor);
 			d3.select(`[value="recttext ${d}"`).style('font-size', '0.75em');
 			d3.select(`[value="recttext ${d}"`).style('font-weight', '300');
-			d3.select(`[value="rect ${d}"]`).style('fill', rectColor);
+			d3.select(`[value="rect ${d}"]`).style('fill', `url(#timeline-gradient-${gradientIndex})`);
 			d3.selectAll(`[end="${d}"]`).style('stroke', lineColor);
+
+			d3.selectAll(`[end="${d}"]`).each(function() {
+				const circleName = d3.select(this).attr('start');
+				d3.selectAll(`[value="${circleName}"]`).style('fill', 'white');
+			});
 		}
 
 		const leftGroup = chart.append('g')
 			.attr('class', 'left-group')
 			.selectAll('g')
-			.data(allOrgs.filter(d => allUNOrgs.includes(d.abbrev)))
+			.data(['UN Organizations', ...allOrgs.filter(d => allUNOrgs.includes(d.abbrev))])
 			.enter();
 
 		leftGroup.append('g')
 			.append('text')
-			.attr('x', d => leftOrgsCurve(d.abbrev))
-			.attr('y', d => leftOrgsScale(d.abbrev))
-			.style('fill', textColor)
+			.attr('x', d => leftOrgsCurve(d.abbrev || d))
+			.attr('y', d => leftOrgsScale(d.abbrev || d))
+			.style('fill', d => (d.abbrev === undefined) ? 'black' : textColor)
 			.style('text-anchor', 'end')
-			.text(d => d.abbrev)
+			.text(d => d.abbrev || d)
+			.style('font-weight', d => (d.abbrev === undefined) ? 600 : 300)
 			.each(function (d) {
+				if (d === 'UN Organizations') {
+					return;
+				}
 				const content = `<b>${d.name}</b> <br> Overall Role: ${d.role}`;
 				return $(this).tooltipster({
 					content: content,
@@ -247,7 +263,7 @@
 		leftCircles.append('circle')
 			.attr('cx', d => leftOrgsCurve(d.abbrev) + 10)
 			.attr('cy', d => leftOrgsScale(d.abbrev) - 5)
-			.attr('r', 5.2)
+			.attr('r', d => (d.abbrev === undefined) ? 0 : 5.2)
 			.attr('value', d => d.abbrev)
 			.style('fill', 'white')
 			.style('fill-opacity', 1)
@@ -280,7 +296,7 @@
 		rightCircles.append('circle')
 			.attr('cx', d => rightOrgsCurve(d.abbrev) - 10)
 			.attr('cy', d => rightOrgsScale(d.abbrev) - 5)
-			.attr('r', 5.2)
+			.attr('r', d => (d.abbrev === undefined) ? 0 : 5.2)
 			.attr('value', d => d.abbrev)
 			.style('fill', 'white')
 			.style('fill-opacity', 1)
