@@ -39,10 +39,39 @@
 				.filter(d => d.category.toUpperCase() === 'UN ORGANIZATIONS')
 				.map(d => d.abbrev));
 
-		const allNonUNOrgs = allOrgs
+		var nonUNTitles = [
+			{
+				category: 'Affected Member State',
+			},
+			{
+				category: 'Non-affected Member States',
+			},
+			{
+				category: 'Non-UN International Organizations',
+			},
+			{
+				category: 'NGOs',
+			},
+			{
+				category: 'Private Sector',
+			},
+		];
+		const allNonUNOrgs = allOrgs.concat(nonUNTitles)
 			.filter(d => !allUNOrgs.includes(d.abbrev))
-			.sort((a, b) => a.category > b.category)
-			.map(d => d.abbrev);
+			.sort((a, b) => {
+				if (a.category === b.category) {
+					if (b.abbrev === undefined) {
+						return true;
+					} else {
+						return a.abbrev < b.abbrev;
+					}
+				} else {
+					return a.category > b.category;
+				}
+			})
+			.map(d => d.abbrev || d.category);
+
+		nonUNTitles = nonUNTitles.map(d => d.category);
 
 		/* CONSTANTS */
 		const height = 1000;
@@ -90,7 +119,9 @@
 		//const titleColor = '#076eb5';
 		const titleColor = '#000000';
 		const rectColor = '#e6e6e5';
-		const selectedRectColor = '#2d9de2';
+		// const selectedRectColor = '#2d9de2';
+		const selectedRectColor = '#94A0C3';
+		const selectedLineColor = 'black';
 		const rectTextColor = '#808080';
 		const textColor = '#989898';
 		const circleColor = '#cccbcb';
@@ -218,11 +249,11 @@
 			// when you mouse over a rectangle, make the font slightly more heavily weighted for emphasis
 			d3.select(`[value="recttext ${d}"`).style('font-weight', '500');
 			d3.select(`[value="rect ${d}"]`).style('fill', selectedRectColor);
-			d3.selectAll(`[end="${d}"]`).style('stroke', selectedRectColor);
+			d3.selectAll(`[end="${d}"]`).style('stroke', selectedLineColor);
 
 			d3.selectAll(`[end="${d}"]`).each(function() {
 				const circleName = d3.select(this).attr('start');
-				d3.selectAll(`[value="${circleName}"]`).style('fill', selectedRectColor);
+				d3.selectAll(`[value="${circleName}"]`).style('fill', selectedLineColor);
 			});
 		}
 
@@ -278,18 +309,23 @@
 			.style('stroke-width', 2);
 
 		const rightGroup = chart.append('g')
+			.attr('class', 'right-group')
 			.selectAll('g')
-			.data(allOrgs.filter(d => allNonUNOrgs.includes(d.abbrev)))
+			.data(nonUNTitles.concat(allOrgs.filter(d => allNonUNOrgs.includes(d.abbrev))))
 			.enter();
 
-		rightGroup.append('g').attr('class', 'right-group')
+		rightGroup.append('g')
 			.append('text')
-			.attr('x', d => rightOrgsCurve(d.abbrev))
-			.attr('y', d => rightOrgsScale(d.abbrev))
-			.style('fill', textColor)
+			.attr('x', d => rightOrgsCurve(d.abbrev || d))
+			.attr('y', d => rightOrgsScale(d.abbrev || d))
+			.style('fill', d => (d.abbrev === undefined) ? 'black' : textColor)
+			.style('font-weight', d => (d.abbrev === undefined) ? 600 : 300)
 			.style('text-anchor', 'start')
-			.text(d => d.abbrev)
+			.text(d => d.abbrev || d)
 			.each(function (d) {
+				if (nonUNTitles.includes(d)) {
+					return;
+				}
 				const content = `<b>${d.name} </b><br> Overall Role: ${d.role}`;
 				return $(this).tooltipster({
 					content: content,

@@ -1,5 +1,5 @@
 (() => {
-	App.initDonut = (selector, eventName, rawData, rawOrgInfo) => {
+	App.initDonut = (selector, eventName, rawData, rawOrgInfo, nodeScaling=2) => {
 		let data;
 		let allCategories;
 		let allRoles;
@@ -76,8 +76,15 @@
 				roleAnchors[k.toLowerCase()] = roleAnchors[k];
 			});
 
-			data = rawData.filter(d => d['Timeline Event'].toLowerCase() === eventName.toLowerCase())
-				.map(old => {
+			let filteredData;
+			if (eventName === null) {
+				filteredData = rawData;
+			} else {
+				filteredData = rawData
+					.filter(d => d['Timeline Event'].toLowerCase() === eventName.toLowerCase());
+			}
+
+			data = filteredData.map(old => {
 					var d = Object.assign({}, old);
 					const orgName = d['Stakeholder'].toLowerCase();
 					const orgRow = rawOrgInfo.filter(o => o['Stakeholder Name'].toLowerCase() === orgName);
@@ -105,7 +112,7 @@
 				index: i,
 				type: d.type,
 				cluster: d.roles,
-				radius: Math.pow(d.size, 2) * baseNodeSize + 20,
+				radius: Math.pow(d.size, nodeScaling) * baseNodeSize + 20,
 				text: d.name,
 				x: 0,
 				y: 0,
