@@ -1,13 +1,14 @@
 (() => {
 	App.initDonut = (selector, eventName, rawData, rawOrgInfo) => {
-
 		let data;
+		let allCategories;
+		let allRoles;
+		let roleAnchors;
 
 		const margin = {top: 25, right: 25, bottom: 50, left: 300};
 		const width = 800;
 		const height = width;
 		const baseNodeSize = 10;
-
 
 		/* STEP ONE => MASSAGE THE DATA */
 		//		  meow
@@ -16,214 +17,92 @@
 		//   > ^ <
 		//
 		// (there are cats here)
-		data = [{'name': 'VqdNMrLGWx',
-			'roles': ['Humanitarian Aid',
-				'Policy and Governance',
-				'Public Health and Medical'],
-			'size': 3,
-			'type': 'National Government (non-affected)'},
-			{'name': 'SLlQXOGeGT',
-				'roles': ['Safety and Security',
-					'Humanitarian Aid',
-					'Policy and Governance',
-					'Public Health and Medical'],
-				'size': 4,
-				'type': 'Private Sector'},
-			{'name': 'mUQGmacyVw',
-				'roles': ['Public Health and Medical',
-					'Humanitarian Aid',
-					'Policy and Governance'],
-				'size': 1,
-				'type': 'National Goverment (affected)'},
-			{'name': 'JxPFEiZWkV',
-				'roles': ['Policy and Governance', 'Humanitarian Aid'],
-				'size': 3,
-				'type': 'Private Sector'},
-			{'name': 'YCcdpgloBp',
-				'roles': ['Policy and Governance'],
-				'size': 2,
-				'type': 'National Government (non-affected)'},
-			{'name': 'QOjwXZYPtg',
-				'roles': ['Humanitarian Aid'],
-				'size': 2,
-				'type': 'National Government (non-affected)'},
-			{'name': 'fMpiXbtgxn',
-				'roles': ['Humanitarian Aid'],
-				'size': 2,
-				'type': 'United Nations Organizations'},
-			{'name': 'QnIVCNPUHa',
-				'roles': ['Policy and Governance', 'Humanitarian Aid'],
-				'size': 2,
-				'type': 'National Government (non-affected)'},
-			{'name': 'EfmepecYrG',
-				'roles': ['Humanitarian Aid',
-					'Policy and Governance',
-					'Safety and Security',
-					'Public Health and Medical'],
-				'size': 2,
-				'type': 'National Government (non-affected)'},
-			{'name': 'LvTpuoqzRE',
-				'roles': ['Safety and Security',
-					'Humanitarian Aid',
-					'Public Health and Medical'],
-				'size': 1,
-				'type': 'Private Sector'},
-			{'name': 'pryAmlSIgY',
-				'roles': ['Public Health and Medical',
-					'Humanitarian Aid',
-					'Safety and Security'],
-				'size': 4,
-				'type': 'National Goverment (affected)'},
-			{'name': 'DoyTtZdNdn',
-				'roles': ['Humanitarian Aid',
-					'Safety and Security',
-					'Public Health and Medical'],
-				'size': 3,
-				'type': 'United Nations Organizations'},
-			{'name': 'JOssORUPyH',
-				'roles': ['Policy and Governance',
-					'Humanitarian Aid',
-					'Public Health and Medical',
-					'Safety and Security'],
-				'size': 3,
-				'type': 'National Government (non-affected)'},
-			{'name': 'oqlyPBtAIN',
-				'roles': ['Policy and Governance'],
-				'size': 3,
-				'type': 'United Nations Organizations'},
-			{'name': 'kczimRbsRc',
-				'roles': ['Humanitarian Aid', 'Public Health and Medical'],
-				'size': 3,
-				'type': 'United Nations Organizations'},
-			{'name': 'OTHVuXQwki',
-				'roles': ['Safety and Security'],
-				'size': 3,
-				'type': 'United Nations Organizations'},
-			{'name': 'GRkoIgavEe',
-				'roles': ['Safety and Security'],
-				'size': 3,
-				'type': 'Private Sector'},
-			{'name': 'SziEEurhna',
-				'roles': ['Safety and Security',
-					'Policy and Governance',
-					'Public Health and Medical',
-					'Humanitarian Aid'],
-				'size': 4,
-				'type': 'National Goverment (affected)'},
-			{'name': 'VsdZEpWCEt',
-				'roles': ['Public Health and Medical',
-					'Safety and Security',
-					'Humanitarian Aid'],
-				'size': 1,
-				'type': 'United Nations Organizations'},
-			{'name': 'fqRDzbRUsQ',
-				'roles': ['Safety and Security',
-					'Public Health and Medical',
-					'Humanitarian Aid'],
-				'size': 4,
-				'type': 'United Nations Organizations'},
-			{'name': 'yUXfWTNRGx',
-				'roles': ['Policy and Governance'],
-				'size': 4,
-				'type': 'Private Sector'},
-			{'name': 'fQQLbykdnq',
-				'roles': ['Humanitarian Aid',
-					'Policy and Governance',
-					'Safety and Security',
-					'Public Health and Medical'],
-				'size': 3,
-				'type': 'National Goverment (affected)'},
-			{'name': 'frcJJpvKwd',
-				'roles': ['Humanitarian Aid'],
-				'size': 3,
-				'type': 'Private Sector'},
-			{'name': 'tzYmUDFAUL',
-				'roles': ['Policy and Governance', 'Humanitarian Aid'],
-				'size': 2,
-				'type': 'United Nations Organizations'},
-			{'name': 'AlPvkgAEjW',
-				'roles': ['Safety and Security', 'Public Health and Medical'],
-				'size': 1,
-				'type': 'Private Sector'},
-			{'name': 'TxKermyduJ',
-				'roles': ['Public Health and Medical',
-					'Policy and Governance',
-					'Safety and Security'],
-				'size': 3,
-				'type': 'National Government (non-affected)'},
-			{'name': 'GckKYLcBPR',
-				'roles': ['Public Health and Medical',
-					'Policy and Governance',
-					'Safety and Security'],
-				'size': 4,
-				'type': 'United Nations Organizations'},
-			{'name': 'qZhLEaLNRd',
-				'roles': ['Public Health and Medical',
-					'Policy and Governance',
-					'Humanitarian Aid'],
-				'size': 3,
-				'type': 'Non-Governmental Organizations'},
-			{'name': 'XpgQARmUEW',
-				'roles': ['Public Health and Medical'],
-				'size': 3,
-				'type': 'Private Sector'},
-			{'name': 'psBUDWaWLJ',
-				'roles': ['Safety and Security',
-					'Public Health and Medical',
-					'Humanitarian Aid',
-					'Policy and Governance'],
-				'size': 3,
-				'type': 'National Goverment (affected)'}];
-		const allCategories = [
-			'United Nations Organizations',
-			'National Goverment (affected)',
-			'Non-Governmental Organizations',
-			'Private Sector',
-			'National Government (non-affected)',
-		];
-		const allRoles = [
-			'Public Health and Medical',
-			'Humanitarian Aid',
-			'Safety and Security',
-			'Policy and Governance',
-		];
+		// data = [{'name': 'VqdNMrLGWx',
+		// 	'roles': ['Humanitarian Aid',
+		// 		'Policy and Governance',
+		// 		'Public Health and Medical'],
+		// 	'size': 3,
+		// 	'type': 'National Government (non-affected)'},
+		// 	{'name': 'SLlQXOGeGT',
+		// 		'roles': ['Safety and Security',
+		// 			'Humanitarian Aid',
+		// 			'Policy and Governance',
+		// 			'Public Health and Medical'],
+		// 		'size': 4,
+		// 		'type': 'Private Sector'}];
+		function parseData() {
+			allCategories = [
+				'United Nations Organizations',
+				'National Goverment (affected)',
+				'Non-Governmental Organizations',
+				'Private Sector',
+				'National Government (non-affected)',
+			];
+			allRoles = [
+				'Public Health and Medical',
+				'Humanitarian Aid',
+				'Safety and Security',
+				'Governance and Policy',
+			];
 
-		const roleAnchors = {
-			'Public Health and Medical': {
-				labelX: 100,
-				labelY: 25,
-				x: width / 7,
-				y: height / 7,
-			},
-			'Humanitarian Aid': {
-				labelX: width - 100,
-				labelY: 25,
-				x: 6 * width / 7,
-				y: height / 7,
-			},
-			'Safety and Security': {
-				labelX: 100,
-				labelY: height - 50,
-				x: width / 7,
-				y: 6 * height / 7,
-			},
-			'Policy and Governance': {
-				labelX: width - 100,
-				labelY: height - 50,
-				x: 6 * width / 7,
-				y: 6 * height / 7,
-			},
-		};
+			roleAnchors = {
+				'Public Health and Medical': {
+					labelX: 75,
+					labelY: 25,
+					x: width / 7,
+					y: height / 7,
+				},
+				'Humanitarian Aid': {
+					labelX: width - 75,
+					labelY: 25,
+					x: 6 * width / 7,
+					y: height / 7,
+				},
+				'Safety and Security': {
+					labelX: 75,
+					labelY: height - 25,
+					x: width / 7,
+					y: 6 * height / 7,
+				},
+				'Governance and Policy': {
+					labelX: width - 75,
+					labelY: height - 25,
+					x: 6 * width / 7,
+					y: 6 * height / 7,
+				},
+			};
+			Object.keys(roleAnchors).forEach(k => {
+				roleAnchors[k.toLowerCase()] = roleAnchors[k];
+			});
+
+			data = rawData.filter(d => d['Timeline Event'].toLowerCase() === eventName.toLowerCase())
+				.map(d => {
+					const orgName = d['Stakeholder'].toLowerCase();
+					const orgRow = rawOrgInfo.filter(o => o['Stakeholder Name'].toLowerCase() === orgName);
+					if (orgRow.length === 0) {
+						console.log(`error, ${orgName} has no associated data`);
+					} else {
+						Object.assign(d, orgRow[0]);
+					}
+					d.name = d['Stakeholder'];
+					d.roles = d['Stakeholder Role'].split(';').map(String.trim);
+					d.size = d['Mandates'].split(';').length;
+					d.type = d['Organization Category'];
+					return d;
+				});
+		}
+		parseData();
 
 		const nodes = data.map((d, i) => {
 			return {
 				index: i,
 				type: d.type,
 				cluster: d.roles,
-				radius: Math.pow(d.size, 1.4) * baseNodeSize,
+				radius: Math.pow(d.size, 2) * baseNodeSize + 15,
 				text: d.name,
 				x: 0,
 				y: 0,
+				size: d.size,
 			};
 		});
 
@@ -296,7 +175,7 @@
 			.attr('dy', d => (d * baseNodeSize * 4) - 5)
 			.style('text-anchor', 'middle')
 			.style('font-size', '1.15em')
-			.text(d => d - 1);
+			.text(d => d);
 
 		/* BUBBLES */
 		const bubbleGroup = chart.append('g')
@@ -352,7 +231,11 @@
 		};
 
 		const edgeCollision = () => {
-			/* initialize a new force to prevent out of bounds */
+			/*
+			 * Initialize a new force to prevent out of bounds
+			 * We also make this bounding box a little smaller than the rect
+			 * To prevent overlapping on the text
+			 */
 			let cnodes;
 
 			const force = () => {
@@ -360,17 +243,17 @@
 					var node;
 					for (var i = 0; i < cnodes.length; i++) {
 						node = cnodes[i];
-						if (node.x + node.radius > width) {
-							node.x = width - node.radius;
+						if (node.x + node.radius > width - 75) {
+							node.x = width - node.radius - 75;
 						}
-						if (node.x - node.radius < 0) {
-							node.x = node.radius;
+						if (node.x - node.radius < 75) {
+							node.x = node.radius + 75;
 						}
-						if (node.y + node.radius > height) {
-							node.y = height - node.radius;
+						if (node.y + node.radius > height - 50) {
+							node.y = height - node.radius - 50;
 						}
-						if (node.y - node.radius < 0) {
-							node.y = node.radius;
+						if (node.y - node.radius < 50) {
+							node.y = node.radius + 50;
 						}
 					}
 				}
@@ -384,7 +267,7 @@
 		};
 
 		const simulation = d3.forceSimulation(nodes)
-			.force('collide', d3.forceCollide(d => d.radius - 2).strength(0.5))
+			.force('collide', d3.forceCollide(d => d.radius - 5).strength(0.5))
 			.force('x', d3.forceX(d => forceCluster(d, 'x'))
 				.strength(1))
 			.force('y', d3.forceY(d => forceCluster(d, 'y'))
@@ -412,7 +295,7 @@
 			.style('text-anchor', 'middle');
 
 		nodeGroup.each(function(d, i) {
-			const content = `<b>${d.text}</b><br><i>${d.type}</i><br>${d.cluster}`;
+			const content = `<b>${d.text}</b><br><i>${d.type}</i><br>${d.cluster}<br><b>Number of Mandates</b> ${d.size}`;
 			return $(this).tooltipster({
 				content: content,
 				trigger: 'hover',
@@ -429,6 +312,11 @@
 				.html(d => {
 					if (d.radius > 60) {
 						return wordWrap(d.text, 30, d.x, d.y);
+					} else {
+						const shortName = getShortName(d.text);
+						if (shortName !== d.text) {
+							return wordWrap(getShortName(d.text), 30, d.x, d.y);
+						}
 					}
 				});
 		};
@@ -452,5 +340,14 @@
 
 
 	};
+
+	function getShortName(s) {
+		const shortname = /^.*\(([A-Z]+)\)$/.exec(s);
+		if (shortname === null) {
+			return s;
+		} else {
+			return shortname[1];
+		}
+	}
 
 })();
