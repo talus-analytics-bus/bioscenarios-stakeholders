@@ -4,18 +4,42 @@
 		const width = param.width || 1000;
 		const height = width * 0.25;
 
+		// How high should the y axis be?
+		// these numbers don't actualy show up, just define relative size of y axis on plot (number of cases)
+        const cases = [
+        10, // case identified
+        10, // agent identified
+        18, // humanitarian response
+        30, // suspicion of deliberate use
+        50, // investigative response
+        70, // state request for assistance
+        56, // WHO PH emergency declared
+        34, // response and recovery
+        16,  // confirmation of deliberate use
+        5 // ongoing response and recovery
+        ];
 
-        const cases = [10, 10, 20, 30, 50, 70, 70, 40, 10, 5];
-        let xTmpCorrd = 243;
+        let xTmpCorrd = 200;
         let yTmpCoord = 222;
         // This data set statically places the noTimeCase circles onto the line. To move the circles, you need to
 		// manipulate the coordinates here. These are relative to the case events.
 		const noTimeCases = [
-			[xTmpCorrd, yTmpCoord], [xTmpCorrd += 12, yTmpCoord-=1], [xTmpCorrd += 12, yTmpCoord-=2],
-            [xTmpCorrd += 12, yTmpCoord-= 3], [xTmpCorrd += 12, yTmpCoord-= 4], [xTmpCorrd += 12, yTmpCoord-= 3],
-            [xTmpCorrd=383, yTmpCoord= 190], [xTmpCorrd = 500, yTmpCoord= 152], [xTmpCorrd += 12, yTmpCoord -= 7],
-            [xTmpCorrd += 12, yTmpCoord-= 6], [xTmpCorrd = 605, yTmpCoord = 100], [xTmpCorrd =710, yTmpCoord=68],
-            [xTmpCorrd += 12, yTmpCoord-= 1], [xTmpCorrd = 820, yTmpCoord = 99],
+			[xTmpCorrd, yTmpCoord], // notification of cases
+			[xTmpCorrd += 22, yTmpCoord-=3.2], // coordinated medical response initiated
+			[xTmpCorrd += 32, yTmpCoord-=9.2], // begin epidemiological investigation
+            // humanitarian response
+            [xTmpCorrd += 60, yTmpCoord-= 15], // define and identify cases
+            [xTmpCorrd += 30, yTmpCoord-= 12], // implement control and prevention measures
+            // suspicion of deliberate use
+            [xTmpCorrd += 63, yTmpCoord-= 3], // monitor and treat new cases
+            [xTmpCorrd=383, yTmpCoord= 190], 
+            [xTmpCorrd = 500, yTmpCoord= 152], 
+            [xTmpCorrd += 12, yTmpCoord -= 7],
+            [xTmpCorrd += 12, yTmpCoord-= 6], 
+            [xTmpCorrd = 605, yTmpCoord = 100], 
+            [xTmpCorrd =710, yTmpCoord=68],
+            [xTmpCorrd += 12, yTmpCoord-= 1], 
+            [xTmpCorrd = 820, yTmpCoord = 99],
 			];
 		const data = rawData
             .map((d, i) => {
@@ -435,6 +459,7 @@
             .attr('r', '4')
             .attr('class', '')
             .attr('stroke', noTimeEventColor)
+            .attr('stroke-width', 0.75)
 			.attr('fill', '#e6e9f1')
             .each(function(d) {
                 const content = `<b>${d.eventName}</b>`;
