@@ -54,7 +54,8 @@
 			return d['Timeline Event'];
 		}))];
 
-		// these are the gradients behind the time line events. these will be used in the policy documents and stakeholders graphic
+		// these are the gradients behind the time line events.
+		// these will be used in the policy documents and stakeholders graphic
 		const timelineEventGradients = [
 			['#f7f8fa', '#f4f6f9'],
 			['#f4f6f9', '#e9ecf3'],
@@ -218,11 +219,11 @@
 			});
 		}
 
-		function mouseoutRect(d) {
+		function mouseoutRect(d, i) {
 			d3.select(`[value="recttext ${d}"`).style('fill', rectTextColor);
 			d3.select(`[value="recttext ${d}"`).style('font-size', '0.75em');
 			d3.select(`[value="recttext ${d}"`).style('font-weight', '300');
-			d3.select(`[value="rect ${d}"]`).style('fill', rectColor);
+			d3.select(`[value="rect ${d}"]`).style('fill', `url(#timeline-gradient-${gradientIndex})`);
 			d3.selectAll(`[end="${d}"]`).style('stroke', lineColor);
 
 			d3.selectAll(`[end="${d}"]`).each(function() {
