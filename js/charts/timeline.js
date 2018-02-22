@@ -409,8 +409,9 @@
 					.style('fill', selectedPointColor);
 
 				// now update labels
-				whatEvent.text(d.eventName)
-					.attr('value', d.eventName);
+				whatEvent.attr('value', d.eventName)
+					.text(d.eventName)
+
 				whatDay.text(`Day ${dayScale(d.eventName.toUpperCase())}`);
 			});
 
