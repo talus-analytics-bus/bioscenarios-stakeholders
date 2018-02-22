@@ -39,8 +39,6 @@
 				.filter(d => d.category.toUpperCase() === 'UN ORGANIZATIONS')
 				.map(d => d.abbrev));
 
-		console.log(allUNOrgs);
-
 		const allNonUNOrgs = allOrgs
 			.filter(d => !allUNOrgs.includes(d.abbrev))
 			.map(d => d.abbrev);
@@ -48,8 +46,8 @@
 		/* CONSTANTS */
 		const height = 1000;
 		const width = 1.2 * height;
-		const rectHeight = 25;
-		const rectWidth = 400;
+		const rectHeight = 40;
+		const rectWidth = 300;
 
 		const timelineEvents = ['Case in humans', ...new Set(rawData.map(d => {
 			return d['Timeline Event'];
@@ -78,9 +76,6 @@
 
 			return index; // -1 is found
 		}
-
-		const leftCircleRadius = width / 2;
-		const rightCircleRadius = 5 * width / 8;
 
 		/* COLOURS */
 		//const titleColor = '#076eb5';
@@ -122,18 +117,6 @@
 			return -(x * x) + (0.35 * width);
 		};
 
-		// const leftCircle = d3.arc()
-		// 	.innerRadius(leftCircleRadius)
-		// 	.outerRadius(leftCircleRadius)
-		// 	.startAngle(-(1 / 4) * Math.PI)
-		// 	.endAngle(-(3 / 4) * Math.PI);
-		//
-		// const rightCircle = d3.arc()
-		// 	.innerRadius(rightCircleRadius)
-		// 	.outerRadius(rightCircleRadius)
-		// 	.startAngle((1 / 4) * Math.PI)
-		// 	.endAngle((3 / 4) * Math.PI);
-
 		/* LINES */
 		const line = d3.line()
 			.curve(d3.curveBasis)
@@ -168,15 +151,6 @@
 				.attr('stop-opacity', 178 / 255)
 				.attr('offset', '100%');
 		});
-		// chart.append('path')
-		// 	.attr('transform', `translate(${width / 4})`)
-		// 	.attr('d', leftCircle)
-		// 	.style('stroke', 'red');
-		//
-		// chart.append('path')
-		// 	.attr('transform', `translate(-${width / 3})`)
-		// 	.attr('d', rightCircle)
-		// 	.style('stroke', 'red');
 
 		// add event title
 		chart.append('g').attr('class', 'main-title')
@@ -217,7 +191,15 @@
 			.style('text-anchor', 'middle')
 			.style('font-size', '0.75em')
 			.attr('value', d => `recttext ${d}`)
-			.html(d => wordWrap(d, rectWidth / 6, 0, innerNodesScale(d) + (rectHeight / 2)))
+			.html(d => {
+				const wrapped = wordWrap(d, rectWidth / 6, 0, innerNodesScale(d) + (rectHeight / 2));
+				if (wrapped.split('tspan').length === 7) {  // if there are 3 lines of text, shift it lower
+					const newWrapped = wordWrap(d, rectWidth / 6, 0, innerNodesScale(d) + (rectHeight / 2) + 6);
+					return newWrapped;
+				} else {
+					return wrapped;
+				}
+			})
 			.on('mouseover', mouseoverRect)
 			.on('mouseout', mouseoutRect);
 
@@ -267,7 +249,8 @@
 			.attr('cy', d => leftOrgsScale(d.abbrev) - 5)
 			.attr('r', 5.2)
 			.attr('value', d => d.abbrev)
-			.style('fill-opacity', 0)
+			.style('fill', 'white')
+			.style('fill-opacity', 1)
 			.style('stroke', circleColor)
 			.style('stroke-width', 2);
 
@@ -299,7 +282,8 @@
 			.attr('cy', d => rightOrgsScale(d.abbrev) - 5)
 			.attr('r', 5.2)
 			.attr('value', d => d.abbrev)
-			.style('fill-opacity', 0)
+			.style('fill', 'white')
+			.style('fill-opacity', 1)
 			.style('stroke', circleColor)
 			.style('stroke-width', 2);
 

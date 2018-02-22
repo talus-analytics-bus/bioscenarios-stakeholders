@@ -115,18 +115,9 @@
 
 		const nodeColors = d3.scaleOrdinal()
 			.domain(allCategories)
-			// .range([
-			// 	'#8dd3c7',
-			// 	'#ffffb3',
-			// 	'#bebada',
-			// 	'#80b1d3',
-			// 	'#fdb462',
-			// 	'#fb8072',
-			// 	'#b3de69',
-			// ]);
 			.range([
 				'#667eae',  // UN Orgs
-				'#aebede',  // International orgs
+				'#DBD195',  // International orgs
 				'#e89372',  // NGOs
 				'#8e87b6',  // non affected states
 				'#c5443c',  // affected states
@@ -290,12 +281,13 @@
 		};
 
 		const simulation = d3.forceSimulation(nodes)
-			.force('collide', d3.forceCollide(d => d.radius - 5).strength(0.5))
+			.force('collide', d3.forceCollide(d => d.radius - (d.radius / 10)).strength(0.5)) // dynamic collision 10%
 			.force('x', d3.forceX(d => forceCluster(d, 'x'))
 				.strength(1))
 			.force('y', d3.forceY(d => forceCluster(d, 'y'))
 				.strength(1))
-			.force('edge-collision', edgeCollision());
+			.force('edge-collision', edgeCollision())
+			.alphaMin(0.001);
 
 		// we don't have any links
 		// need nodes
