@@ -1,7 +1,7 @@
 (() => {
 	App.initTimeline = (selector, rawData, policyEventData, param = {}) => {
-		const margin = {top: 25, right: 25, bottom: 50, left: 0};
-		const width = param.width || 1125;
+		const margin = {top: 25, right: 25, bottom: 50, left: 25};
+		const width = param.width || 1000;
 		const height = width * 0.25;
 
 		// How high should the y axis be?
@@ -19,19 +19,19 @@
         5 // ongoing response and recovery
         ];
 
-        let xTmpCorrd = 200;
-        let yTmpCoord = 222;
+        let xTmpCorrd = 208;
+        let yTmpCoord = 221;
         // This data set statically places the noTimeCase circles onto the line. To move the circles, you need to
 		// manipulate the coordinates here. These are relative to the case events.
 		const noTimeCases = [
 			[xTmpCorrd, yTmpCoord], // notification of cases
-			[xTmpCorrd += 22, yTmpCoord-= 3.2], // coordinated medical response initiated
-			[xTmpCorrd += 32, yTmpCoord-= 9], // begin epidemiological investigation
+			[xTmpCorrd += 15, yTmpCoord-= 2], // coordinated medical response initiated
+			[xTmpCorrd += 14, yTmpCoord-= 3], // begin epidemiological investigation
             // humanitarian response
-            [xTmpCorrd += 60, yTmpCoord-= 16], // define and identify cases
-            [xTmpCorrd += 17, yTmpCoord-= 6], // implement control and prevention measures
+            [xTmpCorrd += 70, yTmpCoord-= 20], // define and identify cases
+            [xTmpCorrd += 30, yTmpCoord-= 10], // implement control and prevention measures
             // suspicion of deliberate use
-            [xTmpCorrd += 78, yTmpCoord-= 37.5], // monitor and treat new cases
+            [xTmpCorrd += 78, yTmpCoord-= 38], // monitor and treat new cases
             // investigative response
             [xTmpCorrd = 500, yTmpCoord= 95], // continued medical response to cases
             // state request for assistance
@@ -92,14 +92,15 @@
             .map(d => d.eventName);
 
 
+        //Fix the bug where in the policy document count. We need to lowercase all text comparisons.
         const policyData = eventLabelsLower.map((d, i) => {
             return {
-                count: policyEventData.filter( (x) => d === x['Timeline Event']).length,
+                count: policyEventData.filter( (x) => d.toLowerCase() === x['Timeline Event'].toLowerCase()).length,
 				eventName: d
             };
 		});
 
-        let a = policyEventData.filter( d=> d['Timeline Event'] == 'Case identified by medical professionals');
+
 		// Colours
 		const backgroundColors = ['#94A0C3', 'white'];
 		const legendColor = '#f7f8fa';
@@ -164,7 +165,7 @@
 		// Upper left label
 		const title = chart.append('text')
 			.attr('class', 'top-description-title')
-			.attr('transform', 'translate(10, 40)')
+			.attr('transform', 'translate(35, 40)')
 			.attr('fill', textBoldColor)
 			.style('font-size', '0.8em')
 			.text('EPIDEMIOLOGICAL CURVE');
@@ -172,7 +173,7 @@
 		// Event Label
 		const whatEvent = chart.append('text')
 			.attr('class', 'what-event-is-it')
-			.attr('transform', 'translate(10, 53)')
+			.attr('transform', 'translate(35, 53)')
 			.attr('fill', textBoldColor)
 			.attr('font-style', 'italic')
 			.style('font-size', '0.8em')
@@ -182,7 +183,7 @@
 		// day label
 		const whatDay = chart.append('text')
 			.attr('class', 'what-day-is-it')
-			.attr('transform', 'translate(10, 66)')
+			.attr('transform', 'translate(35, 66)')
 			.attr('fill', textBoldColor)
 			.attr('font-style', 'italic')
 			.style('font-size', '0.8em')
@@ -327,8 +328,8 @@
 			.attr('class', 'event-label')
 			.attr('fill', (d, i) => (i === 0) ? 'black' : textColor)
 			.attr('text-anchor', 'middle')
-			.style('font-size', '1em')
-			.style('font-weight', 300)
+			.style('font-size', (d, i) => (i === 0) ? '0.70em' : '0.70em')
+			.style('font-weight', (d, i) => (i === 0) ? 600 : '')
 			.html(function (d) {
 				return wordWrap(
 					d.eventName,
@@ -364,8 +365,7 @@
 					.style('fill-opacity', 0);
 				d3.selectAll('.event-label')
 					.style('fill', textColor)
-					.style('font-size', '1em')
-					.style('font-weight', 300);
+					.style('font-size', '0.70em');
 
                 d3.selectAll('.event-marker-highlight-icon')
                     .style('visibility', 'hidden');
@@ -383,7 +383,7 @@
 				// now set text
 				const group = d3.select(`.event-group-${i}`);
 				group.selectAll('text')
-					.style('font-size', '1em')
+					.style('font-size', '0.7em')
 					.style('fill', 'black')
 					.style('font-weight', 600);
 				// now set rect
@@ -411,9 +411,8 @@
 					.style('fill', selectedPointColor);
 
 				// now update labels
-				whatEvent.attr('value', d.eventName)
-					.text(d.eventName)
-
+				whatEvent.text(d.eventName)
+					.attr('value', d.eventName);
 				whatDay.text(`Day ${dayScale(d.eventName.toUpperCase())}`);
 			});
 
