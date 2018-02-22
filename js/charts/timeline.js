@@ -31,12 +31,17 @@
             [xTmpCorrd += 60, yTmpCoord-= 15], // define and identify cases
             [xTmpCorrd += 30, yTmpCoord-= 12], // implement control and prevention measures
             // suspicion of deliberate use
-            [xTmpCorrd += 63, yTmpCoord-= 3], // monitor and treat new cases
-            [xTmpCorrd=383, yTmpCoord= 190], 
-            [xTmpCorrd = 500, yTmpCoord= 152], 
-            [xTmpCorrd += 12, yTmpCoord -= 7],
-            [xTmpCorrd += 12, yTmpCoord-= 6], 
-            [xTmpCorrd = 605, yTmpCoord = 100], 
+            [xTmpCorrd += 78, yTmpCoord-= 38], // monitor and treat new cases
+            // investigative response
+            [xTmpCorrd = 500, yTmpCoord= 95], // continued medical response to cases
+            // state request for assistance
+            // WHO PHE declared
+            [xTmpCorrd = 660, yTmpCoord= 123], // continued epidemiological investigation
+            [xTmpCorrd = 680, yTmpCoord = 136], // increased prevention and control measures
+            // Response and recovery
+            [xTmpCorrd = 765, yTmpCoord = 185], // monitor for new cases
+            // Confirmation of deliberate use
+            [xTmpCorrd = 850, yTmpCoord = 221], // Sanctions issued
             [xTmpCorrd =710, yTmpCoord=68],
             [xTmpCorrd += 12, yTmpCoord-= 1], 
             [xTmpCorrd = 820, yTmpCoord = 99],
@@ -114,7 +119,7 @@
 			.attr('width', width + margin.left + margin.right)
 			.attr('height', height + margin.top + margin.bottom)
 			.append('g')
-			.attr('transform', `translate(${margin.left}, ${margin.top})`);
+			.attr('transform', `translate(${margin.left}, ${margin.top})`); // don't position to the left. We are keeping the graphic tight on the left side
 
 		const defs = chart.append('defs');
 
@@ -157,6 +162,7 @@
 
 		// Upper left label
 		const title = chart.append('text')
+			.attr('class', 'top-description-title')
 			.attr('transform', 'translate(35, 40)')
 			.attr('fill', textBoldColor)
 			.style('font-size', '0.8em')
@@ -165,7 +171,7 @@
 		// Event Label
 		const whatEvent = chart.append('text')
 			.attr('class', 'what-event-is-it')
-			.attr('transform', 'translate(35, 60)')
+			.attr('transform', 'translate(35, 53)')
 			.attr('fill', textBoldColor)
 			.attr('font-style', 'italic')
 			.style('font-size', '0.8em')
@@ -175,7 +181,7 @@
 		// day label
 		const whatDay = chart.append('text')
 			.attr('class', 'what-day-is-it')
-			.attr('transform', 'translate(35, 80)')
+			.attr('transform', 'translate(35, 66)')
 			.attr('fill', textBoldColor)
 			.attr('font-style', 'italic')
 			.style('font-size', '0.8em')
@@ -320,7 +326,7 @@
 			.attr('class', 'event-label')
 			.attr('fill', (d, i) => (i === 0) ? 'black' : textColor)
 			.attr('text-anchor', 'middle')
-			.style('font-size', (d, i) => (i === 0) ? '0.9em' : '0.70em')
+			.style('font-size', (d, i) => (i === 0) ? '0.70em' : '0.70em')
 			.style('font-weight', (d, i) => (i === 0) ? 600 : '')
 			.html(function (d) {
 				return wordWrap(
@@ -374,7 +380,7 @@
 				// now set text
 				const group = d3.select(`.event-group-${i}`);
 				group.selectAll('text')
-					.style('font-size', '0.9em')
+					.style('font-size', '0.7em')
 					.style('fill', 'black')
 					.style('font-weight', 600);
 				// now set rect
@@ -421,28 +427,29 @@
             .attr('ry', '3')
             .style('fill-opacity', 0.85);
 
+		let lineHeight = markerHeight - 3;
         // Drawing the three vertical lines
         markerGroup.append('line')
             .attr('x1', d => x(d.eventName.toUpperCase()) - 10)
             .attr('x2', d => x(d.eventName.toUpperCase()) - 10)
-            .attr('y1', 0)
-            .attr('y2', markerHeight)
+            .attr('y1', 3)
+            .attr('y2', lineHeight)
             .attr('stroke-width', 1)
             .attr('stroke', 'white');
 
         markerGroup.append('line')
             .attr('x1', d => x(d.eventName.toUpperCase()))
             .attr('x2', d => x(d.eventName.toUpperCase()))
-            .attr('y1', 0)
-            .attr('y2', markerHeight)
+            .attr('y1', 3)
+            .attr('y2', lineHeight)
             .attr('stroke-width', 1)
             .attr('stroke', 'white');
 
         markerGroup.append('line')
             .attr('x1', d => x(d.eventName.toUpperCase()) + 10)
             .attr('x2', d => x(d.eventName.toUpperCase()) + 10)
-            .attr('y1', 0)
-            .attr('y2', markerHeight)
+            .attr('y1', 3	)
+            .attr('y2', lineHeight)
             .attr('stroke-width', 1)
             .attr('stroke', 'white');
 
