@@ -320,7 +320,7 @@
 			.attr('class', 'event-label')
 			.attr('fill', (d, i) => (i === 0) ? 'black' : textColor)
 			.attr('text-anchor', 'middle')
-			.style('font-size', (d, i) => (i === 0) ? '0.9em' : '0.70em')
+			.style('font-size', (d, i) => (i === 0) ? '0.70em' : '0.70em')
 			.style('font-weight', (d, i) => (i === 0) ? 600 : '')
 			.html(function (d) {
 				return wordWrap(
@@ -374,7 +374,7 @@
 				// now set text
 				const group = d3.select(`.event-group-${i}`);
 				group.selectAll('text')
-					.style('font-size', '0.9em')
+					.style('font-size', '0.7em')
 					.style('fill', 'black')
 					.style('font-weight', 600);
 				// now set rect
@@ -421,28 +421,29 @@
             .attr('ry', '3')
             .style('fill-opacity', 0.85);
 
+		let lineHeight = markerHeight - 3;
         // Drawing the three vertical lines
         markerGroup.append('line')
             .attr('x1', d => x(d.eventName.toUpperCase()) - 10)
             .attr('x2', d => x(d.eventName.toUpperCase()) - 10)
-            .attr('y1', 0)
-            .attr('y2', markerHeight)
+            .attr('y1', 3)
+            .attr('y2', lineHeight)
             .attr('stroke-width', 1)
             .attr('stroke', 'white');
 
         markerGroup.append('line')
             .attr('x1', d => x(d.eventName.toUpperCase()))
             .attr('x2', d => x(d.eventName.toUpperCase()))
-            .attr('y1', 0)
-            .attr('y2', markerHeight)
+            .attr('y1', 3)
+            .attr('y2', lineHeight)
             .attr('stroke-width', 1)
             .attr('stroke', 'white');
 
         markerGroup.append('line')
             .attr('x1', d => x(d.eventName.toUpperCase()) + 10)
             .attr('x2', d => x(d.eventName.toUpperCase()) + 10)
-            .attr('y1', 0)
-            .attr('y2', markerHeight)
+            .attr('y1', 3	)
+            .attr('y2', lineHeight)
             .attr('stroke-width', 1)
             .attr('stroke', 'white');
 
