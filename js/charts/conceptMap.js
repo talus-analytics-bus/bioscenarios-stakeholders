@@ -70,13 +70,20 @@
 
 		function getGradient(eventName) {
 			let index = -1;
-			if (eventName) {
+			let event = eventName.toLowerCase();
+
+			if (event) {
 				index = timelineEvents.findIndex(d => {
-					return d === eventName;
+					return d.toLowerCase() === event;
 				});
+
+				if (index > (timelineEventGradients.length - 1)) {
+					index = timelineEventGradients.length - 1;
+				}
 			}
 
-			return index; // -1 is found
+
+			return index; // -1 is not found
 		}
 
 		/* COLOURS */
