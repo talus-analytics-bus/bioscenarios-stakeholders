@@ -34,7 +34,6 @@
 			allCategories = [
 				'UN Organizations',
 				'International Organizations',
-				'International Organization',
 				'NGOs',
 				'Member States (non-affected)',
 				'Member State (affected)',
@@ -88,9 +87,12 @@
 					} else {
 						Object.assign(d, orgRow[0]);
 						d.name = d['Stakeholder'];
-						d.roles = d['Stakeholder Role'].split(';').map(String.trim);
+						d.roles = d['Stakeholder Role'].split(';').map(r => r.trim());
 						d.size = d['Mandates'].split(';').length;
 						d.type = d['Organization Category'];
+						if (d.type === 'International Organization') {
+							d.type = 'Interational Organizations';
+						}
 						return d;
 					}
 				})
@@ -113,27 +115,23 @@
 
 		const nodeColors = d3.scaleOrdinal()
 			.domain(allCategories)
-			.range([
-				'#8dd3c7',
-				'#ffffb3',
-				'#bebada',
-				'#80b1d3',
-				'#fdb462',
-				'#fb8072',
-				'#b3de69',
-			]);
 			// .range([
-			// 	// '#667eae',
-			// 	'#082b84',
-			// 	// '#e89372',
-			// 	'#ff6d00',
-			// 	// '#99c2a9',
-			// 	'#0c6b0c',
-			// 	'#8e87b6',
-			// 	// '#3f1d63',
-			// 	// '#c5443c',
-			// 	'#c91414',
+			// 	'#8dd3c7',
+			// 	'#ffffb3',
+			// 	'#bebada',
+			// 	'#80b1d3',
+			// 	'#fdb462',
+			// 	'#fb8072',
+			// 	'#b3de69',
 			// ]);
+			.range([
+				'#667eae',  // UN Orgs
+				'#aebede',  // International orgs
+				'#e89372',  // NGOs
+				'#8e87b6',  // non affected states
+				'#c5443c',  // affected states
+				'#99c2a9',  // Private sector
+			]);
 
 		const chart = d3.select(selector)
 			.append('svg')
