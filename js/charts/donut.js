@@ -126,7 +126,6 @@
 							'Timeline Event': 'all',
 						};
 					});
-				console.log(filteredData);
 				filteredPolicyData = rawPolicyData;
 			} else {
 				// Determine which event num this one is
@@ -135,6 +134,8 @@
 				// Otherwise initially filter our roles to just orgs involved in event
 				filteredData = rawData
 					.filter(d => d['Timeline Event'].toLowerCase() === eventName.toLowerCase());
+				var seenDocs = [];
+				const uniqueFields = ['Policy Document', 'Policy Stakeholder'];
 				// need to filter to every event *up until this one*
 				filteredPolicyData = rawPolicyData
 					.filter(d => {
@@ -148,6 +149,19 @@
 						// note: eventNum is the thing selected by the user in the navigation
 						const isPersistent = ((policyEventNum <= eventNum) && (d['Persistent'] === 'TRUE'));
 						return happening || isPersistent;
+					})
+					.sort((a, b) => getEventNum(a['Timeline Event']) < getEventNum(b['Timeline Event']))
+					.filter(d => {
+						// need to filter again to just use unique docs
+						const isSeen = seenDocs.filter(s => {
+							return uniqueFields.reduce((acc, k) => acc && (s[k] === d[k]), true);
+						}).length > 0;
+						if (isSeen) {
+							return false;
+						} else {
+							seenDocs.push(d);
+							return true;
+						}
 					});
 			}
 			// Now we need to add the info we need
@@ -204,7 +218,7 @@
 		let shift;
 		let power;
 		if (eventName === null) {
-			minRadius = 8;
+			minRadius = 12;
 			shift = 1;
 			power = (x0, x1) => Math.pow(x1, x0);
 		} else {
@@ -322,7 +336,7 @@
 
 		/* LEGEND */
 		const legendGroup = chart.append('g')
-			.attr('transform', `translate(0, ${margin.top})`)
+			.attr('transform', `translate(0, ${margin.top + 52})`)
 			.attr('class', 'legend-group');
 
 		const categoryLabelGroup = legendGroup.append('g')
@@ -340,16 +354,16 @@
 			.attr('transform', 'translate(0, 10)');
 
 		categoryLabels.append('text')
-			.attr('transform', (d, i) => `translate(25, ${i * 30})`)
+			.attr('transform', (d, i) => `translate(27, ${i * 30})`)
 			.style('font-size', '1.1em')
 			.text(d => d);
 
 		categoryLabels.append('rect')
-			.attr('transform', (d, i) => `translate(0, ${(i * 30) - 16})`)
-			.attr('width', 20)
-			.attr('height', 20)
-			.attr('rx', 6)
-			.attr('ry', 6)
+			.attr('transform', (d, i) => `translate(2, ${(i * 30) - 13})`)
+			.attr('width', 15)
+			.attr('height', 15)
+			.attr('rx', 3)
+			.attr('ry', 3)
 			.style('fill', d => nodeGradients(d)(orgTypeSizes[d][0]))
 			.style('fill-opacity', 0.9)
 			.style('stroke', d => nodeColors(d))
@@ -387,12 +401,12 @@
 			.attr('transform', `translate(${margin.left}, ${margin.top})`)
 			.style('background', 'white');
 
-		bubbleGroup.append('rect')
-			.attr('width', width)
-			.attr('height', height)
-			.style('fill-opacity', 0)
-			.style('stroke', 'black')
-			.style('stroke-opacity', 0.2);
+		// bubbleGroup.append('rect')
+		// 	.attr('width', width)
+		// 	.attr('height', height)
+		// 	.style('fill-opacity', 0)
+		// 	.style('stroke', 'black')
+		// 	.style('stroke-opacity', 0.2);
 
 		// first do gridlines
 		const gridlines = bubbleGroup.append('g')

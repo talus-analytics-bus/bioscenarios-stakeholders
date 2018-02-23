@@ -504,16 +504,14 @@ light {
   margin-top: 10px;
   text-align: center; }
 
-/* Steph adjusted page-content to reduce spacing below title on page */
 #page-content {
-  padding-top: 0px; }
+  padding-top: 100px; }
 
 .main-page {
   border-left: 1px solid #999;
   border-right: 1px solid #999;
   padding-left: 30px; }
   .main-page .timeline-section {
-    margin-top: 0px;
     margin-bottom: 30px;
     padding-bottom: 30px;
     border-bottom: 1px solid #999; }
@@ -532,6 +530,11 @@ light {
   opacity: 0; }
 
 .show-all-div {
-  padding-left: 300px; }
+  height: 0;
+  position: relative;
+  top: 25px; }
+
+.checkbox label {
+  font-weight: 600; }
 
 /*# sourceMappingURL=main.css.map */
