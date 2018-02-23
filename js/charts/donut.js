@@ -509,7 +509,11 @@
 		});
 
 		nodeGroup.each(function (d, i) {
-			const content = `<b>${d.text}</b><br><i>${d.type}</i><br><br><b>Roles: </b>${d.cluster}<br><b>Number of Mandates:</b> ${d.size}`;
+			const splitRoles = d.cluster.join(', ');
+			const content = `<b>${d.text}</b>` +
+				`<br><i>${d.type}</i>` +
+				`<br><br><b>Roles: </b>${splitRoles}` +
+				`<br><b>Number of Mandates:</b> ${d.size}`;
 			return $(this).tooltipster({
 				content: content,
 				trigger: 'hover',
