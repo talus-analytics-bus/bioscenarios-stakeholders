@@ -1,5 +1,5 @@
 (() => {
-	App.initDonut = (selector, eventName, rawPolicyData, rawData, rawOrgInfo, rawTimelineData, nodeScaling = 2) => {
+	App.initBubbleChart = (selector, eventName, rawPolicyData, rawData, rawOrgInfo, rawTimelineData, nodeScaling = 2) => {
 		let data;
 		let allCategories;
 		let allRoles;
@@ -502,11 +502,10 @@
 			.style('stroke', d => nodeColors(d.type))
 			.style('stroke-opacity', 1);
 
-		if (eventName !== null) {
-			nodeGroup.append('text')
-				.style('fill', 'white')
-				.style('text-anchor', 'middle');
-		}
+		nodeGroup.append('text')
+			.style('fill', 'white')
+			.style('text-anchor', 'middle')
+			.attr('class', d => (d.size >= 6) ? 'bubble-label' : 'no-bubble-label');
 
 		nodeGroup.on('mouseover', function() {
 			d3.select(this)
@@ -538,20 +537,16 @@
 				.attr('cx', d => d.x)
 				.attr('cy', d => d.y);
 
-			if (eventName !== null) {
-				nodeGroup.selectAll('text')
-					.attr('x', d => {
-						return d.x;
-					})
-					.attr('y', d => {
-						return d.y;
-					})
-					.html(d => {
-						if (d.size >= 6) {
-							return wordWrap(d.text, 30, d.x, d.y);
-						}
-					});
-			}
+			nodeGroup.selectAll('.bubble-label')
+				.attr('x', d => {
+					return d.x;
+				})
+				.attr('y', d => {
+					return d.y;
+				})
+				.html(d => {
+					return wordWrap(d.text, 20, d.x, d.y);
+				});
 		};
 
 		simulation
