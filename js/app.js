@@ -1,8 +1,28 @@
 const App = {};
 
 (() => {
-	App.initialize = () => {
+
+	App.initialize = (callback) => {
 		$('.logout-link').click(Auth.logout);
+
+        d3.queue()
+            .defer(d3.tsv, 'data/policydocs.tsv')
+            .defer(d3.tsv, 'data/policyevents.tsv')
+            .defer(d3.tsv, 'data/roles.tsv')
+            .defer(d3.tsv, 'data/stakeholders.tsv')
+            .defer(d3.tsv, 'data/timeline.tsv')
+            .await((error, rawPolicyData, rawPolicyEventData, rawRoleData, rawStakeholderData,
+                    rawTimelineData) => {
+                App.policyEventData = rawPolicyEventData;
+                App.stakeholderData = rawStakeholderData;
+                App.timelineData = rawTimelineData;
+                App.policyData = rawPolicyData;
+                App.roleData = rawRoleData;
+
+                if (callback) {
+                	callback();
+				}
+            });
 	};
 
 

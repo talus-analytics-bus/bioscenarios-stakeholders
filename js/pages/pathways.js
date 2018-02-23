@@ -1,5 +1,5 @@
 (() => {
-	App.initMain = () => {
+	App.initPathways = () => {
 		let policyData;
 		let policyEventData;
 		let roleData;

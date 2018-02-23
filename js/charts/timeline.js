@@ -120,9 +120,11 @@
 		const noTimeEventColor = '#000000';
 
 
-		// add chart to DOM
-		const chart = d3.select(selector)
-			.append('svg')
+        // Clear the previous SVG (if any)
+		// add timeline chart to the DOM
+        var svg = d3.select(selector).select("svg").remove();
+
+		const chart = d3.select(selector).append('svg')
 			.attr('width', width + margin.left + margin.right)
 			.attr('height', height + margin.top + margin.bottom)
 			.append('g')
