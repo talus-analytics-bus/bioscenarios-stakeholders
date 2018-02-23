@@ -27,6 +27,7 @@
 		let timeline;
 		let donut;
 
+		const bubbleScale = 1.8;
 
 		function init() {
 			initGraphs();
@@ -42,7 +43,8 @@
 				policyEventData,
 				roleData,
 				stakeholderData,
-				2,
+				timelineData,
+				bubbleScale,
 			);
 		}
 
@@ -63,7 +65,8 @@
 						policyEventData,
 						roleData,
 						stakeholderData,
-						2
+						timelineData,
+						bubbleScale
 					);
 
 					previousEvent = event;
@@ -80,7 +83,8 @@
 						policyEventData,
 						roleData,
 						stakeholderData,
-						1.85,
+						timelineData,
+						1.3,
 					);
 				} else {
 					d3.select('.donut-chart').select('svg').remove();
@@ -90,7 +94,8 @@
 						policyEventData,
 						roleData,
 						stakeholderData,
-						2,
+						timelineData,
+						bubbleScale,
 					);
 				}
 			});
