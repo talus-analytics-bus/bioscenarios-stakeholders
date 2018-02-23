@@ -27,6 +27,7 @@
 		let timeline;
 		let donut;
 
+		const bubbleScale = 1.8;
 
 		function init() {
 			initGraphs();
@@ -43,7 +44,7 @@
 				roleData,
 				stakeholderData,
 				timelineData,
-				2,
+				bubbleScale,
 			);
 		}
 
@@ -65,7 +66,7 @@
 						roleData,
 						stakeholderData,
 						timelineData,
-						2
+						bubbleScale
 					);
 
 					previousEvent = event;
@@ -94,7 +95,7 @@
 						roleData,
 						stakeholderData,
 						timelineData,
-						2,
+						bubbleScale,
 					);
 				}
 			});

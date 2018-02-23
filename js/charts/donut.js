@@ -490,13 +490,8 @@
 						return d.y;
 					})
 					.html(d => {
-						if (d.radius > 60) {
+						if (d.size >= 6) {
 							return wordWrap(d.text, 30, d.x, d.y);
-						} else {
-							const shortName = getShortName(d.text);
-							if (shortName !== d.text) {
-								return shortName;
-							}
 						}
 					});
 			}
