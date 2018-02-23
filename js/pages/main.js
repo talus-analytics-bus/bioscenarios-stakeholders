@@ -36,7 +36,14 @@
 		function initGraphs() {
 			timeline = App.initTimeline('.timeline', timelineData, policyEventData);
 			conceptMap = App.initConceptMap('.concept-map', timelineData[0]['Timeline Event'], policyEventData, stakeholderData);
-			donut = App.initDonut('.donut-chart', timelineData[0]['Timeline Event'], roleData, stakeholderData);
+			donut = App.initDonut(
+				'.donut-chart',
+				timelineData[0]['Timeline Event'],
+				policyEventData,
+				roleData,
+				stakeholderData,
+				2,
+			);
 		}
 
 		function initListeners() {
@@ -49,7 +56,15 @@
 					d3.select('.concept-map').select('svg').remove();
 					d3.select('.donut-chart').select('svg').remove();
 					conceptMap = App.initConceptMap('.concept-map', event, policyEventData, stakeholderData);
-					donut = App.initDonut('.donut-chart', event, roleData, stakeholderData);
+
+					donut = App.initDonut(
+						'.donut-chart',
+						event,
+						policyEventData,
+						roleData,
+						stakeholderData,
+						2
+					);
 
 					previousEvent = event;
 				}
@@ -62,6 +77,7 @@
 					donut = App.initDonut(
 						'.donut-chart',
 						null,
+						policyEventData,
 						roleData,
 						stakeholderData,
 						1.85,
@@ -71,6 +87,7 @@
 					donut = App.initDonut(
 						'.donut-chart',
 						previousEvent || timelineData[0]['Timeline Event'],
+						policyEventData,
 						roleData,
 						stakeholderData,
 						2,

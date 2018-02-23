@@ -1,12 +1,9 @@
 (() => {
-	App.initDonut = (selector, eventName, rawData, rawOrgInfo, nodeScaling=2) => {
+	App.initDonut = (selector, eventName, rawPolicyData, rawData, rawOrgInfo, nodeScaling=2) => {
 		let data;
 		let allCategories;
 		let allRoles;
 		let roleAnchors;
-
-		console.log(rawData);
-		console.log(rawOrgInfo);
 
 		const margin = {top: 0, right: 25, bottom: 50, left: 300};
 		const width = 800;
@@ -16,7 +13,7 @@
 		if (eventName === null) {
 			baseNodeSize = 4;
 		} else {
-			baseNodeSize = 10;
+			baseNodeSize = 1;
 		}
 
 		/* STEP ONE => MASSAGE THE DATA */
