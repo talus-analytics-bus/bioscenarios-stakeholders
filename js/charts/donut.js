@@ -89,8 +89,16 @@
 				roleAnchors[k.toLowerCase()] = roleAnchors[k];
 			});
 
-			console.log(rawTimelineData);
-			console.log(rawPolicyData);
+			const getEventNum = (name) => {
+				const num = parseInt(
+					rawTimelineData
+						.filter(e => {
+							return e['Timeline Event'].toLowerCase() === name.toLowerCase();
+						})[0]['Event number']
+				);
+				return num;
+			};
+
 			// If we're not passed an eventName, plot all data
 			let filteredData;
 			let filteredPolicyData;
@@ -98,12 +106,20 @@
 				filteredData = rawData;
 				filteredPolicyData = rawPolicyData;
 			} else {
+				// Determine which event num this one is
+				const eventNum = getEventNum(eventName);
+
 				// Otherwise initially filter our roles to just orgs involved in event
 				filteredData = rawData
 					.filter(d => d['Timeline Event'].toLowerCase() === eventName.toLowerCase());
 				// need to filter to every event *up until this one*
 				filteredPolicyData = rawPolicyData
-					.filter(d => d['Timeline Event'].toLowerCase() === eventName.toLowerCase());
+					.filter(d => {
+						const policyEventNum = getEventNum(d['Timeline Event']);
+						const happening = (policyEventNum <= eventNum);
+						const isPersistent = ((policyEventNum !== eventName) && (d['Persistent'] === 'TRUE'));
+						return happening && isPersistent;
+					});
 			}
 			// Now we need to add the info we need
 			data = filteredData.map(old => {
@@ -227,42 +243,45 @@
 				genScale(
 					orgTypeSizes['UN Organizations'],
 					[
-						'#667eae',
-						'#7c99c5',
-						'#96aacf',
-						'#aebede',
+						'#667EAE',
+						'#7C99C5',
+						'#96AACF',
+						'#AEBEDE',
 					]),
 				// International orgs
 				genScale(
 					orgTypeSizes['Non-UN International Organizations'],
 					[
-						'#dbd195',
+						'#DBD195',
+						'#E2DEC7',
 					]),
 				// NGOs
 				genScale(
 					orgTypeSizes['NGOs'],
 					[
-						'#e89372',
-						'#efb9a0',
+						'#E89372',
+						'#EFB9A0',
 					]),
 				// non affected states
 				genScale(
 					orgTypeSizes['Non-affected Member States'],
 					[
-						'8e87b6',
+						'#8E87B6',
+						'#8C89A5',
 					]),
 				// affected states
 				genScale(
 					orgTypeSizes['Affected Member State'],
 					[
-						'#c5443c',
+						'#c91414',
+						'#C15757',
 					]),
 				// Private sector
 				genScale(
 					orgTypeSizes['Private Sector'],
 					[
-						'#99c2a9',
-						'#adc6bc',
+						'#99C2A9',
+						'#ADC6BC',
 					]),
 			]);
 
