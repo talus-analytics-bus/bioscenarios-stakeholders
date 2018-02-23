@@ -99,11 +99,34 @@
 				return num;
 			};
 
+			const getRoles = (roleStr) => {
+				return roleStr.split(';').map(r => r.trim());
+			};
+
 			// If we're not passed an eventName, plot all data
 			let filteredData;
 			let filteredPolicyData;
 			if (eventName === null) {
-				filteredData = rawData;
+				// so there was a bug that on the "show all" view, multiple nodes were being generated for
+				// a single org. This is because a single org could be (and probably will be) involved in
+				// several events. We need to prune this list of duplicates and concat the roles together
+				filteredData = d3.nest()
+					.key(d => d['Stakeholder']) // group by name
+					.rollup(v => Util.unique(
+						v.reduce(
+							(acc, cval) => acc.concat(getRoles(cval['Stakeholder Role'])),
+							[]
+						)
+					))
+					.entries(rawData)
+					.map(d => {
+						return {
+							'Stakeholder': d.key,
+							'Stakeholder Role': d.value.join(';'),
+							'Timeline Event': 'all',
+						};
+					});
+				console.log(filteredData);
 				filteredPolicyData = rawPolicyData;
 			} else {
 				// Determine which event num this one is
@@ -128,7 +151,7 @@
 				// set name
 				d.name = d['Stakeholder'];
 				// set roles
-				d.roles = d['Stakeholder Role'].split(';').map(r => r.trim());
+				d.roles = getRoles(d['Stakeholder Role']);
 				// get the org
 				const orgName = d['Stakeholder'].toLowerCase();
 				// pull the org row
@@ -175,7 +198,7 @@
 		let shift;
 		let power;
 		if (eventName === null) {
-			minRadius = 4;
+			minRadius = 8;
 			shift = 1;
 			power = (x0, x1) => Math.pow(x1, x0);
 		} else {
@@ -215,8 +238,8 @@
 			};
 		}).map(d => {
 			return Object.assign(d, {
-				x: forceCluster(d, 'x'),
-				y: forceCluster(d, 'y'),
+				x: forceCluster(d, 'x') + Math.random() * 100 - 50,
+				y: forceCluster(d, 'y') + Math.random() * 100 - 50,
 				forceX: forceCluster(d, 'x'),
 				forceY: forceCluster(d, 'y'),
 			});
@@ -334,7 +357,7 @@
 		const legendCircleGroup = legendGroup.append('g')
 			.attr('transform', 'translate(55, 287)')
 			.selectAll('g')
-			.data((eventName === null) ? [4, 8, 12] : [0, 2, 4])
+			.data((eventName === null) ? [4, 6, 9] : [0, 2, 4])
 			.enter()
 			.append('g')
 			.attr('transform', d => 'translate(50)');
@@ -435,11 +458,11 @@
 		};
 
 		const simulation = d3.forceSimulation(nodes)
-			.force('collide', d3.forceCollide(d => d.radius - (d.radius / 10)).strength(1)) // dynamic collision 10%
+			.force('collide', d3.forceCollide(d => d.radius - (d.radius / 20)).strength(1)) // dynamic collision n%
 			.force('x', d3.forceX(d => d.forceX)
-				.strength(0.05))
+				.strength(0.01))
 			.force('y', d3.forceY(d => d.forceY)
-				.strength(0.05))
+				.strength(0.01))
 			.force('edge-collision', edgeCollision())
 			.alphaMin(0.0001);
 
@@ -454,7 +477,7 @@
 
 		nodeGroup.append('circle')
 			.transition()
-			.duration(500)
+			.duration(1200)
 			.attr('r', d => d.radius)
 			.style('fill', d => nodeGradients(d.type)(d.size))
 			.style('fill-opacity', 0.7)
@@ -466,6 +489,18 @@
 				.style('fill', 'white')
 				.style('text-anchor', 'middle');
 		}
+
+		nodeGroup.on('mouseover', function() {
+			d3.select(this)
+				.select('circle')
+				.style('stroke-width', 2)
+				.style('stroke', 'black');
+		}).on('mouseout', function() {
+			d3.select(this)
+				.select('circle')
+				.style('stroke-width', 1)
+				.style('stroke', d => nodeColors(d.type));
+		});
 
 		nodeGroup.each(function (d, i) {
 			const content = `<b>${d.text}</b><br><i>${d.type}</i><br><br><b>Roles: </b>${d.cluster}<br><b>Number of Mandates:</b> ${d.size}`;

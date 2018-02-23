@@ -70,6 +70,9 @@
 					);
 
 					previousEvent = event;
+
+					// reset checkbox
+					$('input[type=checkbox][value=alignbox]').prop('checked', false);
 				}
 			});
 
@@ -84,7 +87,7 @@
 						roleData,
 						stakeholderData,
 						timelineData,
-						1.3,
+						1.4,
 					);
 				} else {
 					d3.select('.donut-chart').select('svg').remove();
