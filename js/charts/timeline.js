@@ -198,6 +198,7 @@
 
 		// upper right label
 		// TODO @steph adjust text
+		// @Steph adjust legends here
 		const circleLabelGroup = chart.append('g')
 			.attr('transform', `translate(${width - 30}, 45)`)
 			.style('text-anchor', 'end');
