@@ -163,6 +163,11 @@
 			.x(d => d.x)
 			.y(d => d.y);
 
+
+        // Clear the previous SVG (if any)
+        var svg = d3.select(selector).select("svg").remove()
+
+
 		/* PLOTTING */
 		// define graph
 		const chart = d3.select(selector)

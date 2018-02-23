@@ -13,12 +13,28 @@ const Routing = {};
 	Routing.initializeRoutes = () => {
 		// setup crossroads for routing
 		crossroads.addRoute('/', () => {
-			loadPage('main', App.initMain);
+			loadPage('home', App.initHome);
 		});
+
+        crossroads.addRoute('/pathways', () => {
+            loadPage('pathways', App.initPathways);
+        });
+
+        crossroads.addRoute('/roles', () => {
+            loadPage('roles', App.initRoles);
+        });
+
+        crossroads.addRoute('/mandates', () => {
+            loadPage('mandates', App.initMandatesPage);
+        });
+
 		crossroads.addRoute('/background', () => {
 			loadPage('background');
 		});
 
+        crossroads.addRoute('/main', () => {
+            loadPage('main', App.initMain);
+        });
 		// setup hasher for subscribing to hash changes and browser history
 		hasher.prependHash = '';
 		hasher.initialized.add(parseHash);
