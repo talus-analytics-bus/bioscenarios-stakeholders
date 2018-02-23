@@ -16,7 +16,7 @@
         68, // WHO PH emergency declared
         41, // response and recovery
         28,  // confirmation of deliberate use
-        22 // ongoing response and recovery
+        26 // ongoing response and recovery
         ];
 
         // You can control the phantom midpoint for the line curve by adjusting these data points.
@@ -196,6 +196,16 @@
 			.style('font-size', '0.8em')
 			.text('Day 1');
 
+		// upper right label
+		// TODO @steph adjust text
+		const circleLabelGroup = chart.append('g')
+			.attr('transform', `translate(35, ${width - 100})`);
+
+		circleLabelGroup.append('text')
+			.style('fill', textBoldColor)
+			.style('font-size', '0.8em')
+			.text('Event Always Occurs');
+
 
 		const lineXDomain = eventLabels;
 		lineXDomain.push("lastelement");
@@ -258,9 +268,9 @@
             ...newItems,
             // part of the array after the specified index
             ...arr.slice(index),
-        ]
+        ];
         lineDomain = insert(lineDomain, epiMidpointIndex, newItem);
-		lineDomain.push(['lastelement', 2]);
+		lineDomain.push(['lastelement', 25]);
 
 		chart.append('path')
 			.attr('fill', 'none')
