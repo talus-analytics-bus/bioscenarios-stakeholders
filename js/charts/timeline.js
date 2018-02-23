@@ -9,20 +9,20 @@
         const cases = [
         10, // case identified
         10, // agent identified
-        18, // humanitarian response
-        30, // suspicion of deliberate use
-        54, // investigative response
-        60, // state request for assistance
-        60, // WHO PH emergency declared
-        42, // response and recovery
+        13, // humanitarian response
+        20, // suspicion of deliberate use
+        39, // state request for assistance
+        72, // investigative response
+        68, // WHO PH emergency declared
+        41, // response and recovery
         28,  // confirmation of deliberate use
         22 // ongoing response and recovery
         ];
 
         // You can control the phantom midpoint for the line curve by adjusting these data points.
-        const epiMidpoint = 80; // y coord for midpoint
+        const epiMidpoint = 77; // y coord for midpoint
         const epiMidpointIndex = 6; // the position within the list of cases
-        const epiMidpointX = 665; // x coord for midpoint
+        const epiMidpointX = 667; // x coord for midpoint
 
         let xTmpCorrd = 180;
         let yTmpCoord = 223;
@@ -260,7 +260,7 @@
             ...arr.slice(index),
         ]
         lineDomain = insert(lineDomain, epiMidpointIndex, newItem);
-		lineDomain.push(['lastelement', 15]);
+		lineDomain.push(['lastelement', 2]);
 
 		chart.append('path')
 			.attr('fill', 'none')
