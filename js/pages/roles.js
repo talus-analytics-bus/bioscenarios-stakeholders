@@ -9,7 +9,7 @@
         let roleData = App.roleData;
         let stakeholderData = App.stakeholderData;
 
-        const bubbleScale = 1.8;
+        const bubbleScale = 3;
         if (!timelineData) {
             App.initialize(loadData); // initialize the application first!
 
@@ -90,7 +90,7 @@
                         roleData,
                         stakeholderData,
                         timelineData,
-                        1.4,
+						2.7,
                     );
                 } else {
                     d3.select('.donut-chart').select('svg').remove();
