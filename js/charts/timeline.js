@@ -194,7 +194,10 @@
 		lineXDomain.push("lastelement");
 		const lineXLength = lineXDomain.length;
 
-		const xPadding = 110;
+		// This is how we are going to control the x coordinates for the anchor points
+		// I've created a custom scaleband which will be used throughout the rest of the
+		// graphic
+		const xPadding = 110; // This is what controls the spacing between the circles
 		const xOffset = 60;
 		const xCoordinateList = [];
 		eventLabels.forEach( (d, i) => {
