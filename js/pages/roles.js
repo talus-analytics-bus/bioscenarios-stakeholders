@@ -4,17 +4,25 @@
         let timeline;
         let donut;
 
-        let timelineData;
-        let policyEventData;
-        let roleData;
-        let stakeholderData;
+        let timelineData = App.timelineData;
+        let policyEventData = App.policyEventData;
+        let roleData = App.roleData;
+        let stakeholderData = App.stakeholderData;
 
         const bubbleScale = 1.8;
         if (!timelineData) {
-            App.initialize(init); // initialize the application first!
+            App.initialize(loadData); // initialize the application first!
 
         }
         else {
+            init();
+        }
+
+        function loadData() {
+            timelineData = App.timelineData;
+            policyEventData = App.policyEventData;
+            roleData = App.roleData;
+            stakeholderData = App.stakeholderData;
             init();
         }
 
@@ -32,7 +40,6 @@
         function initGraphs() {
 
             timeline = App.initTimeline('.timeline', timelineData, policyEventData);
-            conceptMap = App.initConceptMap('.concept-map', timelineData[0]['Timeline Event'], policyEventData, stakeholderData);
             donut = App.initDonut(
                 '.donut-chart',
                 timelineData[0]['Timeline Event'],
@@ -42,6 +49,7 @@
                 timelineData,
                 bubbleScale,
             );
+
         }
 
         function initListeners() {
@@ -51,9 +59,8 @@
             $('body').on('DOMSubtreeModified', '.what-event-is-it', function() {
                 const event = d3.select(this).text();
                 if ((event !== null) && (event !== previousEvent)) {
-                    d3.select('.concept-map').select('svg').remove();
+
                     d3.select('.donut-chart').select('svg').remove();
-                    conceptMap = App.initConceptMap('.concept-map', event, policyEventData, stakeholderData);
 
                     donut = App.initDonut(
                         '.donut-chart',
