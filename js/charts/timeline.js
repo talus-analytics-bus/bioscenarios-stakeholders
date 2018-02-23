@@ -38,9 +38,9 @@
             // suspicion of deliberate use
             [xTmpCorrd += 95, yTmpCoord-= 32], // monitor and treat new cases
             // investigative response
-            [xTmpCorrd = 500, yTmpCoord = 87], // provision of assistance
+            [xTmpCorrd = 560, yTmpCoord = 120], // provision of assistance
             // state request for assistance
-            [xTmpCorrd = 525, yTmpCoord = 78], // continued medical response to cases
+            [xTmpCorrd = 745, yTmpCoord = 107], // continued medical response to cases
             // WHO PHE declared
             [xTmpCorrd = 755, yTmpCoord = 115], // continued epidemiological investigation
             [xTmpCorrd = 775, yTmpCoord = 130], // increased prevention and control measures
