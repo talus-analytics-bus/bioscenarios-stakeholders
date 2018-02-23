@@ -8,7 +8,7 @@
 		const margin = {top: 0, right: 25, bottom: 50, left: 300};
 		const width = 800;
 		const height = width;
-		const baseNodeSize = 10;
+		const baseNodeSize = 1;
 
 		/* STEP ONE => MASSAGE THE DATA */
 		//		  meow
