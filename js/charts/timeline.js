@@ -19,6 +19,11 @@
         22 // ongoing response and recovery
         ];
 
+        // You can control the phantom midpoint for the line curve by adjusting these data points.
+        const epiMidpoint = 80; // y coord for midpoint
+        const epiMidpointIndex = 6; // the position within the list of cases
+        const epiMidpointX = 665; // x coord for midpoint
+
         let xTmpCorrd = 180;
         let yTmpCoord = 223;
         // This data set statically places the noTimeCase circles onto the line. To move the circles, you need to
@@ -207,11 +212,6 @@
 
 
 		// define scales
-		/*const x = d3.scaleBand()
-			.domain(eventLabels)
-			.paddingOuter(1)
-            .paddingInner(1)
-			.range([0, width]);*/
 		const x = (d) => {
 			return xCoordinateList[d];
 		};
@@ -224,35 +224,40 @@
 			.domain([0, 100])
 			.range([height, 0]);
 
-		const xTimelinePadding = 0;
-		function calculatePadding(point, index) {
 
-			/*if (index === 0) {
-				return point;
-			}
-			else {
-				return point + xTimelinePadding;
-			}*/
-			return point;
-		}
-		// graph line
+		// graph epicurve line here
 		var line = d3.line()
 			.curve(d3.curveCardinal)
 			.x(function (d, i) {
 
-				if (i == (lineXLength - 1)) {
+				if (i === (lineXLength - 1)) {
 					return width;
 				}
+				else if (i === epiMidpointIndex) {
+					return epiMidpointX; // return the epi points midpoint. This is NOT in the xDomain which is why we are manually supplying it
+				}
 				else {
-                    return x(d[0]);
+                    return x(d[0]); // this is an actual case and is referencing the X domain for these data
 				}
 
 			})
 			.y(function (d) {
-				return y(d[1])
+				return y(d[1]) // using the y domain data as this is an actual point. This is OK for the epi
 			});
 
-		const lineDomain = filterData.map(d => [d.eventName.toUpperCase(), d.numCases]);
+		let lineDomain = filterData.map(d => [d.eventName.toUpperCase(), d.numCases]);
+
+		let newItem =  ['new point', epiMidpoint];
+
+        const insert = (arr, index, ...newItems) => [
+            // part of the array before the specified index
+            ...arr.slice(0, index),
+            // inserted items
+            ...newItems,
+            // part of the array after the specified index
+            ...arr.slice(index),
+        ]
+        lineDomain = insert(lineDomain, epiMidpointIndex, newItem);
 		lineDomain.push(['lastelement', 15]);
 
 		chart.append('path')
