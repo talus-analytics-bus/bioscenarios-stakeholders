@@ -24,30 +24,30 @@
         const epiMidpointIndex = 6; // the position within the list of cases
         const epiMidpointX = 667; // x coord for midpoint
 
-        let xTmpCorrd = 180;
-        let yTmpCoord = 223;
+        let xTmpCorrd = 190;
+        let yTmpCoord = 252;
         // This data set statically places the noTimeCase circles onto the line. To move the circles, you need to
 		// manipulate the coordinates here. These are relative to the case events.
 		const noTimeCases = [
 			[xTmpCorrd, yTmpCoord], // notification of cases
-			[xTmpCorrd += 20, yTmpCoord-= 4], // coordinated medical response initiated
-			[xTmpCorrd += 20, yTmpCoord-= 5], // begin epidemiological investigation
+			[xTmpCorrd += 25, yTmpCoord-= 1], // coordinated medical response initiated
+			[xTmpCorrd += 25, yTmpCoord-= 2], // begin epidemiological investigation
             // humanitarian response
-            [xTmpCorrd += 50, yTmpCoord= 199], // define and identify cases
-            [xTmpCorrd += 25, yTmpCoord-= 8], // implement control and prevention measures
+            [xTmpCorrd += 80, yTmpCoord = 240], // define and identify cases
+            [xTmpCorrd += 30, yTmpCoord-= 4], // implement control and prevention measures
             // suspicion of deliberate use
-            [xTmpCorrd += 85, yTmpCoord-= 48], // monitor and treat new cases
+            [xTmpCorrd += 95, yTmpCoord-= 32], // monitor and treat new cases
             // investigative response
-            [xTmpCorrd = 465, yTmpCoord = 87], // provision of assistance
+            [xTmpCorrd = 500, yTmpCoord = 87], // provision of assistance
             // state request for assistance
             [xTmpCorrd = 525, yTmpCoord = 78], // continued medical response to cases
             // WHO PHE declared
-            [xTmpCorrd = 615, yTmpCoord = 116.6], // continued epidemiological investigation
-            [xTmpCorrd = 635, yTmpCoord = 128], // increased prevention and control measures
+            [xTmpCorrd = 755, yTmpCoord = 115], // continued epidemiological investigation
+            [xTmpCorrd = 775, yTmpCoord = 130], // increased prevention and control measures
             // Response and recovery
-            [xTmpCorrd = 705, yTmpCoord = 163], // monitor for new cases
+            [xTmpCorrd = 875, yTmpCoord = 186], // monitor for new cases
             // Confirmation of deliberate use
-            [xTmpCorrd = 805, yTmpCoord = 192], // Sanctions issued
+            [xTmpCorrd = 975, yTmpCoord = 206], // Sanctions issued
             [xTmpCorrd =710, yTmpCoord=68],
             [xTmpCorrd += 12, yTmpCoord-= 1], 
             [xTmpCorrd = 820, yTmpCoord = 99],
