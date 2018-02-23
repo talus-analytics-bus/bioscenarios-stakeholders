@@ -19,21 +19,21 @@
         5 // ongoing response and recovery
         ];
 
-        let xTmpCorrd = 208;
-        let yTmpCoord = 217;
+        let xTmpCorrd = 180;
+        let yTmpCoord = 223;
         // This data set statically places the noTimeCase circles onto the line. To move the circles, you need to
 		// manipulate the coordinates here. These are relative to the case events.
 		const noTimeCases = [
 			[xTmpCorrd, yTmpCoord], // notification of cases
-			[xTmpCorrd += 15, yTmpCoord-= 2], // coordinated medical response initiated
-			[xTmpCorrd += 14, yTmpCoord-= 3], // begin epidemiological investigation
+			[xTmpCorrd += 20, yTmpCoord-= 4], // coordinated medical response initiated
+			[xTmpCorrd += 20, yTmpCoord-= 5], // begin epidemiological investigation
             // humanitarian response
-            [xTmpCorrd += 50, yTmpCoord= 193], // define and identify cases
-            [xTmpCorrd += 25, yTmpCoord-= 9], // implement control and prevention measures
+            [xTmpCorrd += 50, yTmpCoord= 199], // define and identify cases
+            [xTmpCorrd += 25, yTmpCoord-= 8], // implement control and prevention measures
             // suspicion of deliberate use
-            [xTmpCorrd += 65, yTmpCoord-= 34], // monitor and treat new cases
+            [xTmpCorrd += 85, yTmpCoord-= 42], // monitor and treat new cases
             // investigative response
-            [xTmpCorrd = 455, yTmpCoord= 96], // provision of assistance
+            [xTmpCorrd = 465, yTmpCoord = 91], // provision of assistance
             // state request for assistance
             [xTmpCorrd = 525, yTmpCoord = 79], // continued medical response to cases
             // WHO PHE declared
