@@ -427,7 +427,7 @@
 			.html(function (d) {
 				return wordWrap(
 					d.eventName,
-					20,
+					16,
 					x(d.eventName.toUpperCase()),
 					y(d.numCases) - 30);
 			});
