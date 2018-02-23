@@ -5,13 +5,17 @@
 		let allRoles;
 		let roleAnchors;
 
+		console.log(rawData);
+		console.log(rawOrgInfo);
+
 		const margin = {top: 0, right: 25, bottom: 50, left: 300};
 		const width = 800;
 		const height = width;
+
 		let baseNodeSize;
 		if (eventName === null) {
 			baseNodeSize = 4;
-		} else{
+		} else {
 			baseNodeSize = 10;
 		}
 
@@ -115,9 +119,6 @@
 				.filter(d => d !== undefined);
 		}
 		parseData();
-
-		console.log(data.length);
-		console.log(rawOrgInfo.length);
 
 		let minRadius;
 		let shift;
@@ -355,7 +356,7 @@
 		}
 
 		nodeGroup.each(function(d, i) {
-			const content = `<b>${d.text}</b><br><i>${d.type}</i><br>${d.cluster}<br><b>Number of Mandates</b> ${d.size}`;
+			const content = `<b>${d.text}</b><br><i>${d.type}</i><br><br><b>Roles: </b>${d.cluster}<br><b>Number of Mandates:</b> ${d.size}`;
 			return $(this).tooltipster({
 				content: content,
 				trigger: 'hover',
