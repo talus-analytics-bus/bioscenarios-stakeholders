@@ -330,7 +330,7 @@
 		}
 
 		nodeGroup.each(function(d, i) {
-			const content = `<b>${d.text}</b><br><i>${d.type}</i><br>${d.cluster}<br><b>Number of Mandates</b> ${d.size}`;
+			const content = `<b>${d.text}</b><br><i>${d.type}</i><br><br><b>Roles: </b>${d.cluster}<br><b>Number of Mandates:</b> ${d.size}`;
 			return $(this).tooltipster({
 				content: content,
 				trigger: 'hover',
