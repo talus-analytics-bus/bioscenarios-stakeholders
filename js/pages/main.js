@@ -64,7 +64,7 @@
 						null,
 						roleData,
 						stakeholderData,
-						1.5
+						1.85,
 					);
 				} else {
 					d3.select('.donut-chart').select('svg').remove();
@@ -73,7 +73,7 @@
 						previousEvent || timelineData[0]['Timeline Event'],
 						roleData,
 						stakeholderData,
-						2
+						2,
 					);
 				}
 			});

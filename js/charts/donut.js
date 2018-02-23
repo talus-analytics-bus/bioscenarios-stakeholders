@@ -8,7 +8,12 @@
 		const margin = {top: 0, right: 25, bottom: 50, left: 300};
 		const width = 800;
 		const height = width;
-		const baseNodeSize = 10;
+		let baseNodeSize;
+		if (eventName === null) {
+			baseNodeSize = 4;
+		} else{
+			baseNodeSize = 10;
+		}
 
 		/* STEP ONE => MASSAGE THE DATA */
 		//		  meow
@@ -111,21 +116,30 @@
 		}
 		parseData();
 
+		console.log(data.length);
+		console.log(rawOrgInfo.length);
+
 		let minRadius;
+		let shift;
+		let power;
 		if (eventName === null) {
 			minRadius = 2;
+			shift = 1;
+			power = (x0, x1) => Math.pow(x1, x0);
 		} else {
 			minRadius = 20;
+			shift = 0;
+			power = (x0, x1) => Math.pow(x0, x1);
 		}
 		const nodes = data.map((d, i) => {
 			return {
 				index: i,
 				type: d.type,
 				cluster: d.roles,
-				radius: Math.pow(d.size, nodeScaling) * baseNodeSize + minRadius,
+				radius: power(d.size + shift, nodeScaling) * baseNodeSize + minRadius,
 				text: d.name,
-				x: 0,
-				y: 0,
+				x: width / 2,
+				y: height / 2,
 				size: d.size,
 			};
 		});
@@ -267,25 +281,36 @@
 			 * Initialize a new force to prevent out of bounds
 			 * We also make this bounding box a little smaller than the rect
 			 * To prevent overlapping on the text
+			 * We're gonna flip to polar coordinates here too, just to make things easy
 			 */
 			let cnodes;
+			const edgeRadius = width / 2;
+
+			const toPolar = (x, y) => {
+				return [
+					Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2)), // r
+					Math.atan2(y, x),  // t
+				];
+			};
+
+			const toCart = (r, t) => {
+				return [
+					r * Math.cos(t),  // x
+					r * Math.sin(t),  // y
+				];
+			};
 
 			const force = () => {
 				if (cnodes !== undefined) {
 					var node;
 					for (var i = 0; i < cnodes.length; i++) {
 						node = cnodes[i];
-						if (node.x + node.radius > width - 75) {
-							node.x = width - node.radius - 75;
-						}
-						if (node.x - node.radius < 75) {
-							node.x = node.radius + 75;
-						}
-						if (node.y + node.radius > height - 50) {
-							node.y = height - node.radius - 50;
-						}
-						if (node.y - node.radius < 50) {
-							node.y = node.radius + 50;
+						const polar = toPolar(node.x - width / 2, node.y - width / 2);
+						let cart;
+						if (polar[0] + node.radius >= edgeRadius) {
+							cart = toCart(edgeRadius - node.radius, polar[1]);
+							node.x = cart[0] + width / 2;
+							node.y = cart[1] + width / 2;
 						}
 					}
 				}
@@ -301,11 +326,11 @@
 		const simulation = d3.forceSimulation(nodes)
 			.force('collide', d3.forceCollide(d => d.radius - (d.radius / 10)).strength(1)) // dynamic collision 10%
 			.force('x', d3.forceX(d => forceCluster(d, 'x'))
-				.strength(0.5))
+				.strength(0.05))
 			.force('y', d3.forceY(d => forceCluster(d, 'y'))
-				.strength(0.5))
+				.strength(0.05))
 			.force('edge-collision', edgeCollision())
-			.alphaMin(0.001);
+			.alphaMin(0.0001);
 
 		// we don't have any links
 		// need nodes
