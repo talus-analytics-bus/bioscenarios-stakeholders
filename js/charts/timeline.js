@@ -11,12 +11,12 @@
         10, // agent identified
         18, // humanitarian response
         30, // suspicion of deliberate use
-        50, // investigative response
+        54, // investigative response
         70, // state request for assistance
-        56, // WHO PH emergency declared
-        34, // response and recovery
-        16,  // confirmation of deliberate use
-        5 // ongoing response and recovery
+        60, // WHO PH emergency declared
+        42, // response and recovery
+        28,  // confirmation of deliberate use
+        22 // ongoing response and recovery
         ];
 
         let xTmpCorrd = 180;
@@ -31,18 +31,18 @@
             [xTmpCorrd += 50, yTmpCoord= 199], // define and identify cases
             [xTmpCorrd += 25, yTmpCoord-= 8], // implement control and prevention measures
             // suspicion of deliberate use
-            [xTmpCorrd += 85, yTmpCoord-= 42], // monitor and treat new cases
+            [xTmpCorrd += 85, yTmpCoord-= 48], // monitor and treat new cases
             // investigative response
-            [xTmpCorrd = 465, yTmpCoord = 91], // provision of assistance
+            [xTmpCorrd = 465, yTmpCoord = 87], // provision of assistance
             // state request for assistance
-            [xTmpCorrd = 525, yTmpCoord = 79], // continued medical response to cases
+            [xTmpCorrd = 525, yTmpCoord = 78], // continued medical response to cases
             // WHO PHE declared
-            [xTmpCorrd = 615, yTmpCoord= 130], // continued epidemiological investigation
-            [xTmpCorrd = 635, yTmpCoord = 144], // increased prevention and control measures
+            [xTmpCorrd = 615, yTmpCoord = 116.6], // continued epidemiological investigation
+            [xTmpCorrd = 635, yTmpCoord = 128], // increased prevention and control measures
             // Response and recovery
-            [xTmpCorrd = 705, yTmpCoord = 188], // monitor for new cases
+            [xTmpCorrd = 705, yTmpCoord = 163], // monitor for new cases
             // Confirmation of deliberate use
-            [xTmpCorrd = 805, yTmpCoord = 231], // Sanctions issued
+            [xTmpCorrd = 805, yTmpCoord = 192], // Sanctions issued
             [xTmpCorrd =710, yTmpCoord=68],
             [xTmpCorrd += 12, yTmpCoord-= 1], 
             [xTmpCorrd = 820, yTmpCoord = 99],
@@ -200,8 +200,6 @@
 			.range([0, width])
 			.padding(1);
 
-
-
 		const dayScale = d3.scaleOrdinal()
 			.domain(eventLabels)
 			.range([1, 2, 10, 30, 50, 55, 75, 80, 91, 100]);
@@ -227,7 +225,7 @@
 			});
 
 		const lineDomain = filterData.map(d => [d.eventName.toUpperCase(), d.numCases]);
-		lineDomain.push(['lastelement', 3]);
+		lineDomain.push(['lastelement', 15]);
 
 		chart.append('path')
 			.attr('fill', 'none')
