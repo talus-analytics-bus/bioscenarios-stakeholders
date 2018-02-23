@@ -53,7 +53,7 @@
 			// TODO: deprecated?
 			var previousEvent = null;
 			$('body').on('DOMSubtreeModified', '.what-event-is-it', function() {
-				const event = d3.select(this).attr('value');
+				const event = d3.select(this).text();
 				if ((event !== null) && (event !== previousEvent)) {
 					d3.select('.concept-map').select('svg').remove();
 					d3.select('.donut-chart').select('svg').remove();

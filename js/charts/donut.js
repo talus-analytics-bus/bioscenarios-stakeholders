@@ -139,9 +139,13 @@
 				filteredPolicyData = rawPolicyData
 					.filter(d => {
 						const policyEventNum = getEventNum(d['Timeline Event']);
-						const happening = (policyEventNum <= eventNum);
-						const isPersistent = ((policyEventNum !== eventName) && (d['Persistent'] === 'TRUE'));
-						return happening && isPersistent;
+						// a policy is "happening" if it's specified event number in policyevents is the event currently selected
+						const happening = (policyEventNum == eventNum);
+						// a policy is still appliable if the policy started during a prior part of the timeline (relative to what was suggested)
+						// AND if the value "Persistent" is true
+						// note: eventNum is the thing selected by the user in the navigation
+						const isPersistent = ((policyEventNum <= eventNum) && (d['Persistent'] === 'TRUE'));
+						return happening || isPersistent;
 					});
 			}
 			// Now we need to add the info we need
@@ -325,7 +329,7 @@
 		categoryLabelGroup.append('text')
 			.attr('transform', 'translate(0, -25)')
 			.style('font-weight', 600)
-			.text('Color = Organization Type');
+			.text('Organization Type');
 
 		const categoryLabels = categoryLabelGroup.selectAll('g')
 			.data(allCategories)
@@ -352,7 +356,7 @@
 		legendGroup.append('text')
 			.attr('transform', 'translate(0, 250)')
 			.style('font-weight', 600)
-			.html(wordWrap('Circle Size = Number of Policies Stakeholder is mandated by', 40, 0, 0));
+			.html(wordWrap('Number of Policies Stakeholder is mandated by', 30, 0, 0));
 
 		const legendCircleGroup = legendGroup.append('g')
 			.attr('transform', 'translate(55, 287)')

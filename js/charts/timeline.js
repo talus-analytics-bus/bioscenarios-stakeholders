@@ -1,7 +1,7 @@
 (() => {
 	App.initTimeline = (selector, rawData, policyEventData, param = {}) => {
-		const margin = {top: 25, right: 25, bottom: 50, left: 25};
-		const width = param.width || 1000;
+		const margin = {top: 25, right: 25, bottom: 50, left: 0};
+		const width = param.width || 1125;
 		const height = width * 0.25;
 
 		// How high should the y axis be?
@@ -12,7 +12,7 @@
         18, // humanitarian response
         30, // suspicion of deliberate use
         54, // investigative response
-        70, // state request for assistance
+        60, // state request for assistance
         60, // WHO PH emergency declared
         42, // response and recovery
         28,  // confirmation of deliberate use
@@ -194,11 +194,24 @@
 		lineXDomain.push("lastelement");
 		const lineXLength = lineXDomain.length;
 
+		const xPadding = 110;
+		const xOffset = 60;
+		const xCoordinateList = [];
+		eventLabels.forEach( (d, i) => {
+			let xCoord= (i === 0) ? xOffset : ((i * xPadding) + xOffset);
+            xCoordinateList[d] = xCoord;
+		});
+
+
 		// define scales
-		const x = d3.scaleBand()
+		/*const x = d3.scaleBand()
 			.domain(eventLabels)
-			.range([0, width])
-			.padding(1);
+			.paddingOuter(1)
+            .paddingInner(1)
+			.range([0, width]);*/
+		const x = (d) => {
+			return xCoordinateList[d];
+		};
 
 		const dayScale = d3.scaleOrdinal()
 			.domain(eventLabels)
@@ -208,10 +221,22 @@
 			.domain([0, 100])
 			.range([height, 0]);
 
+		const xTimelinePadding = 0;
+		function calculatePadding(point, index) {
+
+			/*if (index === 0) {
+				return point;
+			}
+			else {
+				return point + xTimelinePadding;
+			}*/
+			return point;
+		}
 		// graph line
 		var line = d3.line()
 			.curve(d3.curveCardinal)
 			.x(function (d, i) {
+
 				if (i == (lineXLength - 1)) {
 					return width;
 				}
@@ -296,7 +321,7 @@
 
 		// graph points on the line
 		eventGroup.append('circle')
-			.attr('cx', d => x(d.eventName.toUpperCase()))
+			.attr('cx', (d, i) => x(d.eventName.toUpperCase()))
 			.attr('cy', d => y(d.numCases))
 			.attr('r', '4')
 			.attr('class', (d, i) => (i === 0) ? 'selected-circle' : '')
@@ -317,8 +342,8 @@
 
 		// graph point lines
 		eventGroup.append('line')
-			.attr('x1', d => x(d.eventName.toUpperCase()))
-			.attr('x2', d => x(d.eventName.toUpperCase()))
+			.attr('x1', (d, i) => x(d.eventName.toUpperCase()))
+			.attr('x2', (d, i) => x(d.eventName.toUpperCase()))
 			.attr('y1', height)
 			.attr('y2', d => y(d.numCases))
 			.attr('stroke-width', 1)
@@ -342,7 +367,7 @@
 			.attr('class', 'event-label')
 			.attr('fill', (d, i) => (i === 0) ? 'black' : textColor)
 			.attr('text-anchor', 'middle')
-			.style('font-size', (d, i) => (i === 0) ? '0.70em' : '0.70em')
+			.style('font-size', (d, i) => (i === 0) ? '1em' : '1em')
 			.style('font-weight', (d, i) => (i === 0) ? 600 : '')
 			.html(function (d) {
 				return wordWrap(
@@ -379,7 +404,8 @@
 					.style('fill-opacity', 0);
 				d3.selectAll('.event-label')
 					.style('fill', textColor)
-					.style('font-size', '0.70em');
+					.style('font-size', '1em')
+                    .style('font-weight', '');
 
                 d3.selectAll('.event-marker-highlight-icon')
                     .style('visibility', 'hidden');
@@ -397,7 +423,7 @@
 				// now set text
 				const group = d3.select(`.event-group-${i}`);
 				group.selectAll('text')
-					.style('font-size', '0.7em')
+					.style('font-size', '1em')
 					.style('fill', 'black')
 					.style('font-weight', 600);
 				// now set rect
