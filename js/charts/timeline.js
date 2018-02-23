@@ -20,7 +20,7 @@
         ];
 
         let xTmpCorrd = 208;
-        let yTmpCoord = 221;
+        let yTmpCoord = 217;
         // This data set statically places the noTimeCase circles onto the line. To move the circles, you need to
 		// manipulate the coordinates here. These are relative to the case events.
 		const noTimeCases = [
@@ -28,21 +28,21 @@
 			[xTmpCorrd += 15, yTmpCoord-= 2], // coordinated medical response initiated
 			[xTmpCorrd += 14, yTmpCoord-= 3], // begin epidemiological investigation
             // humanitarian response
-            [xTmpCorrd += 70, yTmpCoord-= 20], // define and identify cases
-            [xTmpCorrd += 30, yTmpCoord-= 10], // implement control and prevention measures
+            [xTmpCorrd += 50, yTmpCoord= 193], // define and identify cases
+            [xTmpCorrd += 25, yTmpCoord-= 9], // implement control and prevention measures
             // suspicion of deliberate use
-            [xTmpCorrd += 78, yTmpCoord-= 38], // monitor and treat new cases
+            [xTmpCorrd += 65, yTmpCoord-= 34], // monitor and treat new cases
             // investigative response
-            [xTmpCorrd = 500, yTmpCoord= 95], // continued medical response to cases
+            [xTmpCorrd = 455, yTmpCoord= 96], // provision of assistance
             // state request for assistance
-            [xTmpCorrd = 570, yTmpCoord = 78], // provision of assistance
+            [xTmpCorrd = 525, yTmpCoord = 79], // continued medical response to cases
             // WHO PHE declared
-            [xTmpCorrd = 660, yTmpCoord= 123], // continued epidemiological investigation
-            [xTmpCorrd = 680, yTmpCoord = 136], // increased prevention and control measures
+            [xTmpCorrd = 615, yTmpCoord= 130], // continued epidemiological investigation
+            [xTmpCorrd = 635, yTmpCoord = 144], // increased prevention and control measures
             // Response and recovery
-            [xTmpCorrd = 765, yTmpCoord = 185], // monitor for new cases
+            [xTmpCorrd = 705, yTmpCoord = 188], // monitor for new cases
             // Confirmation of deliberate use
-            [xTmpCorrd = 850, yTmpCoord = 221], // Sanctions issued
+            [xTmpCorrd = 805, yTmpCoord = 231], // Sanctions issued
             [xTmpCorrd =710, yTmpCoord=68],
             [xTmpCorrd += 12, yTmpCoord-= 1], 
             [xTmpCorrd = 820, yTmpCoord = 99],
@@ -189,11 +189,16 @@
 			.style('font-size', '0.8em')
 			.text('Day 1');
 
+
+		const lineXDomain = eventLabels;
+		lineXDomain.push("lastelement");
+
 		// define scales
 		const x = d3.scaleBand()
 			.domain(eventLabels)
 			.range([0, width])
 			.padding(1);
+
 
 
 		const dayScale = d3.scaleOrdinal()
@@ -214,10 +219,14 @@
 				return y(d[1])
 			});
 
+		const lineDomain = filterData.map(d => [d.eventName.toUpperCase(), d.numCases]);
+		lineDomain.push(['lastelement', 5]);
+
 		chart.append('path')
 			.attr('fill', 'none')
 			.style('stroke', 'white')
-			.datum(filterData.map(d => [d.eventName.toUpperCase(), d.numCases]))
+			//.datum(filterData.map(d => [d.eventName.toUpperCase(), d.numCases]))
+			.datum(lineDomain)
 			.attr('d', line);
 
 		// draw the policy graph
