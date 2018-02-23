@@ -27,7 +27,7 @@
 		let timeline;
 		let donut;
 
-		const bubbleScale = 1.8;
+		const bubbleScale = 3;
 
 		function init() {
 			initGraphs();
@@ -87,7 +87,7 @@
 						roleData,
 						stakeholderData,
 						timelineData,
-						1.35,
+						2.7,
 					);
 				} else {
 					d3.select('.donut-chart').select('svg').remove();

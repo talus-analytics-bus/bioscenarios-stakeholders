@@ -12,9 +12,9 @@
 
 		let baseNodeSize;
 		if (eventName === null) {
-			baseNodeSize = 2;
+			baseNodeSize = 1;
 		} else {
-			baseNodeSize = 2;
+			baseNodeSize = 1;
 		}
 
 		/* STEP ONE => MASSAGE THE DATA */
@@ -218,15 +218,13 @@
 		let shift;
 		let power;
 		if (eventName === null) {
-			minRadius = 12;
-			shift = 1;
-			power = (x0, x1) => Math.pow(x1, x0);
+			minRadius = 7;
+			power = (x0, x1) => Math.exp(nodeScaling) * Math.pow(x0, 0.8);
 		} else {
-			minRadius = 20;
-			shift = 1;
-			power = (x0, x1) => Math.pow(x0, x1);
+			minRadius = 10;
+			power = (x0, x1) => Math.exp(nodeScaling) * Math.pow(x0, 0.8);
 		}
-		const getRadius = (size) => power(size + shift, nodeScaling) * baseNodeSize + minRadius;
+		const getRadius = (size) => power(size, nodeScaling) * baseNodeSize + minRadius;
 
 		let value;
 		let initial;
@@ -377,7 +375,7 @@
 		const legendCircleGroup = legendGroup.append('g')
 			.attr('transform', 'translate(55, 287)')
 			.selectAll('g')
-			.data((eventName === null) ? [4, 6, 9] : [0, 2, 4])
+			.data((eventName === null) ? [2, 6, 9] : [1, 2, 4])
 			.enter()
 			.append('g')
 			.attr('transform', d => 'translate(50)');
