@@ -80,7 +80,7 @@
 						policyEventData,
 						roleData,
 						stakeholderData,
-						1.85,
+						1.3,
 					);
 				} else {
 					d3.select('.donut-chart').select('svg').remove();

@@ -1,9 +1,10 @@
 (() => {
-	App.initDonut = (selector, eventName, rawPolicyData, rawData, rawOrgInfo, nodeScaling=2) => {
+	App.initDonut = (selector, eventName, rawPolicyData, rawData, rawOrgInfo, nodeScaling = 2) => {
 		let data;
 		let allCategories;
 		let allRoles;
 		let roleAnchors;
+		let orgTypeSizes;
 
 		const margin = {top: 0, right: 25, bottom: 50, left: 300};
 		const width = 800;
@@ -11,9 +12,9 @@
 
 		let baseNodeSize;
 		if (eventName === null) {
-			baseNodeSize = 4;
+			baseNodeSize = 2;
 		} else {
-			baseNodeSize = 1;
+			baseNodeSize = 2;
 		}
 
 		/* STEP ONE => MASSAGE THE DATA */
@@ -23,6 +24,7 @@
 		//   > ^ <
 		//
 		// (there are cats here)
+		// (need to get data in this format)
 		// data = [{'name': 'VqdNMrLGWx',
 		// 	'roles': ['Humanitarian Aid',
 		// 		'Policy and Governance',
@@ -82,75 +84,184 @@
 					y: 6 * height / 7,
 				},
 			};
+			// Add lowered versions of the keys here, since our datasets is lowered
 			Object.keys(roleAnchors).forEach(k => {
 				roleAnchors[k.toLowerCase()] = roleAnchors[k];
 			});
 
+			// If we're not passed an eventName, plot all data
 			let filteredData;
+			let filteredPolicyData;
 			if (eventName === null) {
 				filteredData = rawData;
+				filteredPolicyData = rawPolicyData;
 			} else {
+				// Otherwise initially filter our roles to just orgs involved in event
 				filteredData = rawData
 					.filter(d => d['Timeline Event'].toLowerCase() === eventName.toLowerCase());
+				// need to filter to every event *up until this one*
+				filteredPolicyData = rawPolicyData
+					.filter(d => d['Timeline Event'].toLowerCase() === eventName.toLowerCase());
 			}
-
+			// Now we need to add the info we need
 			data = filteredData.map(old => {
-					var d = Object.assign({}, old);
-					const orgName = d['Stakeholder'].toLowerCase();
-					const orgRow = rawOrgInfo.filter(o => o['Stakeholder Name'].toLowerCase() === orgName);
-					if (orgRow.length === 0) {
-						console.log(`error, ${orgName} has no associated data.... skipping`);
-						console.log(d);
-					} else {
-						Object.assign(d, orgRow[0]);
-						d.name = d['Stakeholder'];
-						d.roles = d['Stakeholder Role'].split(';').map(r => r.trim());
-						d.size = d['Mandates'].split(';').length;
-						d.type = d['Organization Category'];
-						if (d.type === 'International Organization') {
-							d.type = 'Interational Organizations';
-						}
-						return d;
+				// first initialize new var to work with
+				var d = Object.assign({}, old);
+				// set name
+				d.name = d['Stakeholder'];
+				// set roles
+				d.roles = d['Stakeholder Role'].split(';').map(r => r.trim());
+				// get the org
+				const orgName = d['Stakeholder'].toLowerCase();
+				// pull the org row
+				const orgRow = rawOrgInfo.filter(o => o['Stakeholder Name'].toLowerCase() === orgName);
+				if (orgRow.length === 0) {
+					console.log(`error, ${orgName} has no associated data.... skipping`);
+					console.log(d);
+				} else {
+					d.type = orgRow[0]['Organization Category'];
+					if (d.type === 'International Organization') {
+						d.type = 'Interational Organizations';
 					}
-				})
-				.filter(d => d !== undefined);
+				}
+				// now need to pull the policy docs
+				const policyRows = filteredPolicyData
+					.filter(p => p['Policy Stakeholder'].toLowerCase() === orgName);
+				d.size = policyRows.length;
+				d.policies = policyRows;
+				return d;
+			})
+			.filter(d => d !== undefined);
+
+			orgTypeSizes = d3.nest()
+				.key(d => d.type)
+				.rollup(v => [d3.min(v, _ => _.size), d3.max(v, _ => _.size)])
+				.entries(data)
+				.reduce((acc, cval) =>{
+					acc[cval.key] = cval.value;
+					return acc;
+				}, {});
+
+			allCategories.forEach(c => {
+				const includedOrgs = Object.keys(orgTypeSizes);
+				if (!includedOrgs.includes(c)) {
+					orgTypeSizes[c] = [0, 1];
+				};
+			});
+
 		}
+
 		parseData();
 
 		let minRadius;
 		let shift;
 		let power;
 		if (eventName === null) {
-			minRadius = 2;
+			minRadius = 4;
 			shift = 1;
 			power = (x0, x1) => Math.pow(x1, x0);
 		} else {
 			minRadius = 20;
-			shift = 0;
+			shift = 1;
 			power = (x0, x1) => Math.pow(x0, x1);
 		}
+		const getRadius = (size) => power(size + shift, nodeScaling) * baseNodeSize + minRadius;
+
+		let value;
+		let initial;
+		const forceCluster = (d, direction) => {
+			const numClusters = d.cluster.length;
+			if (numClusters === 1) {
+				value = roleAnchors[d.cluster[0]][direction];
+			} else {
+				if (direction === 'x') {
+					initial = width / 2;
+				} else {
+					initial = height / 2;
+				}
+				value = d.cluster
+					.reduce((acc, cval) => acc + roleAnchors[cval][direction], 0);
+				value /= numClusters;
+			}
+			return value;
+		};
+
 		const nodes = data.map((d, i) => {
 			return {
 				index: i,
 				type: d.type,
 				cluster: d.roles,
-				radius: power(d.size + shift, nodeScaling) * baseNodeSize + minRadius,
+				radius: getRadius(d.size),
 				text: d.name,
-				x: width / 2,
-				y: height / 2,
 				size: d.size,
 			};
+		}).map(d => {
+			return Object.assign(d, {
+				x: forceCluster(d, 'x'),
+				y: forceCluster(d, 'y'),
+				forceX: forceCluster(d, 'x'),
+				forceY: forceCluster(d, 'y'),
+			});
 		});
 
+
+		// these are colouring *just* the borders
 		const nodeColors = d3.scaleOrdinal()
 			.domain(allCategories)
 			.range([
-				'#667eae',  // UN Orgs
-				'#DBD195',  // International orgs
-				'#e89372',  // NGOs
-				'#8e87b6',  // non affected states
+				'#082b84',  // UN Orgs
+				'#d7c333',  // International orgs
+				'#ef7733',  // NGOs
+				'#3b2f60',  // non affected states
 				'#c5443c',  // affected states
-				'#99c2a9',  // Private sector
+				'#326921',  // Private sector
+			]);
+
+		const genScale = (domain, range) => d3.scaleLinear().domain(domain.reverse()).range(range);
+		const nodeGradients = d3.scaleOrdinal()
+			.domain(allCategories)
+			.range([
+				// UN Orgs
+				genScale(
+					orgTypeSizes['UN Organizations'],
+					[
+						'#667eae',
+						'#7c99c5',
+						'#96aacf',
+						'#aebede',
+					]),
+				// International orgs
+				genScale(
+					orgTypeSizes['Non-UN International Organizations'],
+					[
+						'#dbd195',
+					]),
+				// NGOs
+				genScale(
+					orgTypeSizes['NGOs'],
+					[
+						'#e89372',
+						'#efb9a0',
+					]),
+				// non affected states
+				genScale(
+					orgTypeSizes['Non-affected Member States'],
+					[
+						'8e87b6',
+					]),
+				// affected states
+				genScale(
+					orgTypeSizes['Affected Member State'],
+					[
+						'#c5443c',
+					]),
+				// Private sector
+				genScale(
+					orgTypeSizes['Private Sector'],
+					[
+						'#99c2a9',
+						'#adc6bc',
+					]),
 			]);
 
 		const chart = d3.select(selector)
@@ -189,9 +300,9 @@
 			.attr('height', 20)
 			.attr('rx', 6)
 			.attr('ry', 6)
-			.style('fill', d => nodeColors(d))
+			.style('fill', d => nodeGradients(d)(orgTypeSizes[d][0]))
 			.style('fill-opacity', 0.9)
-			.style('stroke', d => d3.color(nodeColors(d)).darker())
+			.style('stroke', d => nodeColors(d))
 			.style('stroke-opacity', 1);
 
 		legendGroup.append('text')
@@ -202,21 +313,21 @@
 		const legendCircleGroup = legendGroup.append('g')
 			.attr('transform', 'translate(55, 287)')
 			.selectAll('g')
-			.data([1, 2, 4])
+			.data((eventName === null) ? [4, 8, 12] : [0, 2, 4])
 			.enter()
 			.append('g')
 			.attr('transform', d => 'translate(50)');
 
 		legendCircleGroup.append('circle')
-			.attr('r', d => baseNodeSize * d * 2)
-			.attr('cy', d => baseNodeSize * d * 2)
+			.attr('r', d => getRadius(d))
+			.attr('cy', d => getRadius(d))
 			.style('fill-opacity', 0)
 			.style('stroke', 'black')
 			.style('stroke-opacity', 0.8)
 			.style('stroke-dasharray', ('3, 3'));
 
 		legendCircleGroup.append('text')
-			.attr('dy', d => (d * baseNodeSize * 4) - 5)
+			.attr('dy', d => getRadius(d) * 2 - 5)
 			.style('text-anchor', 'middle')
 			.style('font-size', '1.15em')
 			.text(d => d);
@@ -255,25 +366,6 @@
 
 		// now force layout
 		// first setup simulation
-		let value;
-		let initial;
-		const forceCluster = (d, direction) => {
-			const numClusters = d.cluster.length;
-			if (numClusters === 1) {
-				value = roleAnchors[d.cluster[0]][direction];
-			} else {
-				if (direction === 'x') {
-					initial = width / 2;
-				} else {
-					initial = height / 2;
-				}
-				value = d.cluster
-					.reduce((acc, cval) => acc + roleAnchors[cval][direction], 0);
-				value /= numClusters;
-			}
-			return value;
-		};
-
 		const edgeCollision = () => {
 			/*
 			 * Initialize a new force to prevent out of bounds
@@ -323,9 +415,9 @@
 
 		const simulation = d3.forceSimulation(nodes)
 			.force('collide', d3.forceCollide(d => d.radius - (d.radius / 10)).strength(1)) // dynamic collision 10%
-			.force('x', d3.forceX(d => forceCluster(d, 'x'))
+			.force('x', d3.forceX(d => d.forceX)
 				.strength(0.05))
-			.force('y', d3.forceY(d => forceCluster(d, 'y'))
+			.force('y', d3.forceY(d => d.forceY)
 				.strength(0.05))
 			.force('edge-collision', edgeCollision())
 			.alphaMin(0.0001);
@@ -340,10 +432,12 @@
 			.append('g');
 
 		nodeGroup.append('circle')
+			.transition()
+			.duration(500)
 			.attr('r', d => d.radius)
-			.style('fill', d => nodeColors(d.type))
-			.style('fill-opacity', 0.9)
-			.style('stroke', d => d3.color(nodeColors(d.type)).darker())
+			.style('fill', d => nodeGradients(d.type)(d.size))
+			.style('fill-opacity', 0.7)
+			.style('stroke', d => nodeColors(d.type))
 			.style('stroke-opacity', 1);
 
 		if (eventName !== null) {
@@ -352,7 +446,7 @@
 				.style('text-anchor', 'middle');
 		}
 
-		nodeGroup.each(function(d, i) {
+		nodeGroup.each(function (d, i) {
 			const content = `<b>${d.text}</b><br><i>${d.type}</i><br><br><b>Roles: </b>${d.cluster}<br><b>Number of Mandates:</b> ${d.size}`;
 			return $(this).tooltipster({
 				content: content,
