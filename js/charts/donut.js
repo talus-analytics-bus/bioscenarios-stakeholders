@@ -116,9 +116,13 @@
 				filteredPolicyData = rawPolicyData
 					.filter(d => {
 						const policyEventNum = getEventNum(d['Timeline Event']);
-						const happening = (policyEventNum <= eventNum);
-						const isPersistent = ((policyEventNum !== eventName) && (d['Persistent'] === 'TRUE'));
-						return happening && isPersistent;
+						// a policy is "happening" if it's specified event number in policyevents is the event currently selected
+						const happening = (policyEventNum == eventNum);
+						// a policy is still appliable if the policy started during a prior part of the timeline (relative to what was suggested)
+						// AND if the value "Persistent" is true
+						// note: eventNum is the thing selected by the user in the navigation
+						const isPersistent = ((policyEventNum <= eventNum) && (d['Persistent'] === 'TRUE'));
+						return happening || isPersistent;
 					});
 			}
 			// Now we need to add the info we need
