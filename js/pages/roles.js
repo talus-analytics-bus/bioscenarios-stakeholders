@@ -9,7 +9,7 @@
         let roleData = App.roleData;
         let stakeholderData = App.stakeholderData;
 
-        const bubbleScale = 1.8;
+        const bubbleScale = 3;
         if (!timelineData) {
             App.initialize(loadData); // initialize the application first!
 
@@ -40,7 +40,7 @@
         function initGraphs() {
 
             timeline = App.initTimeline('.timeline', timelineData, policyEventData);
-            donut = App.initDonut(
+            donut = App.initBubbleChart(
                 '.donut-chart',
                 timelineData[0]['Timeline Event'],
                 policyEventData,
@@ -62,7 +62,7 @@
 
                     d3.select('.donut-chart').select('svg').remove();
 
-                    donut = App.initDonut(
+                    donut = App.initBubbleChart(
                         '.donut-chart',
                         event,
                         policyEventData,
@@ -83,18 +83,18 @@
                 const isChecked = $(this).prop('checked');
                 if (isChecked) {
                     d3.select('.donut-chart').select('svg').remove();
-                    donut = App.initDonut(
+                    donut = App.initBubbleChart(
                         '.donut-chart',
                         null,
                         policyEventData,
                         roleData,
                         stakeholderData,
                         timelineData,
-                        1.4,
+						2.7,
                     );
                 } else {
                     d3.select('.donut-chart').select('svg').remove();
-                    donut = App.initDonut(
+                    donut = App.initBubbleChart(
                         '.donut-chart',
                         previousEvent || timelineData[0]['Timeline Event'],
                         policyEventData,

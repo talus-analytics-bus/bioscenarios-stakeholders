@@ -37,7 +37,7 @@
 		function initGraphs() {
 			timeline = App.initTimeline('.timeline', timelineData, policyEventData);
 			conceptMap = App.initConceptMap('.concept-map', timelineData[0]['Timeline Event'], policyEventData, stakeholderData);
-			donut = App.initDonut(
+			donut = App.initBubbleChart(
 				'.donut-chart',
 				timelineData[0]['Timeline Event'],
 				policyEventData,
@@ -59,7 +59,7 @@
 					d3.select('.donut-chart').select('svg').remove();
 					conceptMap = App.initConceptMap('.concept-map', event, policyEventData, stakeholderData);
 
-					donut = App.initDonut(
+					donut = App.initBubbleChart(
 						'.donut-chart',
 						event,
 						policyEventData,
@@ -77,7 +77,7 @@
 				const isChecked = $(this).prop('checked');
 				if (isChecked) {
 					d3.select('.donut-chart').select('svg').remove();
-					donut = App.initDonut(
+					donut = App.initBubbleChart(
 						'.donut-chart',
 						null,
 						policyEventData,
@@ -88,7 +88,7 @@
 					);
 				} else {
 					d3.select('.donut-chart').select('svg').remove();
-					donut = App.initDonut(
+					donut = App.initBubbleChart(
 						'.donut-chart',
 						previousEvent || timelineData[0]['Timeline Event'],
 						policyEventData,

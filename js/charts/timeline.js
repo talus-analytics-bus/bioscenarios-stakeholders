@@ -9,45 +9,45 @@
         const cases = [
         10, // case identified
         10, // agent identified
-        18, // humanitarian response
-        30, // suspicion of deliberate use
-        54, // investigative response
-        60, // state request for assistance
-        60, // WHO PH emergency declared
-        42, // response and recovery
+        13, // humanitarian response
+        20, // suspicion of deliberate use
+        39, // state request for assistance
+        72, // investigative response
+        68, // WHO PH emergency declared
+        41, // response and recovery
         28,  // confirmation of deliberate use
-        22 // ongoing response and recovery
+        26 // ongoing response and recovery
         ];
 
         // You can control the phantom midpoint for the line curve by adjusting these data points.
-        const epiMidpoint = 80; // y coord for midpoint
+        const epiMidpoint = 77; // y coord for midpoint
         const epiMidpointIndex = 6; // the position within the list of cases
-        const epiMidpointX = 665; // x coord for midpoint
+        const epiMidpointX = 667; // x coord for midpoint
 
-        let xTmpCorrd = 180;
-        let yTmpCoord = 223;
+        let xTmpCorrd = 190;
+        let yTmpCoord = 252;
         // This data set statically places the noTimeCase circles onto the line. To move the circles, you need to
 		// manipulate the coordinates here. These are relative to the case events.
 		const noTimeCases = [
 			[xTmpCorrd, yTmpCoord], // notification of cases
-			[xTmpCorrd += 20, yTmpCoord-= 4], // coordinated medical response initiated
-			[xTmpCorrd += 20, yTmpCoord-= 5], // begin epidemiological investigation
+			[xTmpCorrd += 25, yTmpCoord-= 1], // coordinated medical response initiated
+			[xTmpCorrd += 25, yTmpCoord-= 2], // begin epidemiological investigation
             // humanitarian response
-            [xTmpCorrd += 50, yTmpCoord= 199], // define and identify cases
-            [xTmpCorrd += 25, yTmpCoord-= 8], // implement control and prevention measures
+            [xTmpCorrd += 80, yTmpCoord = 240], // define and identify cases
+            [xTmpCorrd += 30, yTmpCoord-= 4], // implement control and prevention measures
             // suspicion of deliberate use
-            [xTmpCorrd += 85, yTmpCoord-= 48], // monitor and treat new cases
+            [xTmpCorrd += 95, yTmpCoord-= 32], // monitor and treat new cases
             // investigative response
-            [xTmpCorrd = 465, yTmpCoord = 87], // provision of assistance
+            [xTmpCorrd = 560, yTmpCoord = 120], // provision of assistance
             // state request for assistance
-            [xTmpCorrd = 525, yTmpCoord = 78], // continued medical response to cases
+            [xTmpCorrd = 745, yTmpCoord = 107], // continued medical response to cases
             // WHO PHE declared
-            [xTmpCorrd = 615, yTmpCoord = 116.6], // continued epidemiological investigation
-            [xTmpCorrd = 635, yTmpCoord = 128], // increased prevention and control measures
+            [xTmpCorrd = 755, yTmpCoord = 115], // continued epidemiological investigation
+            [xTmpCorrd = 775, yTmpCoord = 130], // increased prevention and control measures
             // Response and recovery
-            [xTmpCorrd = 705, yTmpCoord = 163], // monitor for new cases
+            [xTmpCorrd = 875, yTmpCoord = 186], // monitor for new cases
             // Confirmation of deliberate use
-            [xTmpCorrd = 805, yTmpCoord = 192], // Sanctions issued
+            [xTmpCorrd = 975, yTmpCoord = 206], // Sanctions issued
             [xTmpCorrd =710, yTmpCoord=68],
             [xTmpCorrd += 12, yTmpCoord-= 1], 
             [xTmpCorrd = 820, yTmpCoord = 99],
@@ -204,6 +204,51 @@
 			.style('font-size', '0.8em')
 			.text('Day 1');
 
+		// upper right label
+		// TODO @steph adjust text
+		// @Steph adjust legends here
+		const circleLabelGroup = chart.append('g')
+			.attr('transform', `translate(${width - 30}, 45)`)
+			.style('text-anchor', 'end');
+
+		circleLabelGroup.append('text')
+			.style('fill', textBoldColor)
+			.style('font-size', '0.8em')
+			.text('Event Always Occurs');
+
+		circleLabelGroup.append('text')
+			.attr('transform', 'translate(0, 12)')
+			.style('fill', textBoldColor)
+			.style('font-size', '0.8em')
+			.text('Event Sometimes Occurs');
+
+		// circleLabelGroup.append('text')
+		// 	.attr('transform', 'translate(0, 24)')
+		// 	.style('fill', textBoldColor)
+		// 	.style('font-size', '0.8em')
+		// 	.text('Tasks');
+
+		circleLabelGroup.append('circle')
+			.attr('transform', 'translate(7, -3)')
+			.attr('r', 4)
+			.style('stroke', noTimeEventColor)
+			.style('stroke-width', 0.75)
+			.style('fill', alwaysOccursPointColor);
+
+		circleLabelGroup.append('circle')
+			.attr('transform', 'translate(7, 9)')
+			.attr('r', 4)
+			.style('stroke', noTimeEventColor)
+			.style('stroke-width', 0.75)
+			.style('fill', pointColor);
+
+		// circleLabelGroup.append('circle')
+		// 	.attr('transform', 'translate(7, 21)')
+		// 	.attr('r', 4)
+		// 	.style('stroke', noTimeEventColor)
+		// 	.style('stroke-width', 0.75)
+		// 	.style('fill', 'white');
+
 
 		const lineXDomain = eventLabels;
 		lineXDomain.push("lastelement");
@@ -266,9 +311,9 @@
             ...newItems,
             // part of the array after the specified index
             ...arr.slice(index),
-        ]
+        ];
         lineDomain = insert(lineDomain, epiMidpointIndex, newItem);
-		lineDomain.push(['lastelement', 15]);
+		lineDomain.push(['lastelement', 25]);
 
 		chart.append('path')
 			.attr('fill', 'none')
@@ -390,7 +435,7 @@
 			.html(function (d) {
 				return wordWrap(
 					d.eventName,
-					20,
+					16,
 					x(d.eventName.toUpperCase()),
 					y(d.numCases) - 30);
 			});

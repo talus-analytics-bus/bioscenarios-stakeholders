@@ -1,5 +1,5 @@
 (() => {
-	App.initDonut = (selector, eventName, rawPolicyData, rawData, rawOrgInfo, rawTimelineData, nodeScaling = 2) => {
+	App.initBubbleChart = (selector, eventName, rawPolicyData, rawData, rawOrgInfo, rawTimelineData, nodeScaling = 2) => {
 		let data;
 		let allCategories;
 		let allRoles;
@@ -12,9 +12,9 @@
 
 		let baseNodeSize;
 		if (eventName === null) {
-			baseNodeSize = 2;
+			baseNodeSize = 1;
 		} else {
-			baseNodeSize = 2;
+			baseNodeSize = 1;
 		}
 
 		/* STEP ONE => MASSAGE THE DATA */
@@ -218,15 +218,13 @@
 		let shift;
 		let power;
 		if (eventName === null) {
-			minRadius = 12;
-			shift = 1;
-			power = (x0, x1) => Math.pow(x1, x0);
+			minRadius = 7;
+			power = (x0, x1) => Math.exp(nodeScaling) * Math.pow(x0, 0.8);
 		} else {
-			minRadius = 20;
-			shift = 1;
-			power = (x0, x1) => Math.pow(x0, x1);
+			minRadius = 10;
+			power = (x0, x1) => Math.exp(nodeScaling) * Math.pow(x0, 0.8);
 		}
-		const getRadius = (size) => power(size + shift, nodeScaling) * baseNodeSize + minRadius;
+		const getRadius = (size) => power(size, nodeScaling) * baseNodeSize + minRadius;
 
 		let value;
 		let initial;
@@ -377,7 +375,7 @@
 		const legendCircleGroup = legendGroup.append('g')
 			.attr('transform', 'translate(55, 287)')
 			.selectAll('g')
-			.data((eventName === null) ? [4, 6, 9] : [0, 2, 4])
+			.data((eventName === null) ? [2, 6, 9] : [1, 2, 4])
 			.enter()
 			.append('g')
 			.attr('transform', d => 'translate(50)');
@@ -504,11 +502,10 @@
 			.style('stroke', d => nodeColors(d.type))
 			.style('stroke-opacity', 1);
 
-		if (eventName !== null) {
-			nodeGroup.append('text')
-				.style('fill', 'white')
-				.style('text-anchor', 'middle');
-		}
+		nodeGroup.append('text')
+			.style('fill', 'white')
+			.style('text-anchor', 'middle')
+			.attr('class', d => (d.size >= 6) ? 'bubble-label' : 'no-bubble-label');
 
 		nodeGroup.on('mouseover', function() {
 			d3.select(this)
@@ -540,20 +537,16 @@
 				.attr('cx', d => d.x)
 				.attr('cy', d => d.y);
 
-			if (eventName !== null) {
-				nodeGroup.selectAll('text')
-					.attr('x', d => {
-						return d.x;
-					})
-					.attr('y', d => {
-						return d.y;
-					})
-					.html(d => {
-						if (d.size >= 6) {
-							return wordWrap(d.text, 30, d.x, d.y);
-						}
-					});
-			}
+			nodeGroup.selectAll('.bubble-label')
+				.attr('x', d => {
+					return d.x;
+				})
+				.attr('y', d => {
+					return d.y;
+				})
+				.html(d => {
+					return wordWrap(d.text, 20, d.x, d.y);
+				});
 		};
 
 		simulation
