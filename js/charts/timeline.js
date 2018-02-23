@@ -199,12 +199,46 @@
 		// upper right label
 		// TODO @steph adjust text
 		const circleLabelGroup = chart.append('g')
-			.attr('transform', `translate(35, ${width - 100})`);
+			.attr('transform', `translate(${width - 50}, 45)`)
+			.style('text-anchor', 'end');
 
 		circleLabelGroup.append('text')
 			.style('fill', textBoldColor)
 			.style('font-size', '0.8em')
 			.text('Event Always Occurs');
+
+		circleLabelGroup.append('text')
+			.attr('transform', 'translate(0, 12)')
+			.style('fill', textBoldColor)
+			.style('font-size', '0.8em')
+			.text('Event Sometimes Occurs');
+
+		circleLabelGroup.append('text')
+			.attr('transform', 'translate(0, 24)')
+			.style('fill', textBoldColor)
+			.style('font-size', '0.8em')
+			.text('Tasks');
+
+		circleLabelGroup.append('circle')
+			.attr('transform', 'translate(7, -3)')
+			.attr('r', 4)
+			.style('stroke', noTimeEventColor)
+			.style('stroke-width', 0.75)
+			.style('fill', alwaysOccursPointColor);
+
+		circleLabelGroup.append('circle')
+			.attr('transform', 'translate(7, 9)')
+			.attr('r', 4)
+			.style('stroke', noTimeEventColor)
+			.style('stroke-width', 0.75)
+			.style('fill', pointColor);
+
+		circleLabelGroup.append('circle')
+			.attr('transform', 'translate(7, 21)')
+			.attr('r', 4)
+			.style('stroke', noTimeEventColor)
+			.style('stroke-width', 0.75)
+			.style('fill', 'white');
 
 
 		const lineXDomain = eventLabels;

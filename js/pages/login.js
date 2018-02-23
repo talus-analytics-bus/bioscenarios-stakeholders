@@ -1,5 +1,6 @@
 (() => {
 	function init() {
+		$('#page-content').css('padding-top', '100px');
 		$('.login-button').click(login);
 		$('.password-input').on('keyup', (e) => {
 			if (e.which === 13) login();
