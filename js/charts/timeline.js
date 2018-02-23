@@ -69,9 +69,7 @@
                 return {
                     eventName: d['Timeline Event'],
                     eventDescription: d['Timeline Event Description'],
-                    //numCases: i,
 					position: i,
-
                     alwaysOccurs: d['Always occurs'],
                     hasAssociatedPolicies: d['Has associated policies'],
                 };
@@ -84,7 +82,6 @@
                     eventName: d['Timeline Event'],
                     eventDescription: d['Timeline Event Description'],
                     numCases: cases[i],
-
                     alwaysOccurs: d['Always occurs'],
                     hasAssociatedPolicies: d['Has associated policies'],
                 };
@@ -93,15 +90,26 @@
 
 		const eventLabels = data.filter( (x) => x.hasAssociatedPolicies !== 'FALSE')
             .map(d => d.eventName.toUpperCase());
+
 		const eventLabelsLower = data.filter( (x) => x.hasAssociatedPolicies !== 'FALSE')
             .map(d => d.eventName);
 
+
+		// Get the event label by index
+		function getEventLabelByIndex(idx) {
+			const index = idx;
+
+			if (index < 0 || index > eventLabels.length) {
+				return 0; // just return the beginning index. For some reason, the idx is out of bounds
+			}
+			return eventLabels[index];
+		}
 
         //Fix the bug where in the policy document count. We need to lowercase all text comparisons.
         const policyData = eventLabelsLower.map((d, i) => {
             return {
                 count: policyEventData.filter( (x) => d.toLowerCase() === x['Timeline Event'].toLowerCase()).length,
-				eventName: d
+				eventName: d,
             };
 		});
 
@@ -334,11 +342,11 @@
 			.attr('cx', (d, i) => x(d.eventName.toUpperCase()))
 			.attr('cy', d => y(d.numCases))
 			.attr('r', '4')
-			.attr('class', (d, i) => (i === 0) ? 'selected-circle' : '')
+			.attr('class', (d, i) => (i === App.currentEventIndex) ? 'selected-circle' : '')
 			.attr('stroke', noTimeEventColor)
             .attr('stroke-width', 0.75)
 			.attr('fill', (d, i) => {
-                if (i === 0) {
+                if (i === App.currentEventIndex) {
 			      return selectedPointColor;
                 } else {
                     if (d.alwaysOccurs.toUpperCase() === 'ALWAYS OCCURS') {
@@ -357,9 +365,9 @@
 			.attr('y1', height)
 			.attr('y2', d => y(d.numCases))
 			.attr('stroke-width', 1)
-            .attr('class', (d, i) => (i === 0) ? 'selected-line' : '')
+            .attr('class', (d, i) => (i === App.currentEventIndex) ? 'selected-line' : '')
 			.attr('stroke', (d, i) => {
-                if (i === 0) {
+                if (i === App.currentEventIndex) {
                     return selectedPointColor;
                 } else {
                     if (d.alwaysOccurs.toUpperCase() === 'ALWAYS OCCURS') {
@@ -387,8 +395,6 @@
 					y(d.numCases) - 30);
 			});
 
-
-
         // you need to remember the previous color so that you can reset it
         // once it is deselected
         let previousSelectedPointColor = pointColor;
@@ -408,6 +414,9 @@
 			.style('fill', highlightColor)
 			.style('fill-opacity', 0.)
 			.on('click', function(d, i) {
+
+                // Update the currently selected event index
+                App.currentEventIndex = i;
 
 				// reset all changes
 				d3.selectAll('.event-highlight-rect')
@@ -452,7 +461,7 @@
 					.attr('stroke', selectedPointColor)
                     .attr('class', 'selected-line');
 
-				// Set red marker
+				// Select the red marker. This is based upon the currently selected group. The marker is a sibling of the selected element
                 d3.select(this.nextElementSibling)
                    .style('visibility', 'visible');
 
@@ -464,18 +473,20 @@
 				whatEvent.text(d.eventName)
 					.attr('value', d.eventName);
 				whatDay.text(`Day ${dayScale(d.eventName.toUpperCase())}`);
+
+
 			});
 
 
 
-		// create the marker groups
+		// create the marker groups (The little red slider maker at the top of the timeline graphic)
         const markerGroup = eventGroup.append('g').attr('class', 'event-marker-highlight-icon');
 
 		markerGroup.append('rect')
             .attr('width', markerWidth)
             .attr('height', markerHeight)
 			.attr('fill', selectedTimelineGroup)
-			.attr('x', d => x(d.eventName.toUpperCase()) - (markerWidth / 2))
+            .attr('x', d => x(d.eventName.toUpperCase()) - (markerWidth / 2))
 			.attr('rx', '3')
             .attr('ry', '3')
             .style('fill-opacity', 0.85);
@@ -533,13 +544,16 @@
         d3.selectAll('.event-marker-highlight-icon')
             .style('visibility', 'hidden'); // start with all of the red marker widgets hidden
 
-		d3.select('.policy-tract-0')
+		// Select the current policy tract
+		d3.select(`.policy-tract-${App.currentEventIndex}`)
 			.style('fill', selectedPointColor);
 
-		d3.select('.event-marker-highlight-icon')
+		d3.selectAll('.event-marker-highlight-icon')
+			.filter( (d, i) => { return i=== App.currentEventIndex})
             .style('visibility', 'visible');
 
-		d3.select(`[value="${eventLabels[0]}"]`)
+		// select the current event
+		d3.select(`[value="${eventLabels[App.currentEventIndex]}"]`)
 			.style('fill-opacity', 0.15);
 
 		return chart;

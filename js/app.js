@@ -23,6 +23,8 @@ const App = {};
                 	callback();
 				}
             });
+
+        App.currentEventIndex = 0;
 	};
 
 
