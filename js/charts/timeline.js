@@ -192,6 +192,7 @@
 
 		const lineXDomain = eventLabels;
 		lineXDomain.push("lastelement");
+		const lineXLength = lineXDomain.length;
 
 		// define scales
 		const x = d3.scaleBand()
@@ -212,15 +213,21 @@
 		// graph line
 		var line = d3.line()
 			.curve(d3.curveCardinal)
-			.x(function (d) {
-				return x(d[0])
+			.x(function (d, i) {
+				if (i == (lineXLength - 1)) {
+					return width;
+				}
+				else {
+                    return x(d[0]);
+				}
+
 			})
 			.y(function (d) {
 				return y(d[1])
 			});
 
 		const lineDomain = filterData.map(d => [d.eventName.toUpperCase(), d.numCases]);
-		lineDomain.push(['lastelement', 5]);
+		lineDomain.push(['lastelement', 3]);
 
 		chart.append('path')
 			.attr('fill', 'none')
