@@ -1,5 +1,5 @@
 (() => {
-	App.initDonut = (selector, eventName, rawPolicyData, rawData, rawOrgInfo, nodeScaling = 2) => {
+	App.initDonut = (selector, eventName, rawPolicyData, rawData, rawOrgInfo, rawTimelineData, nodeScaling = 2) => {
 		let data;
 		let allCategories;
 		let allRoles;
@@ -89,6 +89,8 @@
 				roleAnchors[k.toLowerCase()] = roleAnchors[k];
 			});
 
+			console.log(rawTimelineData);
+			console.log(rawPolicyData);
 			// If we're not passed an eventName, plot all data
 			let filteredData;
 			let filteredPolicyData;

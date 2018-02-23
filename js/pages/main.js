@@ -42,6 +42,7 @@
 				policyEventData,
 				roleData,
 				stakeholderData,
+				timelineData,
 				2,
 			);
 		}
@@ -63,6 +64,7 @@
 						policyEventData,
 						roleData,
 						stakeholderData,
+						timelineData,
 						2
 					);
 
@@ -80,6 +82,7 @@
 						policyEventData,
 						roleData,
 						stakeholderData,
+						timelineData,
 						1.3,
 					);
 				} else {
@@ -90,6 +93,7 @@
 						policyEventData,
 						roleData,
 						stakeholderData,
+						timelineData,
 						2,
 					);
 				}
