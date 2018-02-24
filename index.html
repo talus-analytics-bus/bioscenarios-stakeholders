@@ -5,7 +5,7 @@
 	<title>Biological Event Stakeholders</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="icon" href="img/favicon.ico">
-		
+
 		<!-- Stylesheets -->
 	<link href='https://fonts.googleapis.com/css?family=Open+Sans:800,600,400,300' rel='stylesheet' type='text/css'>
 	<link href='https://fonts.googleapis.com/css?family=Raleway:600,400' rel='stylesheet' type='text/css'>
@@ -50,16 +50,23 @@
 	</div>
 
 
-		
+
 	<!-- ----------- TEMPLATES ------------- -->
 	<script id="home-template" type="text/x-handlebars-template">
 		<div class="home-background">
 			<div class="home-container container container-content">
-				<h3>Welcome!</h3>
-				<div class="description">
-					This site is a template for Talus Analytics web applications.
-					Typically, our home pages include a picture with a summary of the tool.
-					This page is very free-form and will look different for every application.
+				<div class = "row">
+					<div class="graphic-title"><h1>Stakeholders in a Deliberate Biological Event</h1></div>
+					<div>This tool describes how a deliberate biological outbreak might unfold, including the stakeholders who would be involved in identifying, responding to, and recovering from the event, and the policies that govern these efforts. Policy documents are identified as they become relevant during a notional event timeline, and those documents are linked to the stakeholders who draw their mandates from each policy document. The functional roles for each stakeholder are also identified, including affected and non-affected member States, UN and other international organizations, local and international NGOs, and private sector organizations would play as the event progresses.</div>
+				</div>
+				<div class = "row">
+					<div class="graphic-title"><h1>Background</h1></div>
+					<div>Despite global efforts to build national and international capacity to prevent, detect and respond to biological threats, little effort or resources have been devoted to deliberate biological events (DBE). Many standard practices and the stakeholders involved in outbreak response activities - including clinical efforts, sample collection, and information sharing - may be hindered or altered in a deliberate event. Indeed, many of the traditional stakeholders may have no plan or even mandates to engage in a response, leaving the international community at significant risk of a slow and ineffectively response strategy.<br>
+
+Beyond identifying stakeholders, it is still unclear how and from whom requests for assistance will come during a deliberate event. Article VII of the Biological and Toxins Weapons Convention commits “each [State Party] to provide or support assistance, in accordance with the United Nations Charter, to any Party to the Convention which so requests, if the Security Council decides that such Party has been exposed to danger as a result of violation of the Convention”. More than 40 years since entry into force of the BWC, concerns and uncertainties remain about the processes and feasibility of providing assistance.<br>
+
+In September 2017, a gathering of international experts at Wilton Park identified the need to identify and map stakeholders and clarify processes and pathways associated with BWC Article VII as two key areas of work required to enhance international capacity to respond to deliberate biological events. This tool provides interactive graphics to identify stakeholders, relevant policies, and roles in a deliberate event scenario, each mapped to a time line of a notional biological outbreak scenario affecting humans and suspected to be deliberate.<br>
+</div>
 				</div>
 			</div>
 		</div>
@@ -68,10 +75,7 @@
 	<script id="main-template" type="text/x-handlebars-template">
         <div class="container main-page">
 			<div class="row col-lg-12 timeline-section">
-				<div class = "row">
-					<div class="graphic-title"><h1>Stakeholders in a Deliberate Biological Event</h1></div>
-					<div>This tool describes how a deliberate biological outbreak might unfold, including the stakeholders who would be involved in identifying, responding to, and recovering from the event, and the policies that govern these efforts. Policy documents are identified as they become relevant during a notional event timeline, and those documents are linked to the stakeholders who draw their mandates from each policy document. The functional roles for each stakeholder are also identified, including affected and non-affected member States, UN and other international organizations, local and international NGOs, and private sector organizations would play as the event progresses.</div>
-				</div>
+
 				<div class="row">
 					<div class="graphic-title"><h3>Deliberate Biological Event Timeline</h3></div>
 					<div>The timeline below identifies notional events in a deliberate biological event. Each event is linked to corresponding policies and stakeholders, which can be seen by clicking on any gray or black point. Hover over open circles to see additional events.</div>
@@ -190,7 +194,10 @@
 			</div>
 
 
-			<div class="pathways-graphic"> PLACE HOLDER HERE FOR GRAPHIC </div>
+			<div class="pathways-graphic"><h3>Pathways for Assistance</h3></div>
+			<!-- TODO: add "see more" button after second sentence, between "during an event" and "Policy documents..." !-->
+			<div>This is placeholder text. This is placeholder text. This is placeholder text. </div>
+			<img src="img/PATHWAYS.png" />
 
 
 		</div>
@@ -218,13 +225,13 @@
 	<script src="lib/bootstrap.min.js"></script>
 	<script src="lib/leaflet.min.js"></script>
 	<script src="lib/wrap.js"></script>
-	
+
 	<!-- Routing Libraries -->
 	<script src="lib/signals.min.js"></script>
 	<script src="lib/crossroads.min.js"></script>
 	<script src="lib/hasher.min.js"></script>
-	<script src="lib/handlebars-v3.0.0.js"></script>	
-	
+	<script src="lib/handlebars-v3.0.0.js"></script>
+
 	<!-- Miscellaneous Libraries -->
 	<script src="lib/topojson.v2.min.js"></script>
 	<script src="lib/nprogress.min.js"></script>
@@ -234,7 +241,7 @@
 	<script src="lib/sankey.js"></script>
 
 	<!--<script src="build/lib.min.js"></script>-->
-		
+
 	<!-- Project Specific Files -->
 	<script src="js/utility.js"></script>
 	<script src="js/routing.js"></script>
