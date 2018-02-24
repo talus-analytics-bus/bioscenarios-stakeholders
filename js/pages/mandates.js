@@ -20,6 +20,7 @@
         }
 
         function loadData() {
+            // the data loading callback. This is the first time that someone hit the site. They should really start at home.
             timelineData = App.timelineData;
             policyEventData = App.policyEventData;
             roleData = App.roleData;
@@ -36,7 +37,13 @@
         function initGraphs() {
 
             timeline = App.initTimeline('.timeline', timelineData, policyEventData);
-            conceptMap = App.initConceptMap('.concept-map', timelineData[0]['Timeline Event'], policyEventData, stakeholderData);
+
+            let eventName = timelineData[0]['Timeline Event']; // default event name
+            if (App.currentEventName.length > 0)
+            {
+                eventName = App.currentEventName; // there is a previously selected event name. Send it to the concept map
+            }
+            conceptMap = App.initConceptMap('.concept-map', eventName, policyEventData, stakeholderData);
 
         }
 

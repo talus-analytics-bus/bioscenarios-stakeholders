@@ -25,6 +25,7 @@ const App = {};
             });
 
         App.currentEventIndex = 0;
+        App.currentEventName ="";
 	};
 
 

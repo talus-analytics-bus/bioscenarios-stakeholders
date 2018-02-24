@@ -19,6 +19,7 @@
         }
 
         function loadData() {
+            // the data loading callback. This is the first time that someone hit the site. They should really start at home.
             timelineData = App.timelineData;
             policyEventData = App.policyEventData;
             roleData = App.roleData;
@@ -40,9 +41,16 @@
         function initGraphs() {
 
             timeline = App.initTimeline('.timeline', timelineData, policyEventData);
+
+            let eventName = timelineData[0]['Timeline Event']; // default event name
+            if (App.currentEventName.length > 0)
+            {
+                eventName = App.currentEventName; // there is a previously selected event name. Send it to the concept map
+            }
+
             donut = App.initBubbleChart(
                 '.donut-chart',
-                timelineData[0]['Timeline Event'],
+                eventName,
                 policyEventData,
                 roleData,
                 stakeholderData,

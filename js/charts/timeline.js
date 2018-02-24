@@ -462,6 +462,7 @@
 
                 // Update the currently selected event index
                 App.currentEventIndex = i;
+                App.currentEventName = d.eventName; // set the new event name
 
 				// reset all changes
 				d3.selectAll('.event-highlight-rect')
