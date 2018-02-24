@@ -3,7 +3,7 @@
 
         let conceptMap;
         let timeline;
-        let donut;
+
 
         let timelineData = App.timelineData;
         let policyEventData = App.policyEventData;

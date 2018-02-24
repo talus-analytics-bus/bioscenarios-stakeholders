@@ -1,6 +1,6 @@
 (() => {
 	App.initRoles = () => {
-        let conceptMap;
+
         let timeline;
         let donut;
 

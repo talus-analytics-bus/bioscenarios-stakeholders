@@ -165,8 +165,7 @@
 
 
         // Clear the previous SVG (if any)
-        var svg = d3.select(selector).select("svg").remove()
-
+        var svg = d3.select(selector).select("svg").remove();
 
 		/* PLOTTING */
 		// define graph
