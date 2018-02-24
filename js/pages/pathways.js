@@ -8,6 +8,8 @@
         let roleData = App.roleData;
         let stakeholderData = App.stakeholderData;
 
+        $('body').unbind(); // unbind any event listeners
+
         if (!timelineData) {
             App.initialize(loadData); // initialize the application first!
 
