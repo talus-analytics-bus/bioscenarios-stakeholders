@@ -132,6 +132,8 @@
 		// add timeline chart to the DOM
         var svg = d3.select(selector).select("svg").remove();
 
+
+        // Start building the timeline graphic
 		const chart = d3.select(selector).append('svg')
 			.attr('width', width + margin.left + margin.right)
 			.attr('height', height + margin.top + margin.bottom)
@@ -261,12 +263,13 @@
 		const xOffset = 60;
 		const xCoordinateList = [];
 		eventLabels.forEach( (d, i) => {
-			let xCoord= (i === 0) ? xOffset : ((i * xPadding) + xOffset);
-            xCoordinateList[d] = xCoord;
+            // The padding is the spacing between the nodes. The offset is what moves across the xAxis.
+			let xCoord= (i === 0) ? xOffset : ((i * xPadding) + xOffset); // i zero is the first element. don't include padding. just the offset
+            xCoordinateList[d] = xCoord; // store the xCoordinate
 		});
 
 
-		// define scales
+		// define scales. This is overriding the default D3 scaleband. We want to control the x coordinates specifically
 		const x = (d) => {
 			return xCoordinateList[d];
 		};
@@ -304,21 +307,24 @@
 
 		let newItem =  ['new point', epiMidpoint];
 
+		// This is an insert method to insert an element at a specific index within an array.
         const insert = (arr, index, ...newItems) => [
             // part of the array before the specified index
             ...arr.slice(0, index),
+
             // inserted items
             ...newItems,
+
             // part of the array after the specified index
             ...arr.slice(index),
         ];
+
         lineDomain = insert(lineDomain, epiMidpointIndex, newItem);
 		lineDomain.push(['lastelement', 25]);
 
 		chart.append('path')
 			.attr('fill', 'none')
 			.style('stroke', 'white')
-			//.datum(filterData.map(d => [d.eventName.toUpperCase(), d.numCases]))
 			.datum(lineDomain)
 			.attr('d', line);
 
@@ -428,10 +434,10 @@
 		// label each point
 		eventGroup.append('text')
 			.attr('class', 'event-label')
-			.attr('fill', (d, i) => (i === 0) ? 'black' : textColor)
+			.attr('fill', (d, i) => (i === App.currentEventIndex) ? 'black' : textColor)
 			.attr('text-anchor', 'middle')
-			.style('font-size', (d, i) => (i === 0) ? '1em' : '1em')
-			.style('font-weight', (d, i) => (i === 0) ? 600 : '')
+			.style('font-size', (d, i) => (i === App.currentEventIndex) ? '1em' : '1em')
+			.style('font-weight', (d, i) => (i === App.currentEventIndex) ? 600 : '')
 			.html(function (d) {
 				return wordWrap(
 					d.eventName,
