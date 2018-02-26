@@ -5,7 +5,10 @@
 
 		// click event for the enter button
 		$('.enter-button').click((d) => {
-            window.location = window.location += 'mandates';
+            const location = window.location.href;
+
+            // Firefox doesn't have the hash always. Check for the existance of it.
+			window.location += location.endsWith('#') ? 'mandates' : '#mandates';
 		});
 
 	};
