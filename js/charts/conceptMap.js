@@ -98,8 +98,6 @@
 			})
 			.map(d => d.abbrev || d.category);
 
-		console.log(allNonUNOrgs);
-
 		nonUNTitles = nonUNTitles.map(d => d.category);
 
 		/* CONSTANTS */
@@ -107,6 +105,7 @@
 		const width = 1.2 * height;
 		const rectHeight = 40;
 		const rectWidth = 400;
+		const columnTopSpacing = 50;
 
 		const timelineEvents = ['Case in humans', ...new Set(rawData.map(d => {
 			return d['Timeline Event'];
@@ -158,13 +157,14 @@
 
 		/* SCALES */
 		const innerRange = ((rectHeight / 2) + 3) * allPolicies.length;
+		const topAnchor = (-height / 2) + columnTopSpacing;
 		const innerNodesScale = d3.scaleBand()
 			.domain(allPolicies)
-			.range([-innerRange, innerRange]);
+			.range([topAnchor, topAnchor + ((rectHeight + 5) * allPolicies.length)]);
 
 		const leftOrgsScale = d3.scaleBand()
 			.domain(allUNOrgs)
-			.range([-0.35 * height, 0.35 * height]);
+			.range([topAnchor, 0.4 * height]);
 
 		const leftOrgsCurve = (orgName) => {
 			const xScale = d3.scaleBand()
@@ -176,7 +176,7 @@
 
 		const rightOrgsScale = d3.scaleBand()
 			.domain(allNonUNOrgs)
-			.range([-0.35 * height, 0.35 * height]);
+			.range([topAnchor, 0.4 * height]);
 
 		const rightOrgsCurve = (orgName) => {
 			const xScale = d3.scaleBand()
@@ -229,8 +229,8 @@
 		chart.append('g').attr('class', 'main-title')
 			.append('text')
 			.attr('x', 25)
-			.attr('y', -(innerRange + 25))
-			.attr('dy', 0.35)
+			.attr('y', -height / 2)
+			.attr('dy', 1)
 			.attr('text-anchor', 'middle')
 			.style('font-size', '16px')
 			.style('font-weight', '600')
