@@ -162,9 +162,11 @@
 		const innerTop = topAnchor;
 		const innerBottom = topAnchor + ((rectHeight + 5) * allPolicies.length);
 
+		const innerShift = Math.max(0, -20 * allPolicies.length + 275);
+
 		const innerNodesScale = d3.scaleBand()
 			.domain(allPolicies)
-			.range([innerTop, innerBottom]);
+			.range([innerTop + innerShift, innerBottom + innerShift]);
 
 		const leftOrgsScale = d3.scaleBand()
 			.domain(allUNOrgs)
