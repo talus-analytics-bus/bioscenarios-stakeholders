@@ -216,13 +216,13 @@
 		circleLabelGroup.append('text')
 			.style('fill', textBoldColor)
 			.style('font-size', '0.8em')
-			.text('Event Always Occurs');
+			.text('Policy Trigger Always Occurs');
 
 		circleLabelGroup.append('text')
 			.attr('transform', 'translate(0, 12)')
 			.style('fill', textBoldColor)
 			.style('font-size', '0.8em')
-			.text('Event Sometimes Occurs');
+			.text('Policy Trigger Sometimes Occurs');
 
 		circleLabelGroup.append('text')
 			.attr('transform', 'translate(0, 24)')
