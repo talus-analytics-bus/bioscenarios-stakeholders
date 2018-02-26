@@ -59,17 +59,46 @@
 		const allNonUNOrgs = allOrgs.concat(nonUNTitles)
 			.filter(d => !allUNOrgs.includes(d.abbrev))
 			.sort((a, b) => {
-				if (a.category === b.category) {
-					if (b.abbrev === undefined) {
-						return true;
+				// So for some reason this is sorting differently in Firefox vs. Chrome
+				// Expanding to use defs in
+				// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort
+				//  Referring to a's order in relation to b
+				//     -1 means a before b
+				//     +1 means a after b
+				//     0 means same level
+				// We're just trying to do a hierarchical sort here
+				let sortVal;
+				const aBeforeB = -1;
+				const bBeforeA = 1;
+				const aSameAsB = 0;
+				if (a.category.toLowerCase() === b.category.toLowerCase()) {
+					// First check if the categories are the same
+					if (a.abbrev === undefined) {
+						sortVal = aBeforeB;
+					} else if (b.abbrev === undefined) {
+						sortVal = bBeforeA;
 					} else {
-						return a.abbrev < b.abbrev;
+						// Otherwise, sort alphabetically on the abbreviations
+						if (a.abbrev.toLowerCase() < b.abbrev.toLowerCase()) {
+							sortVal = aBeforeB;
+						} else {
+							sortVal = bBeforeA;
+						}
 					}
 				} else {
-					return a.category > b.category;
+					// if the categories are not the same, simply sort on that category
+					// (a < b) based on criteria
+					if (a.category.toLowerCase() < b.category.toLowerCase()) {
+						sortVal = aBeforeB;
+					} else {
+						sortVal = bBeforeA;
+					}
 				}
+				return sortVal;
 			})
 			.map(d => d.abbrev || d.category);
+
+		console.log(allNonUNOrgs);
 
 		nonUNTitles = nonUNTitles.map(d => d.category);
 
