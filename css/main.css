@@ -718,9 +718,10 @@ light {
   opacity: 0; }
 
 .show-all-div {
-  height: 0;
-  position: relative;
-  top: 25px;
+  position: absolute;
+  height: 25px;
+  width: 200px;
+  top: 600px;
   font-weight: 600;
   font-size: 1.1em; }
 
