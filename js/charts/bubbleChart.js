@@ -380,7 +380,7 @@
 		legendGroup.append('text')
 			.attr('transform', 'translate(0, 250)')
 			.style('font-weight', 600)
-			.html(wordWrap('Number of Policies Stakeholder is mandated by', 30, 0, 0));
+			.html(wordWrap('Policies per stakeholder', 30, 0, 0));
 
 		const legendCircleGroup = legendGroup.append('g')
 			.attr('transform', 'translate(55, 287)')
