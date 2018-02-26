@@ -224,11 +224,11 @@
 			.style('font-size', '0.8em')
 			.text('Event Sometimes Occurs');
 
-		// circleLabelGroup.append('text')
-		// 	.attr('transform', 'translate(0, 24)')
-		// 	.style('fill', textBoldColor)
-		// 	.style('font-size', '0.8em')
-		// 	.text('Tasks');
+		circleLabelGroup.append('text')
+			.attr('transform', 'translate(0, 24)')
+			.style('fill', textBoldColor)
+			.style('font-size', '0.8em')
+			.text('Tasks');
 
 		circleLabelGroup.append('circle')
 			.attr('transform', 'translate(7, -3)')
@@ -244,12 +244,12 @@
 			.style('stroke-width', 0.75)
 			.style('fill', pointColor);
 
-		// circleLabelGroup.append('circle')
-		// 	.attr('transform', 'translate(7, 21)')
-		// 	.attr('r', 4)
-		// 	.style('stroke', noTimeEventColor)
-		// 	.style('stroke-width', 0.75)
-		// 	.style('fill', 'white');
+		circleLabelGroup.append('circle')
+			.attr('transform', 'translate(7, 21)')
+			.attr('r', 4)
+			.style('stroke', noTimeEventColor)
+			.style('stroke-width', 0.75)
+			.style('fill', 'white');
 
 
 		const lineXDomain = eventLabels;
