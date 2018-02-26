@@ -158,13 +158,17 @@
 		/* SCALES */
 		const innerRange = ((rectHeight / 2) + 3) * allPolicies.length;
 		const topAnchor = (-height / 2) + columnTopSpacing;
+
+		const innerTop = topAnchor;
+		const innerBottom = topAnchor + ((rectHeight + 5) * allPolicies.length);
+
 		const innerNodesScale = d3.scaleBand()
 			.domain(allPolicies)
-			.range([topAnchor, topAnchor + ((rectHeight + 5) * allPolicies.length)]);
+			.range([innerTop, innerBottom]);
 
 		const leftOrgsScale = d3.scaleBand()
 			.domain(allUNOrgs)
-			.range([topAnchor, 0.4 * height]);
+			.range([(-width / 2) + 150, 0.15 * height]);
 
 		const leftOrgsCurve = (orgName) => {
 			const xScale = d3.scaleBand()
@@ -176,12 +180,12 @@
 
 		const rightOrgsScale = d3.scaleBand()
 			.domain(allNonUNOrgs)
-			.range([topAnchor, 0.4 * height]);
+			.range([(-width / 2) + 150, 0.4 * height]);
 
 		const rightOrgsCurve = (orgName) => {
 			const xScale = d3.scaleBand()
 				.domain(allNonUNOrgs)
-				.range([-8, 8]);
+				.range([-6, 6]);
 			const x = xScale(orgName);
 			return -(x * x) + (0.35 * width);
 		};
@@ -228,11 +232,11 @@
 		// add event title
 		chart.append('g').attr('class', 'main-title')
 			.append('text')
-			.attr('x', 25)
-			.attr('y', -height / 2)
+			.attr('x', 0)
+			.attr('y', topAnchor - 50)
 			.attr('dy', 1)
 			.attr('text-anchor', 'middle')
-			.style('font-size', '16px')
+			.style('font-size', '20px')
 			.style('font-weight', '600')
 			.style('fill', titleColor)
 			.text(eventName.toUpperCase())
@@ -258,7 +262,7 @@
 			.on('mouseout', mouseoutRect);
 
 		rectGroup.append('text')
-			.attr('transform', 'translate(25)')
+			// .attr('transform', 'translate(25)')
 			.attr('x', 0)
 			.attr('y', d => innerNodesScale(d) + (rectHeight / 2))
 			.style('fill', rectTextColor)

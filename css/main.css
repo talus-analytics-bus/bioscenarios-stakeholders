@@ -677,7 +677,9 @@ light {
 .show-all-div {
   height: 0;
   position: relative;
-  top: 25px; }
+  top: 25px;
+  font-weight: 600;
+  font-size: 1.1em; }
 
 .checkbox label {
   font-weight: 600; }

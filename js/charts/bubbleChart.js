@@ -256,6 +256,7 @@
 				cluster: d.roles,
 				radius: getRadius(d.size),
 				text: d.name,
+				abbrev: getShortName(d.name),
 				size: d.size,
 			};
 		}).map(d => {
@@ -343,8 +344,9 @@
 			.append('g');
 
 		/* LEGEND */
+		// TODO @steph Adjust here for legend spacing (increase number for more space)
 		const legendGroup = chart.append('g')
-			.attr('transform', `translate(0, ${margin.top + 52})`)
+			.attr('transform', `translate(0, ${margin.top + 150})`)
 			.attr('class', 'legend-group');
 
 		const categoryLabelGroup = legendGroup.append('g')
@@ -519,6 +521,13 @@
 				if (d.doLabel) {
 					return 'bubble-label';
 				}
+			})
+			.style('font-size', d => {
+				if (d.size <= 2) {
+					return '0.8';
+				} else {
+					return '1em';
+				}
 			});
 
 		nodeGroup.on('mouseover', function() {
@@ -559,10 +568,17 @@
 					return d.y;
 				})
 				.html(d => {
+					let newText;
 					if (d.size <= 3) {
-						return wordWrap(getShortName(d.text), 15, d.x, d.y);
+						newText = d.abbrev;
 					} else {
-						return wordWrap(d.text, 15, d.x, d.y);
+						newText = d.text;
+					}
+
+					if (newText.length >= 7) {
+						return wordWrap(newText, 15, d.x, d.y);
+					} else {
+						return newText;
 					}
 				});
 		};
@@ -588,7 +604,7 @@
 	};
 
 	function getShortName(s) {
-		const shortname = /\(([A-Z]+)\)/.exec(s);
+		const shortname = /\(([A-Z ]+)\)/.exec(s);
 		if (shortname === null) {
 			return s;
 		} else {

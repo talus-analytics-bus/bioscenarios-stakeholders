@@ -75,11 +75,13 @@
 
 					// reset checkbox
 					$('input[type=checkbox][value=alignbox]').prop('checked', false);
+					$('input[type=radio][name=starburstradio]')
 				}
 			});
 
-			$('input[type=checkbox][value=alignbox]').on('change', function() {
-				const isChecked = $(this).prop('checked');
+			$('input[type=radio][name="starburstradio"]').on('change', function() {
+				console.log('here');
+				console.log($(this));
 				if (isChecked) {
 					d3.select('.donut-chart').select('svg').remove();
 					donut = App.initBubbleChart(
