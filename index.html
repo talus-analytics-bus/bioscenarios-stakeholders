@@ -72,43 +72,6 @@
 		</div>
 	</script>
 
-	<script id="main-template" type="text/x-handlebars-template">
-        <div class="container main-page">
-			<div class="row col-lg-12 timeline-section">
-
-				<div class="row">
-					<div class="graphic-title"><h3>Deliberate Biological Event Timeline</h3></div>
-					<div>The timeline below identifies notional events in a deliberate biological event. Each event is linked to corresponding policies and stakeholders, which can be seen by clicking on any gray or black point. Hover over open circles to see additional events.</div>
-				</div>
-				<div class="row ">
-					<div class="timeline"></div>
-				</div>
-			</div>
-			<div class="row spaghetti-section">
-				<div class="graphic-title"><h3>Policy Documents and Stakeholders</h3></div>
-				<!-- TODO: add "see more" button after second sentence, between "during an event" and "Policy documents..." !-->
-				<div>Each policy governs specific stakeholders, as shown. Hover over a policy document to highlight the related stakeholders; hover over a stakeholder to view a description of their role during an event. Policy documents, including constitutions, resolutions, conventions, memorandums of understanding, and mission statements, identify the triggers for stakeholder engagement. Each policy document characterizes stakeholder mandates during the event and are identified at the point at which it first applies or becomes applicable. In some cases, single policy documents may apply throughout the event.</div>
-				<div class="concept-map"></div>
-			</div>
-
-			<div class="row starburst-section">
-				<div class="graphic-title"><h3>Stakeholder Roles</h3></div>
-				<div>Stakeholders and stakeholder roles change throughout an event. As shown below, stakeholders are positioned based on their roles and are sized proportionally to the number of policy documents from which they draw their mandates.</div>
-                <div class="bubble-spacer"></div>
-                <div>
-                    <form class="align-to-event-form">
-                        <div class="checkbox show-all-div">
-                            <label class="show-all-checkbox"><input type="checkbox" value="alignbox" class="show-all-checkbox">Show all stakeholders</label>
-                        </div>
-                    </form>
-                </div>
-				<div class="donut-chart"></div>
-			</div>
-
-
-
-		</div>
-	</script>
 
 	<script id="mandates-template" type="text/x-handlebars-template">
 
@@ -124,6 +87,13 @@
 				</div>
 				<div class="row ">
 					<div class="timeline"></div>
+					<div class="arrow-navigation">
+						<div class="arrow-container">
+							<a href="#roles">
+								<span class="right"><img src="img/arrow_right.png" /></span>
+							</a>
+						</div>
+					</div>
 				</div>
 			</div>
 			<div class="row spaghetti-section">
@@ -157,6 +127,23 @@
 				</div>
 				<div class="row ">
 					<div class="timeline"></div>
+					<div class="arrow-navigation">
+						<div class="arrow-container">
+							<a href="#mandates">
+								<span class="left"><img src="img/arrow_left.png" /></span>
+							</a>
+
+							<a href="#pathways">
+								<span class="right"><img src="img/arrow_right.png" /></span>
+							</a>
+						</div>
+						<!-- <div class="right-arrow-container">
+							<a href="#pathways">
+								<span class="right"><img src="img/arrow_right.png" /></span>
+							</a>
+						</div>
+						-->
+					</div>
 				</div>
 			</div>
 
@@ -195,6 +182,13 @@
 				</div>
 				<div class="row ">
 					<div class="timeline"></div>
+					<div class="arrow-navigation">
+						<div class="arrow-container">
+							<a href="#roles">
+								<span class="left"><img src="img/arrow_left.png" /></span>
+							</a>
+						</div>
+					</div>
 				</div>
 			</div>
 

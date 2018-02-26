@@ -41,6 +41,7 @@
 /* --- Talus Category Colors (Dark) --- */
 /* --- Chart Colors --- */
 /* --- Talus Logo Colors --- */
+/* Define the mixin properties for flexbox */
 /* --- Block Link Content --- */
 .block-link-container {
   float: left;
@@ -236,6 +237,148 @@
   -webkit-background-clip: padding-box;
   -moz-background-clip: padding;
   background-clip: padding-box; }
+
+.arrow-navigation {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  	/*
+  	//text-align: center;
+  	a {
+  		display: inline-block;
+  		border-radius: 50%;
+  	}
+  
+  	a:hover .left, a:hover .top, a:hover .bottom, a:hover .right{
+  		border: 0.5em solid #e74c3c;
+  	}
+  
+  	a:hover .left:after, a:hover .top:after, a:hover .bottom:after, a:hover .right:after {
+  		border-top: 0.5em solid #e74c3c;
+  		border-right: 0.5em solid #e74c3c;
+  	}
+  
+  	// Use this if you want to hand draw the left arrow
+  	.left {
+  		display: inline-block;
+  		width: 3em;
+  		height: 3em;
+  		border: 0.5em solid $dark-blue;
+  		border-radius: 50%;
+  		margin-right: 1.5em;
+  	}
+  
+  	.left:after {
+  		content: '';
+  		display: inline-block;
+  		margin-top: 0.5em;
+  		margin-left: 0.5em;
+  		width: 1.0em;
+  		height: 1.0em;
+  		border-top: 0.5em solid $dark-blue;
+  		border-right: 0.5em solid $dark-blue;
+  		-moz-transform: rotate(-135deg);
+  		-webkit-transform: rotate(-135deg);
+  		transform: rotate(-135deg);
+  	}
+  
+  
+  	.right {
+  		display: inline-block;
+  		width: 3em;
+  		height: 3em;
+  		border: 0.5em solid $dark-blue;
+  		border-radius: 50%;
+  		margin-left: 1.5em;
+  	}
+  
+  	.right:after {
+  		content: '';
+  		display: inline-block;
+  		margin-top: 0.5em;
+  		margin-right: 0.5em;
+  		width: 1.0em;
+  		height: 1.0em;
+  		border-top: 0.5em solid $dark-blue;
+  		border-right: 0.5em solid $dark-blue;
+  		-moz-transform: rotate(45deg);
+  		-webkit-transform: rotate(45deg);
+  		transform: rotate(45deg);
+  	}
+  
+  	.top {
+  		display: inline-block;
+  		width: 4em;
+  		height: 4em;
+  		border: 0.5em solid $dark-blue;
+  		border-radius: 50%;
+  		margin-right: 0.75em;
+  	}
+  
+  	.top:after {
+  		content: '';
+  		display: inline-block;
+  		margin-top: 1.4em;
+  		width: 1.4em;
+  		height: 1.4em;
+  		border-top: 0.5em solid $dark-blue;
+  		border-right: 0.5em solid $dark-blue;
+  		-moz-transform: rotate(-45deg);
+  		-webkit-transform: rotate(-45deg);
+  		transform: rotate(-45deg);
+  	}
+  
+  	.bottom {
+  		display: inline-block;
+  		width: 4em;
+  		height: 4em;
+  		border: 0.5em solid $dark-blue;
+  		border-radius: 50%;
+  		margin-left: 0.75em;
+  	}
+  
+  	.bottom:after {
+  		content: '';
+  		display: inline-block;
+  		margin-top: 0.6em;
+  		width: 1.4em;
+  		height: 1.4em;
+  		border-top: 0.5em solid $dark-blue;
+  		border-right: 0.5em solid $dark-blue;
+  		-moz-transform: rotate(135deg);
+  		-webkit-transform: rotate(135deg);
+  		transform: rotate(135deg);
+  	}
+  */ }
+  .arrow-navigation .right-arrow-container {
+    -webkit-box-flex: 1;
+    -moz-box-flex: 1;
+    -webkit-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    text-align: right; }
+  .arrow-navigation .left-arrow-container {
+    -webkit-box-flex: 1;
+    -moz-box-flex: 1;
+    -webkit-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    text-align: left; }
+  .arrow-navigation .arrow-container {
+    -webkit-box-flex: 1;
+    -moz-box-flex: 1;
+    -webkit-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    text-align: right; }
+  .arrow-navigation .left img {
+    width: 30px;
+    height: 30px; }
+  .arrow-navigation .right img {
+    width: 30px;
+    height: 30px; }
 
 .container-content {
   padding: 10px 30px 30px; }
