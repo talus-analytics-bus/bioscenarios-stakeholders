@@ -59,15 +59,42 @@
 		const allNonUNOrgs = allOrgs.concat(nonUNTitles)
 			.filter(d => !allUNOrgs.includes(d.abbrev))
 			.sort((a, b) => {
-				if (a.category === b.category) {
-					if (b.abbrev === undefined) {
-						return true;
+				// So for some reason this is sorting differently in Firefox vs. Chrome
+				// Expanding to use defs in
+				// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort
+				//  Referring to a's order in relation to b
+				//     -1 means a before b
+				//     +1 means a after b
+				//     0 means same level
+				// We're just trying to do a hierarchical sort here
+				let sortVal;
+				const aBeforeB = -1;
+				const bBeforeA = 1;
+				const aSameAsB = 0;
+				if (a.category.toLowerCase() === b.category.toLowerCase()) {
+					// First check if the categories are the same
+					if (a.abbrev === undefined) {
+						sortVal = aBeforeB;
+					} else if (b.abbrev === undefined) {
+						sortVal = bBeforeA;
 					} else {
-						return a.abbrev < b.abbrev;
+						// Otherwise, sort alphabetically on the abbreviations
+						if (a.abbrev.toLowerCase() < b.abbrev.toLowerCase()) {
+							sortVal = aBeforeB;
+						} else {
+							sortVal = bBeforeA;
+						}
 					}
 				} else {
-					return a.category > b.category;
+					// if the categories are not the same, simply sort on that category
+					// (a < b) based on criteria
+					if (a.category.toLowerCase() < b.category.toLowerCase()) {
+						sortVal = aBeforeB;
+					} else {
+						sortVal = bBeforeA;
+					}
 				}
+				return sortVal;
 			})
 			.map(d => d.abbrev || d.category);
 
@@ -78,6 +105,7 @@
 		const width = 1.2 * height;
 		const rectHeight = 40;
 		const rectWidth = 400;
+		const columnTopSpacing = 50;
 
 		const timelineEvents = ['Case in humans', ...new Set(rawData.map(d => {
 			return d['Timeline Event'];
@@ -129,13 +157,14 @@
 
 		/* SCALES */
 		const innerRange = ((rectHeight / 2) + 3) * allPolicies.length;
+		const topAnchor = (-height / 2) + columnTopSpacing;
 		const innerNodesScale = d3.scaleBand()
 			.domain(allPolicies)
-			.range([-innerRange, innerRange]);
+			.range([topAnchor, topAnchor + ((rectHeight + 5) * allPolicies.length)]);
 
 		const leftOrgsScale = d3.scaleBand()
 			.domain(allUNOrgs)
-			.range([-0.35 * height, 0.35 * height]);
+			.range([topAnchor, 0.4 * height]);
 
 		const leftOrgsCurve = (orgName) => {
 			const xScale = d3.scaleBand()
@@ -147,7 +176,7 @@
 
 		const rightOrgsScale = d3.scaleBand()
 			.domain(allNonUNOrgs)
-			.range([-0.35 * height, 0.35 * height]);
+			.range([topAnchor, 0.4 * height]);
 
 		const rightOrgsCurve = (orgName) => {
 			const xScale = d3.scaleBand()
@@ -200,8 +229,8 @@
 		chart.append('g').attr('class', 'main-title')
 			.append('text')
 			.attr('x', 25)
-			.attr('y', -(innerRange + 25))
-			.attr('dy', 0.35)
+			.attr('y', -height / 2)
+			.attr('dy', 1)
 			.attr('text-anchor', 'middle')
 			.style('font-size', '16px')
 			.style('font-weight', '600')
