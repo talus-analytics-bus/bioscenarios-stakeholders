@@ -245,7 +245,11 @@
 			return value;
 		};
 
+		var sizeSum = 0;
+		var nodeCount = 0;
 		const nodes = data.map((d, i) => {
+			sizeSum += d.size;
+			nodeCount += 1;
 			return {
 				index: i,
 				type: d.type,
@@ -255,14 +259,20 @@
 				size: d.size,
 			};
 		}).map(d => {
+			let doLabel;
+			if (d.size >= (sizeSum / nodeCount)) {
+				doLabel = true;
+			} else {
+				doLabel = false;
+			}
 			return Object.assign(d, {
 				x: forceCluster(d, 'x') + Math.random() * 100 - 50,
 				y: forceCluster(d, 'y') + Math.random() * 100 - 50,
 				forceX: forceCluster(d, 'x'),
 				forceY: forceCluster(d, 'y'),
+				doLabel: doLabel,
 			});
 		});
-
 
 		// these are colouring *just* the borders
 		const nodeColors = d3.scaleOrdinal()
@@ -505,7 +515,11 @@
 		nodeGroup.append('text')
 			.style('fill', 'white')
 			.style('text-anchor', 'middle')
-			.attr('class', d => (d.size >= 6) ? 'bubble-label' : 'no-bubble-label');
+			.attr('class', d => {
+				if (d.doLabel) {
+					return 'bubble-label';
+				}
+			});
 
 		nodeGroup.on('mouseover', function() {
 			d3.select(this)
@@ -545,7 +559,11 @@
 					return d.y;
 				})
 				.html(d => {
-					return wordWrap(d.text, 20, d.x, d.y);
+					if (d.size <= 3) {
+						return wordWrap(getShortName(d.text), 15, d.x, d.y);
+					} else {
+						return wordWrap(d.text, 15, d.x, d.y);
+					}
 				});
 		};
 
