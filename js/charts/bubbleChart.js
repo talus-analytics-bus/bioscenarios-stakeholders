@@ -523,8 +523,8 @@
 				}
 			})
 			.style('font-size', d => {
-				if (d.size <= 2) {
-					return '0.8';
+				if ((d.size <= 2) && (d.abbrev === d.text)) {
+					return '0.8em';
 				} else {
 					return '1em';
 				}
@@ -576,7 +576,7 @@
 					}
 
 					if (newText.length >= 7) {
-						return wordWrap(newText, 15, d.x, d.y);
+						return wordWrap(newText, 20, d.x, d.y);
 					} else {
 						return newText;
 					}
