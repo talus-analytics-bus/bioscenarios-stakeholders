@@ -173,8 +173,8 @@
 			.append('svg')
 			.attr('width', width)
 			.attr('height', height)
-			.append('g')
-			.attr('transform', `translate(${3 * width / 8},${height / 2})`);
+			.append('g').attr('class', 'concept-map-container')
+			.attr('transform', `translate(${3 * width / 8}, ${height/2})`);
 
 		const defs = chart.append('defs');
 		timelineEventGradients.forEach((item, index, array) => {
