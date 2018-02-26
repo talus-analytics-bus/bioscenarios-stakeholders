@@ -321,11 +321,18 @@
 
 		leftGroup.append('g')
 			.append('text')
-			.attr('x', d => leftOrgsCurve(d.abbrev || d))
+            .attr('x', d => {
+                let value = 0;
+
+                if (d.abbrev === undefined) {
+                    value = 18; // this is a label, pull the label in by the offset px
+                }
+                return leftOrgsCurve(d.abbrev || d) + value;
+            })
 			.attr('y', d => leftOrgsScale(d.abbrev || d))
 			.style('fill', d => (d.abbrev === undefined) ? 'black' : textColor)
 			.style('text-anchor', 'end')
-			.text(d => d.abbrev || d)
+            .text(d => (d.abbrev === undefined) ? d.toUpperCase() : d.abbrev)
 			.style('font-weight', d => (d.abbrev === undefined) ? 600 : 300)
 			.each(function (d) {
 				if (d === 'UN Organizations') {
@@ -362,12 +369,19 @@
 
 		rightGroup.append('g')
 			.append('text')
-			.attr('x', d => rightOrgsCurve(d.abbrev || d))
+			.attr('x', d => {
+				let value = 0;
+
+				if (d.abbrev === undefined) {
+					value = 18; // this is a label, pull the label in by the offset px
+                }
+                return rightOrgsCurve(d.abbrev || d) - value;
+			})
 			.attr('y', d => rightOrgsScale(d.abbrev || d))
 			.style('fill', d => (d.abbrev === undefined) ? 'black' : textColor)
 			.style('font-weight', d => (d.abbrev === undefined) ? 600 : 300)
 			.style('text-anchor', 'start')
-			.text(d => d.abbrev || d)
+			.text(d => (d.abbrev === undefined) ? d.toUpperCase() : d.abbrev)
 			.each(function (d) {
 				if (nonUNTitles.includes(d)) {
 					return;
