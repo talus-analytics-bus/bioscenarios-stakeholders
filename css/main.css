@@ -377,11 +377,13 @@
     flex: 1;
     text-align: right; }
   .arrow-navigation .left img {
-    width: 30px;
-    height: 30px; }
+    width: 60px;
+    height: 60px;
+    margin-left: -84px; }
   .arrow-navigation .right img {
-    width: 30px;
-    height: 30px; }
+    width: 60px;
+    height: 60px;
+    margin-right: -99px; }
 
 .container-content {
   padding: 10px 30px 30px; }
