@@ -264,7 +264,7 @@
 			.on('mouseout', mouseoutRect);
 
 		rectGroup.append('text')
-			// .attr('transform', 'translate(25)')
+			.attr('transform', 'translate(25)')
 			.attr('x', 0)
 			.attr('y', d => innerNodesScale(d) + (rectHeight / 2))
 			.style('fill', rectTextColor)
