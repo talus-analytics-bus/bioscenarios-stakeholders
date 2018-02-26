@@ -366,6 +366,13 @@
     -ms-flex: 1;
     flex: 1;
     text-align: left; }
+  .arrow-navigation .arrow-container {
+    -webkit-box-flex: 1;
+    -moz-box-flex: 1;
+    -webkit-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    text-align: right; }
   .arrow-navigation .left img {
     width: 30px;
     height: 30px; }
