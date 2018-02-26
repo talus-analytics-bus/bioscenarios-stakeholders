@@ -60,6 +60,8 @@
                 bubbleScale,
             );
 
+			// set checkbox
+			$('input[type=radio][name=starburstradio][value=timeline]').prop('checked', true);
         }
 
         function initListeners() {
@@ -85,12 +87,12 @@
                     previousEvent = event;
 
                     // reset checkbox
-                    $('input[type=checkbox][value=alignbox]').prop('checked', false);
+					$('input[type=radio][name=starburstradio][value=timeline]').prop('checked', true);
                 }
             });
 
-            $('input[type=checkbox][value=alignbox]').on('change', function() {
-                const isChecked = $(this).prop('checked');
+            $('input[type=radio][name=starburstradio]').on('change', function() {
+                const isChecked = $(this).val() === 'all';
                 if (isChecked) {
                     d3.select('.donut-chart').select('svg').remove();
                     donut = App.initBubbleChart(
