@@ -18,28 +18,32 @@
 	.right-arrow-container {
 		@include flex(1);
 		text-align: right;
+		margin-right: -99px;
 	}
 
 	.left-arrow-container {
 		@include flex(1);
 		text-align: left;
+		flex-basis: 100%;
+		margin-left: -84px;
 	}
 
 	.arrow-container {
 		@include flex(1);
-		text-align: right;
+		//text-align: right;
+		justify-content: space-between;
 	}
 
 	.left img {
 		width: 60px;
 		height: 60px;
-		margin-left: -84px;
+		//margin-left: -84px;
 	}
 
 	.right img {
 		width: 60px;
 		height: 60px;
-		margin-right: -99px;
+		//margin-right: -99px;
 	}
 	/*
 	//text-align: center;
