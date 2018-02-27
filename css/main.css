@@ -380,10 +380,10 @@
     flex: 1;
     justify-content: space-between; }
   .arrow-navigation .left img {
-    width: 60px;
+    width: 30px;
     height: 60px; }
   .arrow-navigation .right img {
-    width: 60px;
+    width: 30px;
     height: 60px; }
 
 .container-content {
