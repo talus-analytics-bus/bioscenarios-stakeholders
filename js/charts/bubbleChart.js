@@ -16,6 +16,13 @@
 		} else {
 			baseNodeSize = 1;
 		}
+		
+		var events_with_arrow = ["Suspicion of deliberate use", "Investigative response", "Confirmation of deliberate use"];
+		if (events_with_arrow.includes(eventName) == false) {
+			$(".right-arrow-container").hide();
+		} else {
+			$(".right-arrow-container").show();
+		}
 
 		/* STEP ONE => MASSAGE THE DATA */
 		//		  meow

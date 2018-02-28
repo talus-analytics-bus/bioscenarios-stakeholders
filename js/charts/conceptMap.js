@@ -479,7 +479,7 @@
 					xscale = rightOrgsCurve;
 					sign = 1;
 				}
-				const startx = xscale(d.abbrev) - (sign * 13);
+				const startx = xscale(d.abbrev) - (sign * 15);
 				const starty = yscale(d.abbrev) - 5;
 				const endx = sign * rectWidth / 2 + 25;
 				const endy = innerNodesScale(d['Policy Document']) + (rectHeight / 2);
