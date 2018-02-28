@@ -1,5 +1,5 @@
 (() => {
-	App.initConceptMap = (selector, eventName, rawData, stakeholderData) => {
+	App.initConceptMap = (selector, eventName, rawData, stakeholderData, policyData) => {
 		function convertOrgName(s) {
 			/* Converts Org name to just it's abbreviation (if provided) */
 			const abbrev = s.match(/\(([A-Za-z0-9 ]+)\)/);
@@ -14,7 +14,6 @@
 		/* FORMAT DATA */
 		// get event data
 		const data = rawData.filter(d => d['Timeline Event'].toLowerCase() === eventName.toLowerCase());
-
 		const allOrgs = stakeholderData.map(d => {
 			return {
 				name: d['Stakeholder Name'],
@@ -23,7 +22,13 @@
 				role: d['Overall Role'],
 			};
 		});
-
+		const policyDocs = policyData.map(d => {
+			return {
+				name: d['Policy Document Name'],
+				link: d['Primary Reference Link'],
+				text: d['Relevant Text or Description'],
+			};
+		});
 		const allCategories = d3.nest()
 			.key(d => d.category.toUpperCase())
 			.entries(allOrgs)
@@ -280,8 +285,29 @@
 					return wrapped;
 				}
 			})
+
 			.on('mouseover', mouseoverRect)
 			.on('mouseout', mouseoutRect);
+
+		rectGroup.append("image")
+			.attr('x', rectWidth/2-5)
+			.attr('y', d => innerNodesScale(d)+8)
+			.attr('width', 20)
+			.attr('height', 24)
+			.attr("xlink:href", "../../img/whitefile.png")
+			.attr('value', d => `icon ${d}`)
+			.on('mouseover', mouseoverRect)
+			.on('mouseout', mouseoutRect)
+			.on('click', (d,i)=>window.location.replace(policyDocs[i].link))
+			.each(function (d,i) {
+				return $(this).tooltipster({
+					content: "<h4 style=font-weight:600>"+d+"</h4><br><a href="+policyDocs[i].link+">view Policy Document</a>",
+					contentAsHTML: true,
+					trigger: 'hover',
+					side: 'right',
+					interactive: true,
+				});
+			});
 
 		function mouseoverRect(d) {
 			d3.select(`[value="recttext ${d}"`).style('fill', 'black');
@@ -289,6 +315,8 @@
 			d3.select(`[value="recttext ${d}"`).style('font-weight', '500');
 			d3.select(`[value="rect ${d}"]`).style('fill', selectedRectColor);
 			d3.selectAll(`[end="${d}"]`).style('stroke', selectedLineColor);
+			// change doc icon to blue when hovered over
+			d3.select(`[value="icon ${d}"`).attr("xlink:href", "../../img/bluefile.png");
 
 			d3.selectAll(`[end="${d}"]`).each(function() {
 				const circleName = d3.select(this).attr('start');
@@ -301,6 +329,7 @@
 			d3.select(`[value="recttext ${d}"`).style('font-weight', '300');
 			d3.select(`[value="rect ${d}"]`).style('fill', `url(#timeline-gradient-${gradientIndex})`);
 			d3.selectAll(`[end="${d}"]`).style('stroke', lineColor);
+			d3.select(`[value="icon ${d}"`).attr("xlink:href", "../../img/whitefile.png");
 
 			d3.selectAll(`[end="${d}"]`).each(function() {
 				const circleName = d3.select(this).attr('start');

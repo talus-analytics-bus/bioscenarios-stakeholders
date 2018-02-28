@@ -8,6 +8,7 @@
         let policyEventData = App.policyEventData;
         let roleData = App.roleData;
         let stakeholderData = App.stakeholderData;
+        let policyData = App.policyData;
 
         $('body').unbind(); // unbind any event listeners
 
@@ -25,6 +26,7 @@
             policyEventData = App.policyEventData;
             roleData = App.roleData;
             stakeholderData = App.stakeholderData;
+            policyData = App.policyData;
             init();
         }
 
@@ -43,7 +45,7 @@
             {
                 eventName = App.currentEventName; // there is a previously selected event name. Send it to the concept map
             }
-            conceptMap = App.initConceptMap('.concept-map', eventName, policyEventData, stakeholderData);
+            conceptMap = App.initConceptMap('.concept-map', eventName, policyEventData, stakeholderData, policyData);
 
         }
 
@@ -56,7 +58,7 @@
                 const event = d3.select(this).text();
                 if ((event !== null) && (event !== previousEvent)) {
                     d3.select('.concept-map').select('svg').remove();
-                    conceptMap = App.initConceptMap('.concept-map', event, policyEventData, stakeholderData);
+                    conceptMap = App.initConceptMap('.concept-map', event, policyEventData, stakeholderData, policyData);
 
                     previousEvent = event;
 
