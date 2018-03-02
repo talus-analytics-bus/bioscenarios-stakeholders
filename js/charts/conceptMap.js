@@ -301,7 +301,7 @@
 			.on('click', (d,i)=>window.location.replace(policyDocs[i].link))
 			.each(function (d,i) {
 				return $(this).tooltipster({
-					content: "<h4 style=font-weight:600>"+d+"</h4><br><a href="+policyDocs[i].link+">view Policy Document</a>",
+					content: "<h4 style=font-weight:600>"+d+"</h4><br><a href="+policyDocs[i].link+">View Policy Document</a>",
 					contentAsHTML: true,
 					trigger: 'hover',
 					side: 'right',
