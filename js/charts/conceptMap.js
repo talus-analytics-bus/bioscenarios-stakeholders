@@ -22,13 +22,12 @@
 				role: d['Overall Role'],
 			};
 		});
-		const policyDocs = policyData.map(d => {
-			return {
-				name: d['Policy Document Name'],
-				link: d['Primary Reference Link'],
-				text: d['Relevant Text or Description'],
-			};
+
+		var docs = {};
+		policyData.forEach(function(element) {
+		  docs[element['Policy Document Name']] = element["Primary Reference Link"];
 		});
+
 		const allCategories = d3.nest()
 			.key(d => d.category.toUpperCase())
 			.entries(allOrgs)
@@ -298,10 +297,10 @@
 			.attr('value', d => `icon ${d}`)
 			.on('mouseover', mouseoverRect)
 			.on('mouseout', mouseoutRect)
-			.on('click', (d,i)=>window.location.replace(policyDocs[i].link))
+			.on('click', (d,i)=> window.location.replace(docs[d]))
 			.each(function (d,i) {
 				return $(this).tooltipster({
-					content: "<h4 style=font-weight:600>"+d+"</h4><br><a href="+policyDocs[i].link+">View Policy Document</a>",
+					content: "<h4 style=font-weight:600>"+d+"</h4><br><a href="+docs[d]+">View Policy Document</a>",
 					contentAsHTML: true,
 					trigger: 'hover',
 					side: 'right',
