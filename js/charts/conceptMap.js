@@ -43,6 +43,8 @@
 				.filter(d => d.category.toUpperCase() === 'UN ORGANIZATIONS')
 				.map(d => d.abbrev));
 
+		const noLinks = ["National regulations and policies", "Local regulations and policies", "Organization-specific mandates"];
+
 		var nonUNTitles = [
 			{
 				category: 'Affected Member State',
