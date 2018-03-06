@@ -295,29 +295,33 @@
 			.attr('y', d => innerNodesScale(d)+8)
 			.attr('width', 20)
 			.attr('height', 24)
-			.attr("xlink:href", (d)=> if (noLinks.includes(d) == false) {return "../../img/whitefile.png"})
+			.attr("xlink:href", function(d) {console.log(docs[d]); if (noLinks.includes(d) == false) {return "../../img/whitefile.png"}})
 			.attr('value', d => `icon ${d}`)
 			.on('mouseover', mouseoverRect)
 			.on('mouseout', mouseoutRect)
-			.on('click', (d,i)=> window.location.replace(docs[d]))
+			.on('click', function(d) {if (noLinks.includes(d) == false) {window.location.replace(docs[d])}})
 			.each(function (d,i) {
-				return $(this).tooltipster({
-					content: "<h4 style=font-weight:600>"+d+"</h4><br><a href="+docs[d]+">View Policy Document</a>",
-					contentAsHTML: true,
-					trigger: 'hover',
-					side: 'right',
-					interactive: true,
-				});
+				if (noLinks.includes(d) == false) {
+					return $(this).tooltipster({
+						content: "<h4 style=font-weight:600>"+d+"</h4><br><a href="+docs[d]+">View Policy Document</a>",
+						contentAsHTML: true,
+						trigger: 'hover',
+						side: 'right',
+						interactive: true,
+					});
+				}
 			});
 
 		function mouseoverRect(d) {
+			if (noLinks.includes(d) == false) {
+				// change doc icon to blue when hovered over
+				d3.select(`[value="icon ${d}"`).attr("xlink:href", "../../img/bluefile.png");
+			}
 			d3.select(`[value="recttext ${d}"`).style('fill', 'black');
 			// when you mouse over a rectangle, make the font slightly more heavily weighted for emphasis
 			d3.select(`[value="recttext ${d}"`).style('font-weight', '500');
 			d3.select(`[value="rect ${d}"]`).style('fill', selectedRectColor);
 			d3.selectAll(`[end="${d}"]`).style('stroke', selectedLineColor);
-			// change doc icon to blue when hovered over
-			d3.select(`[value="icon ${d}"`).attr("xlink:href", "../../img/bluefile.png");
 
 			d3.selectAll(`[end="${d}"]`).each(function() {
 				const circleName = d3.select(this).attr('start');
@@ -326,11 +330,13 @@
 		}
 
 		function mouseoutRect(d, i) {
+			if (noLinks.includes(d) == false) {
+				d3.select(`[value="icon ${d}"`).attr("xlink:href", "../../img/whitefile.png");
+			}
 			d3.select(`[value="recttext ${d}"`).style('fill', rectTextColor);
 			d3.select(`[value="recttext ${d}"`).style('font-weight', '300');
 			d3.select(`[value="rect ${d}"]`).style('fill', `url(#timeline-gradient-${gradientIndex})`);
 			d3.selectAll(`[end="${d}"]`).style('stroke', lineColor);
-			d3.select(`[value="icon ${d}"`).attr("xlink:href", "../../img/whitefile.png");
 
 			d3.selectAll(`[end="${d}"]`).each(function() {
 				const circleName = d3.select(this).attr('start');
