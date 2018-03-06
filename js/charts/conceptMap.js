@@ -295,7 +295,7 @@
 			.attr('y', d => innerNodesScale(d)+8)
 			.attr('width', 20)
 			.attr('height', 24)
-			.attr("xlink:href", "../../img/whitefile.png")
+			.attr("xlink:href", (d)=> if (noLinks.includes(d) == false) {return "../../img/whitefile.png"})
 			.attr('value', d => `icon ${d}`)
 			.on('mouseover', mouseoverRect)
 			.on('mouseout', mouseoutRect)
