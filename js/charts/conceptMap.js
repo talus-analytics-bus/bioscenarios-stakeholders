@@ -24,8 +24,8 @@
 		});
 
 		var docs = {};
-		policyData.forEach(function(element) {
-		  docs[element['Policy Document Name']] = element["Primary Reference Link"];
+		policyData.forEach(function (element) {
+			docs[element['Policy Document Name']] = element['Primary Reference Link'];
 		});
 
 		const allCategories = d3.nest()
@@ -43,7 +43,11 @@
 				.filter(d => d.category.toUpperCase() === 'UN ORGANIZATIONS')
 				.map(d => d.abbrev));
 
-		const noLinks = ["National regulations and policies", "Local regulations and policies", "Organization-specific mandates"];
+		const noLinks = [
+			'National regulations and policies',
+			'Local regulations and policies',
+			'Organization-specific mandates',
+		];
 
 		var nonUNTitles = [
 			{
@@ -205,8 +209,8 @@
 			.y(d => d.y);
 
 
-        // Clear the previous SVG (if any)
-        var svg = d3.select(selector).select("svg").remove();
+		// Clear the previous SVG (if any)
+		var svg = d3.select(selector).select('svg').remove();
 
 		/* PLOTTING */
 		// define graph
@@ -215,7 +219,7 @@
 			.attr('width', width)
 			.attr('height', height)
 			.append('g').attr('class', 'concept-map-container')
-			.attr('transform', `translate(${3 * width / 8}, ${height/2})`);
+			.attr('transform', `translate(${3 * width / 8}, ${height / 2})`);
 
 		const defs = chart.append('defs');
 		timelineEventGradients.forEach((item, index, array) => {
@@ -290,20 +294,33 @@
 			.on('mouseover', mouseoverRect)
 			.on('mouseout', mouseoutRect);
 
-		rectGroup.append("image")
-			.attr('x', rectWidth/2-5)
-			.attr('y', d => innerNodesScale(d)+8)
+		rectGroup.append('image')
+			.attr('x', rectWidth / 2 - 5)
+			.attr('y', d => innerNodesScale(d) + 8)
 			.attr('width', 20)
 			.attr('height', 24)
-			.attr("xlink:href", function(d) { if (noLinks.includes(d) == false) {return "../../img/whitefile.png"}})
+			.attr('xlink:href', function (d) {
+				if (noLinks.includes(d) === false) {
+					return '../../img/whitefile.png';
+				}
+			})
 			.attr('value', d => `icon ${d}`)
 			.on('mouseover', mouseoverRect)
 			.on('mouseout', mouseoutRect)
-			.on('click', function(d) {if (noLinks.includes(d) == false) {window.location.replace(docs[d])}})
-			.each(function (d,i) {
-				if (noLinks.includes(d) == false) {
+			.on('click', function (d) {
+				if (noLinks.includes(d) === false) {
+					const win = window.open(docs[d], '_blank');
+					if (win) {
+						win.focus();
+					}
+				}
+			})
+			.each(function (d, i) {
+				if (noLinks.includes(d) === false) {
+					const content = `<h4 style=font-weight:600>${d}</h4>` +
+						`<br><a href="${docs[d]}" target="_blank">View Policy Document</a>`;
 					return $(this).tooltipster({
-						content: "<h4 style=font-weight:600>"+d+"</h4><br><a href="+docs[d]+">View Policy Document</a>",
+						content: content,
 						contentAsHTML: true,
 						trigger: 'hover',
 						side: 'right',
@@ -316,32 +333,32 @@
 		function mouseoverRect(d) {
 			if (noLinks.includes(d) == false) {
 				// change doc icon to blue when hovered over
-				d3.select(`[value="icon ${d}"`).attr("xlink:href", "../../img/bluefile.png");
+				d3.select(`[value='icon ${d}'`).attr('xlink:href', '../../img/bluefile.png');
 			}
-			d3.select(`[value="recttext ${d}"`).style('fill', 'black');
+			d3.select(`[value='recttext ${d}'`).style('fill', 'black');
 			// when you mouse over a rectangle, make the font slightly more heavily weighted for emphasis
-			d3.select(`[value="recttext ${d}"`).style('font-weight', '500');
-			d3.select(`[value="rect ${d}"]`).style('fill', selectedRectColor);
-			d3.selectAll(`[end="${d}"]`).style('stroke', selectedLineColor);
+			d3.select(`[value='recttext ${d}'`).style('font-weight', '500');
+			d3.select(`[value='rect ${d}']`).style('fill', selectedRectColor);
+			d3.selectAll(`[end='${d}']`).style('stroke', selectedLineColor);
 
-			d3.selectAll(`[end="${d}"]`).each(function() {
+			d3.selectAll(`[end='${d}']`).each(function () {
 				const circleName = d3.select(this).attr('start');
-				d3.selectAll(`[value="${circleName}"]`).style('fill', selectedLineColor);
+				d3.selectAll(`[value='${circleName}']`).style('fill', selectedLineColor);
 			});
 		}
 
 		function mouseoutRect(d, i) {
 			if (noLinks.includes(d) == false) {
-				d3.select(`[value="icon ${d}"`).attr("xlink:href", "../../img/whitefile.png");
+				d3.select(`[value='icon ${d}'`).attr('xlink:href', '../../img/whitefile.png');
 			}
-			d3.select(`[value="recttext ${d}"`).style('fill', rectTextColor);
-			d3.select(`[value="recttext ${d}"`).style('font-weight', '300');
-			d3.select(`[value="rect ${d}"]`).style('fill', `url(#timeline-gradient-${gradientIndex})`);
-			d3.selectAll(`[end="${d}"]`).style('stroke', lineColor);
+			d3.select(`[value='recttext ${d}'`).style('fill', rectTextColor);
+			d3.select(`[value='recttext ${d}'`).style('font-weight', '300');
+			d3.select(`[value='rect ${d}']`).style('fill', `url(#timeline-gradient-${gradientIndex})`);
+			d3.selectAll(`[end='${d}']`).style('stroke', lineColor);
 
-			d3.selectAll(`[end="${d}"]`).each(function() {
+			d3.selectAll(`[end='${d}']`).each(function () {
 				const circleName = d3.select(this).attr('start');
-				d3.selectAll(`[value="${circleName}"]`).style('fill', 'white');
+				d3.selectAll(`[value='${circleName}']`).style('fill', 'white');
 			});
 		}
 
@@ -358,18 +375,18 @@
 
 		leftGroup.append('g')
 			.append('text')
-            .attr('x', d => {
-                let value = 0;
+			.attr('x', d => {
+				let value = 0;
 
-                if (d.abbrev === undefined) {
-                    value = 18; // this is a label, pull the label in by the offset px
-                }
-                return leftOrgsCurve(d.abbrev || d) + value;
-            })
+				if (d.abbrev === undefined) {
+					value = 18; // this is a label, pull the label in by the offset px
+				}
+				return leftOrgsCurve(d.abbrev || d) + value;
+			})
 			.attr('y', d => leftOrgsScale(d.abbrev || d))
 			.style('fill', d => (d.abbrev === undefined) ? 'black' : textColor)
 			.style('text-anchor', 'end')
-            .text(d => (d.abbrev === undefined) ? d.toUpperCase() : d.abbrev)
+			.text(d => (d.abbrev === undefined) ? d.toUpperCase() : d.abbrev)
 			.style('font-weight', d => (d.abbrev === undefined) ? 600 : 300)
 			.each(function (d) {
 				if (d === 'UN Organizations') {
@@ -411,8 +428,8 @@
 
 				if (d.abbrev === undefined) {
 					value = 18; // this is a label, pull the label in by the offset px
-                }
-                return rightOrgsCurve(d.abbrev || d) - value;
+				}
+				return rightOrgsCurve(d.abbrev || d) - value;
 			})
 			.attr('y', d => rightOrgsScale(d.abbrev || d))
 			.style('fill', d => (d.abbrev === undefined) ? 'black' : textColor)
@@ -445,22 +462,22 @@
 
 		// ORG MOUSE EVENTS
 		function mouseoverOrg(d) {
-			d3.select(`[value="${d.abbrev}"]`).style('fill', 'black');
-			d3.selectAll(`[start="${d.abbrev}"]`).style('stroke', selectedLineColor);
-			d3.selectAll(`[start="${d.abbrev}"]`).each(function() {
+			d3.select(`[value='${d.abbrev}']`).style('fill', 'black');
+			d3.selectAll(`[start='${d.abbrev}']`).style('stroke', selectedLineColor);
+			d3.selectAll(`[start='${d.abbrev}']`).each(function () {
 				const policyName = d3.select(this).attr('end');
-				d3.selectAll(`[value="rect ${policyName}"]`).style('fill', selectedRectColor);
-				d3.selectAll(`[value="recttext ${policyName}"]`).style('fill', 'black');
+				d3.selectAll(`[value='rect ${policyName}']`).style('fill', selectedRectColor);
+				d3.selectAll(`[value='recttext ${policyName}']`).style('fill', 'black');
 			});
 		}
 
 		function mouseoutOrg(d) {
-			d3.select(`[value="${d.abbrev}"]`).style('fill', 'white');
-			d3.selectAll(`[start="${d.abbrev}"]`).style('stroke', lineColor);
-			d3.selectAll(`[start="${d.abbrev}"]`).each(function() {
+			d3.select(`[value='${d.abbrev}']`).style('fill', 'white');
+			d3.selectAll(`[start='${d.abbrev}']`).style('stroke', lineColor);
+			d3.selectAll(`[start='${d.abbrev}']`).each(function () {
 				const policyName = d3.select(this).attr('end');
-				d3.selectAll(`[value="rect ${policyName}"]`).style('fill', `url(#timeline-gradient-${gradientIndex})`);
-				d3.selectAll(`[value="recttext ${policyName}"]`).style('fill', textColor);
+				d3.selectAll(`[value='rect ${policyName}']`).style('fill', `url(#timeline-gradient-${gradientIndex})`);
+				d3.selectAll(`[value='recttext ${policyName}']`).style('fill', textColor);
 			});
 		}
 
