@@ -102,7 +102,7 @@
                         roleData,
                         stakeholderData,
                         timelineData,
-						2.7,
+						2.45,
                     );
                 } else {
                     d3.select('.donut-chart').select('svg').remove();

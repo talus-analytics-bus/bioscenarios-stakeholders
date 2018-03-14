@@ -16,12 +16,16 @@
 		} else {
 			baseNodeSize = 1;
 		}
-		
-		var events_with_arrow = ["Suspicion of deliberate use", "Investigative response", "Confirmation of deliberate use"];
-		if (events_with_arrow.includes(eventName) == false) {
-			$(".right-arrow-container").hide();
+
+		const eventsWithArrow = [
+			'Suspicion of deliberate use',
+			'Investigative response',
+			'Confirmation of deliberate use',
+		];
+		if (eventsWithArrow.includes(eventName) === false) {
+			$('.right-arrow-container').hide();
 		} else {
-			$(".right-arrow-container").show();
+			$('.right-arrow-container').show();
 		}
 
 		/* STEP ONE => MASSAGE THE DATA */
@@ -114,7 +118,7 @@
 			let filteredData;
 			let filteredPolicyData;
 			if (eventName === null) {
-				// so there was a bug that on the "show all" view, multiple nodes were being generated for
+				// so there was a bug that on the 'show all' view, multiple nodes were being generated for
 				// a single org. This is because a single org could be (and probably will be) involved in
 				// several events. We need to prune this list of duplicates and concat the roles together
 				filteredData = d3.nest()
@@ -147,12 +151,12 @@
 				filteredPolicyData = rawPolicyData
 					.filter(d => {
 						const policyEventNum = getEventNum(d['Timeline Event']);
-						// a policy is "happening" if it's specified event number in policyevents
+						// a policy is 'happening' if it's specified event number in policyevents
 						// is the event currently selected
 						const happening = (policyEventNum === eventNum);
 						// a policy is still applicable if the policy started during a prior part
 						// of the timeline(relative to what was suggested)
-						// AND if the value "Persistent" is true
+						// AND if the value 'Persistent' is true
 						// note: eventNum is the thing selected by the user in the navigation
 						const isPersistent = ((policyEventNum <= eventNum) && (d['Persistent'] === 'TRUE'));
 						return happening || isPersistent;
@@ -267,12 +271,7 @@
 				size: d.size,
 			};
 		}).map(d => {
-			let doLabel;
-			if (d.size >= (sizeSum / nodeCount)) {
-				doLabel = true;
-			} else {
-				doLabel = false;
-			}
+			const doLabel = d.size >= (sizeSum / nodeCount);
 			return Object.assign(d, {
 				x: forceCluster(d, 'x') + Math.random() * 100 - 50,
 				y: forceCluster(d, 'y') + Math.random() * 100 - 50,
@@ -530,7 +529,7 @@
 				}
 			})
 			.style('font-size', d => {
-				if ((d.size <= 2) && (d.abbrev === d.text)) {
+				if ((eventName === null) || ((d.size <= 2) && (d.abbrev === d.text))) {
 					return '0.8em';
 				} else {
 					return '1em';
@@ -572,7 +571,7 @@
 					return d.x;
 				})
 				.attr('y', d => {
-					return d.y;
+					return d.y + 5;
 				})
 				.html(d => {
 					let newText;
@@ -583,7 +582,7 @@
 					}
 
 					if (newText.length >= 7) {
-						return wordWrap(newText, 20, d.x, d.y);
+						return wordWrap(newText, 15, d.x, d.y + 5);
 					} else {
 						return newText;
 					}

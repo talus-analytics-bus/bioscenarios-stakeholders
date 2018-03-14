@@ -331,7 +331,7 @@
 			});
 
 		function mouseoverRect(d) {
-			if (noLinks.includes(d) == false) {
+			if (noLinks.includes(d) === false) {
 				// change doc icon to blue when hovered over
 				d3.select(`[value='icon ${d}'`).attr('xlink:href', '../../img/bluefile.png');
 			}
@@ -348,7 +348,7 @@
 		}
 
 		function mouseoutRect(d, i) {
-			if (noLinks.includes(d) == false) {
+			if (noLinks.includes(d) === false) {
 				d3.select(`[value='icon ${d}'`).attr('xlink:href', '../../img/whitefile.png');
 			}
 			d3.select(`[value='recttext ${d}'`).style('fill', rectTextColor);
