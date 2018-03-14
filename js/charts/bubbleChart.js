@@ -571,7 +571,7 @@
 					return d.x;
 				})
 				.attr('y', d => {
-					return d.y + 5;
+					return d.y;
 				})
 				.html(d => {
 					let newText;
@@ -582,7 +582,7 @@
 					}
 
 					if (newText.length >= 7) {
-						return wordWrap(newText, 15, d.x, d.y + 5);
+						return wordWrap(newText, 17, d.x, d.y);
 					} else {
 						return newText;
 					}
