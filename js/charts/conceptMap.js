@@ -242,17 +242,23 @@
 		});
 
 		// add event title
-		chart.append('g').attr('class', 'main-title')
-			.append('text')
-			.attr('x', 0)
-			.attr('y', topAnchor - 50)
-			.attr('dy', 1)
+		const titleGroup = chart.append('g')
+			.attr('class', 'main-title')
+			.attr('transform', `translate(25, ${topAnchor - 10})`);
+
+		titleGroup.append('text')
+			.text(eventName.toUpperCase())
+			.call(wrap, 340);
+
+		titleGroup.append('text')
+			.attr('transform', 'translate(0, -20)')
+			.text('POLICIES ASSOCIATED WITH');
+
+		titleGroup.selectAll('text')
 			.attr('text-anchor', 'middle')
 			.style('font-size', '20px')
 			.style('font-weight', '600')
-			.style('fill', titleColor)
-			.text(eventName.toUpperCase())
-			.call(wrap, 340);
+			.style('fill', titleColor);
 
 		// Inner Nodes
 		const rectGroup = chart.append('g')
