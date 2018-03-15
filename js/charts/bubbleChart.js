@@ -6,7 +6,7 @@
 		let roleAnchors;
 		let orgTypeSizes;
 
-		const margin = {top: 0, right: 25, bottom: 50, left: 300};
+		const margin = {top: 25, right: 25, bottom: 50, left: 300};
 		const width = 800;
 		const height = width;
 

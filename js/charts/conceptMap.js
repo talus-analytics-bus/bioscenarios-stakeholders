@@ -488,6 +488,9 @@
 
 			d3.selectAll('.connecting-line')
 				.sort((a, b) => {
+					if (d.name === undefined) {
+						return 0;
+					}
 					if (a['Policy Stakeholder'].toUpperCase() === d.name.toUpperCase()) {
 						return 1;
 					} else {
