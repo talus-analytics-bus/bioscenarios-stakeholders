@@ -215,42 +215,38 @@
 		// TODO @steph adjust text
 		// @Steph adjust legends here
 		const circleLabelGroup = chart.append('g')
-			.attr('transform', `translate(${2 * width / 3}, -5)`)
+			.attr('transform', `translate(${width * 0.73}, -5)`)
+			.attr('fill', textColor)
+			.attr('font-size', '12px')
 			.style('text-anchor', 'end');
 
 		circleLabelGroup.append('text')
-			.style('fill', textBoldColor)
-			.style('font-size', '0.8em')
-			.text('Policy Trigger Always Occurs');
+			.text('Policy Trigger Always Occurs'.toUpperCase());
 
 		circleLabelGroup.append('text')
-			.attr('transform', 'translate(200)')
-			.style('fill', textBoldColor)
-			.style('font-size', '0.8em')
-			.text('Policy Trigger Sometimes Occurs');
+			.attr('transform', 'translate(242)')
+			.text('Policy Trigger Sometimes Occurs'.toUpperCase());
 
 		circleLabelGroup.append('text')
-			.attr('transform', 'translate(255)')
-			.style('fill', textBoldColor)
-			.style('font-size', '0.8em')
-			.text('Tasks');
+			.attr('transform', 'translate(300)')
+			.text('Tasks'.toUpperCase());
 
 		circleLabelGroup.append('circle')
-			.attr('transform', 'translate(-155, -5)')
+			.attr('transform', 'translate(-200, -4.5)')
 			.attr('r', 4)
 			.style('stroke', noTimeEventColor)
 			.style('stroke-width', 0.75)
 			.style('fill', alwaysOccursPointColor);
 
 		circleLabelGroup.append('circle')
-			.attr('transform', 'translate(22, -5)')
+			.attr('transform', 'translate(22, -4.5)')
 			.attr('r', 4)
 			.style('stroke', noTimeEventColor)
 			.style('stroke-width', 0.75)
 			.style('fill', pointColor);
 
 		circleLabelGroup.append('circle')
-			.attr('transform', 'translate(220, -5)')
+			.attr('transform', 'translate(260, -4.5)')
 			.attr('r', 4)
 			.style('stroke', noTimeEventColor)
 			.style('stroke-width', 0.75)
