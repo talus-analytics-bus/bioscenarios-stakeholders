@@ -17,16 +17,16 @@
 			baseNodeSize = 1;
 		}
 
-		const eventsWithArrow = [
-			'Suspicion of deliberate use',
-			'Investigative response',
-			'Confirmation of deliberate use',
-		];
-		if (eventsWithArrow.includes(eventName) === false) {
-			$('.right-arrow-container').hide();
-		} else {
-			$('.right-arrow-container').show();
-		}
+		// const eventsWithArrow = [
+		// 	'Suspicion of deliberate use',
+		// 	'Investigative response',
+		// 	'Confirmation of deliberate use',
+		// ];
+		// if (eventsWithArrow.includes(eventName) === false) {
+		// 	$('.right-arrow-container').hide();
+		// } else {
+		// 	$('.right-arrow-container').show();
+		// }
 
 		/* STEP ONE => MASSAGE THE DATA */
 		//		  meow
