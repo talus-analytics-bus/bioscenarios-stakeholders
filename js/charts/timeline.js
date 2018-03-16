@@ -282,6 +282,9 @@
 			.domain([0, 100])
 			.range([height, 0]);
 
+		const reverseX = d3.scaleOrdinal()
+			.domain(xCoordinateList)
+			.range(eventLabels);
 
 		// graph epicurve line here
 		var line = d3.line()
@@ -395,6 +398,7 @@
 			.attr('cy', d => y(d.numCases))
 			.attr('r', '4')
 			.attr('class', (d, i) => (i === App.currentEventIndex) ? 'selected-circle' : '')
+			.attr('value', (d, i) => `scatter-circle-${i}`)
 			.attr('stroke', noTimeEventColor)
             .attr('stroke-width', 0.75)
 			.attr('fill', (d, i) => {
@@ -418,6 +422,7 @@
 			.attr('y2', d => y(d.numCases))
 			.attr('stroke-width', 1)
             .attr('class', (d, i) => (i === App.currentEventIndex) ? 'selected-line' : '')
+			.attr('value', (d, i) => `scatter-line-${i}`)
 			.attr('stroke', (d, i) => {
                 if (i === App.currentEventIndex) {
                     return selectedPointColor;
@@ -479,8 +484,10 @@
 					.style('font-size', '1em')
                     .style('font-weight', '');
 
-                d3.selectAll('.event-marker-highlight-icon')
-                    .style('visibility', 'hidden');
+                // d3.selectAll('.event-marker-highlight-icon')
+                //     .style('visibility', 'hidden');
+				chart.select('.event-marker-highlight-icon')
+					.attr('transform', `translate(${x(eventLabels[i]) - (markerWidth / 2)})`);
 
                 d3.selectAll('.policy-tract-markers rect')
 					.style('fill', scatterlineColor);
@@ -515,8 +522,8 @@
                     .attr('class', 'selected-line');
 
 				// Select the red marker. This is based upon the currently selected group. The marker is a sibling of the selected element
-                d3.select(this.nextElementSibling)
-                   .style('visibility', 'visible');
+				// d3.select(this.nextElementSibling)
+                 //   .style('visibility', 'visible');
 
                 // Set the policy rectangle red as well
 				d3.select(`.policy-tract-${i}`)
@@ -533,13 +540,14 @@
 
 
 		// create the marker groups (The little red slider maker at the top of the timeline graphic)
-        const markerGroup = eventGroup.append('g').attr('class', 'event-marker-highlight-icon');
+        const markerGroup = chart.append('g')
+			.attr('transform', `translate(${x(eventLabels[App.currentEventIndex]) - (markerWidth / 2)})`)
+			.attr('class', 'event-marker-highlight-icon');
 
 		markerGroup.append('rect')
             .attr('width', markerWidth)
             .attr('height', markerHeight)
 			.attr('fill', selectedTimelineGroup)
-            .attr('x', d => x(d.eventName.toUpperCase()) - (markerWidth / 2))
 			.attr('rx', '3')
             .attr('ry', '3')
             .style('fill-opacity', 0.85);
@@ -547,28 +555,119 @@
 		let lineHeight = markerHeight - 3;
         // Drawing the three vertical lines
         markerGroup.append('line')
-            .attr('x1', d => x(d.eventName.toUpperCase()) - 10)
-            .attr('x2', d => x(d.eventName.toUpperCase()) - 10)
+            .attr('x1', (markerWidth / 2) - 10)
+            .attr('x2', (markerWidth / 2) - 10)
             .attr('y1', 3)
             .attr('y2', lineHeight)
             .attr('stroke-width', 1)
             .attr('stroke', 'white');
 
         markerGroup.append('line')
-            .attr('x1', d => x(d.eventName.toUpperCase()))
-            .attr('x2', d => x(d.eventName.toUpperCase()))
+            .attr('x1', markerWidth / 2)
+            .attr('x2', markerWidth / 2)
             .attr('y1', 3)
             .attr('y2', lineHeight)
             .attr('stroke-width', 1)
             .attr('stroke', 'white');
 
         markerGroup.append('line')
-            .attr('x1', d => x(d.eventName.toUpperCase()) + 10)
-            .attr('x2', d => x(d.eventName.toUpperCase()) + 10)
-            .attr('y1', 3	)
+            .attr('x1', (markerWidth / 2) + 10)
+            .attr('x2', (markerWidth / 2) + 10)
+            .attr('y1', 3)
             .attr('y2', lineHeight)
             .attr('stroke-width', 1)
             .attr('stroke', 'white');
+
+        const markerIndicator = markerGroup.append('line')
+			.attr('x1', markerWidth / 2)
+			.attr('x2', markerWidth / 2)
+			.attr('y1', lineHeight)
+			.attr('y2', height)
+			.attr('stroke-width', 1)
+			.style('visibility', 'hidden')
+			.attr('stroke', selectedPointColor);
+
+		const drag = d3.drag()
+			.on('drag', function(d) {
+				// var newX = d3.event.sourceEvent.x + d3.event.dx - 80 - margin.left;
+				var newX = d3.event.x - (markerWidth / 2);
+				// don't let it go too far left
+				newX = Math.max(x(eventLabels[0]) - (markerWidth / 2), newX);
+				// don't let it go too far right
+				newX = Math.min(x(eventLabels[eventLabels.length - 2]) - (markerWidth / 2), newX);
+
+				// set new Index
+				const newIndex = Math.round((newX - (xOffset / 2)) / xPadding);
+				App.currentEventIndex = newIndex;
+
+				markerGroup.attr('transform', `translate(${newX})`);
+				markerIndicator.style('visibility', 'visible');
+			})
+			.on('end', function(d) {
+				markerIndicator.style('visibility', 'hidden');
+				markerGroup.attr(
+					'transform',
+					`translate(${x(eventLabels[App.currentEventIndex]) - (markerWidth / 2)})`
+				);
+				App.currentEventName = eventLabels[App.currentEventIndex];
+
+				// reset all changes
+				d3.selectAll('.event-highlight-rect')
+					.style('fill-opacity', d => {
+						if (d.eventName.toUpperCase() === App.currentEventName.toUpperCase()) {
+							return 0.15;
+						} else {
+							return 0;
+						}
+					});
+				d3.selectAll('.event-label')
+					.style('fill', textColor)
+					.style('font-size', '1em')
+					.style('font-weight', '');
+
+				d3.selectAll('.policy-tract-markers rect')
+					.style('fill', scatterlineColor);
+
+				d3.select('.selected-circle')
+					.attr('class', '')
+					.attr('fill', previousSelectedPointColor);
+				d3.select('.selected-line')
+					.attr('class', '')
+					.attr('stroke', previousSelectedPointColor);
+
+				// now set text
+				const group = d3.select(`.event-group-${App.currentEventIndex}`);
+				group.selectAll('text')
+					.style('font-size', '1em')
+					.style('fill', 'black')
+					.style('font-weight', 600);
+				// now set rect
+				d3.select(this)
+					.style('fill-opacity', 0.15);
+
+				const circle = d3.select(`[value="scatter-circle-${App.currentEventIndex}"]`);
+				previousSelectedPointColor = circle.attr('fill');
+
+				circle.attr('fill', selectedPointColor)
+					.attr('class', 'selected-circle');
+
+				chart.select(`[value="scatter-line-${App.currentEventIndex}"]`)
+					.attr('stroke', selectedPointColor)
+					.attr('class', 'selected-line');
+
+				// Set the policy rectangle red as well
+				d3.select(`.policy-tract-${App.currentEventIndex}`)
+					.style('fill', selectedPointColor);
+
+				// now update labels
+				whatEvent.text(App.currentEventName)
+					.attr('value', App.currentEventName);
+				whatDay.text(`Day ${dayScale(App.currentEventName.toUpperCase())}`);
+
+
+			});
+
+		markerGroup.call(drag);
 
         // Add the circles to the line. These are statically placed. These only show the event name within the tooltip
         const noTimelineEvent = chart.append('g').attr('class', 'no-timeline-event-details')
@@ -594,8 +693,8 @@
                 });
             });
 
-        d3.selectAll('.event-marker-highlight-icon')
-            .style('visibility', 'hidden'); // start with all of the red marker widgets hidden
+        // d3.selectAll('.event-marker-highlight-icon')
+        //     .style('visibility', 'hidden'); // start with all of the red marker widgets hidden
 
 		// Select the current policy tract
 		d3.select(`.policy-tract-${App.currentEventIndex}`)

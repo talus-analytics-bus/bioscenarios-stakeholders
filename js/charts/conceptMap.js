@@ -242,17 +242,25 @@
 		});
 
 		// add event title
-		chart.append('g').attr('class', 'main-title')
-			.append('text')
-			.attr('x', 0)
-			.attr('y', topAnchor - 50)
-			.attr('dy', 1)
+		const titleGroup = chart.append('g')
+			.attr('class', 'main-title')
+			.attr('transform', `translate(25, ${topAnchor - 10})`);
+
+		titleGroup.append('text')
 			.attr('text-anchor', 'middle')
 			.style('font-size', '20px')
 			.style('font-weight', '600')
 			.style('fill', titleColor)
 			.text(eventName.toUpperCase())
 			.call(wrap, 340);
+
+		titleGroup.append('text')
+			.attr('text-anchor', 'middle')
+			.style('font-size', '20px')
+			.style('fill', titleColor)
+			.style('fill-opacity', 0.5)
+			.attr('transform', 'translate(0, -20)')
+			.text('POLICIES ASSOCIATED WITH');
 
 		// Inner Nodes
 		const rectGroup = chart.append('g')
@@ -339,6 +347,14 @@
 			// when you mouse over a rectangle, make the font slightly more heavily weighted for emphasis
 			d3.select(`[value='recttext ${d}'`).style('font-weight', '500');
 			d3.select(`[value='rect ${d}']`).style('fill', selectedRectColor);
+			d3.selectAll('.connecting-line')
+				.sort((a, b) => {
+					if (a['Policy Document'].toUpperCase() === d.toUpperCase()) {
+						return 1;
+					} else {
+						return -1;
+					}
+				});
 			d3.selectAll(`[end='${d}']`).style('stroke', selectedLineColor);
 
 			d3.selectAll(`[end='${d}']`).each(function () {
@@ -469,6 +485,18 @@
 				d3.selectAll(`[value='rect ${policyName}']`).style('fill', selectedRectColor);
 				d3.selectAll(`[value='recttext ${policyName}']`).style('fill', 'black');
 			});
+
+			d3.selectAll('.connecting-line')
+				.sort((a, b) => {
+					if (d.name === undefined) {
+						return 0;
+					}
+					if (a['Policy Stakeholder'].toUpperCase() === d.name.toUpperCase()) {
+						return 1;
+					} else {
+						return -1;
+					}
+				});
 		}
 
 		function mouseoutOrg(d) {
@@ -482,7 +510,7 @@
 		}
 
 
-		// Time to draw lines
+		// LINES
 		const lineGroup = chart.append('g')
 			.selectAll('path')
 			.data(data.map(d => {
@@ -491,6 +519,7 @@
 			}))
 			.enter()
 			.append('path')
+			.attr('class', 'connecting-line')
 			.attr('d', d => {
 				let xscale;
 				let yscale;
