@@ -3,7 +3,7 @@ const app = require('express')();
 const server = require('http').Server(app);
 const path = require('path');
 
-const useHTTPSRedirection = false;
+const useHTTPSRedirection = true;
 
 // grab config object
 const config = require('./server/config.json');
