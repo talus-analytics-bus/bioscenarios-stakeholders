@@ -22,32 +22,32 @@
         // You can control the phantom midpoint for the line curve by adjusting these data points.
         const epiMidpoint = 77; // y coord for midpoint
         const epiMidpointIndex = 6; // the position within the list of cases
-        const epiMidpointX = 667; // x coord for midpoint
+        const epiMidpointX = 687; // x coord for midpoint
 
-        let xTmpCorrd = 190;
-        let yTmpCoord = 252;
+        let xTmpCorrd = 215;
+        let yTmpCoord = 255;
         // This data set statically places the noTimeCase circles onto the line. To move the circles, you need to
 		// manipulate the coordinates here. These are relative to the case events.
 		const noTimeCases = [
 			[xTmpCorrd, yTmpCoord], // notification of cases
-			[xTmpCorrd += 25, yTmpCoord-= 1], // coordinated medical response initiated
+			[xTmpCorrd += 25, yTmpCoord-= 2], // coordinated medical response initiated
 			[xTmpCorrd += 25, yTmpCoord-= 2], // begin epidemiological investigation
             // humanitarian response
-            [xTmpCorrd += 80, yTmpCoord = 240], // define and identify cases
-            [xTmpCorrd += 30, yTmpCoord-= 4], // implement control and prevention measures
+            [xTmpCorrd += 80, yTmpCoord = 242], // define and identify cases
+            [xTmpCorrd += 30, yTmpCoord-= 6], // implement control and prevention measures
             // suspicion of deliberate use
-            [xTmpCorrd += 95, yTmpCoord-= 32], // monitor and treat new cases
+            [xTmpCorrd += 95, yTmpCoord-= 33], // monitor and treat new cases
             // investigative response
-            [xTmpCorrd = 560, yTmpCoord = 120], // provision of assistance
+            [xTmpCorrd = 575, yTmpCoord = 128], // provision of assistance
             // state request for assistance
-            [xTmpCorrd = 745, yTmpCoord = 107], // continued medical response to cases
+            [xTmpCorrd = 765, yTmpCoord = 108], // continued medical response to cases
             // WHO PHE declared
-            [xTmpCorrd = 755, yTmpCoord = 115], // continued epidemiological investigation
-            [xTmpCorrd = 775, yTmpCoord = 130], // increased prevention and control measures
+            [xTmpCorrd = 775, yTmpCoord = 115], // continued epidemiological investigation
+            [xTmpCorrd = 795, yTmpCoord = 131], // increased prevention and control measures
             // Response and recovery
-            [xTmpCorrd = 875, yTmpCoord = 186], // monitor for new cases
+            [xTmpCorrd = 895, yTmpCoord = 188], // monitor for new cases
             // Confirmation of deliberate use
-            [xTmpCorrd = 975, yTmpCoord = 206], // Sanctions issued
+            [xTmpCorrd = 1005, yTmpCoord = 208], // Sanctions issued
             [xTmpCorrd =710, yTmpCoord=68],
             [xTmpCorrd += 12, yTmpCoord-= 1], 
             [xTmpCorrd = 820, yTmpCoord = 99],
@@ -470,7 +470,7 @@
 			.attr('class', 'event-highlight-rect')
 			.attr('value', d => d.eventName.toUpperCase())
 			.style('fill', highlightColor)
-			.style('fill-opacity', 0.)
+			.style('fill-opacity', 0)
 			.on('click', function(d, i) {
 
                 // Update the currently selected event index
