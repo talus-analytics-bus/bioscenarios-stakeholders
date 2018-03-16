@@ -161,7 +161,8 @@
 		// const selectedRectColor = '#2d9de2';
 		const selectedRectColor = '#94A0C3';
 		const selectedLineColor = 'black';
-		const rectTextColor = '#808080';
+		// const rectTextColor = '#808080';
+		const rectTextColor = '#000000';
 		const textColor = '#6c6d6d';
 		const circleColor = '#cccbcb';
 		const lineColor = '#cccbcb';
