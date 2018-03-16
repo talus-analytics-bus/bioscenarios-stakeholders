@@ -359,7 +359,7 @@
 			}
 			d3.select(`[value='recttext ${d}'`).style('fill', 'black');
 			// when you mouse over a rectangle, make the font slightly more heavily weighted for emphasis
-			d3.select(`[value='recttext ${d}'`).style('font-weight', '500');
+			// d3.select(`[value='recttext ${d}'`).style('font-weight', '500');
 			d3.select(`[value='rect ${d}']`).style('fill', selectedRectColor);
 			d3.selectAll('.connecting-line')
 				.sort((a, b) => {
@@ -497,7 +497,7 @@
 			d3.selectAll(`[start='${d.abbrev}']`).each(function () {
 				const policyName = d3.select(this).attr('end');
 				d3.selectAll(`[value='rect ${policyName}']`).style('fill', selectedRectColor);
-				d3.selectAll(`[value='recttext ${policyName}']`).style('fill', 'black');
+				d3.selectAll(`[value='recttext ${policyName}']`).style('fill', rectTextColor);
 			});
 
 			d3.selectAll('.connecting-line')
@@ -519,7 +519,7 @@
 			d3.selectAll(`[start='${d.abbrev}']`).each(function () {
 				const policyName = d3.select(this).attr('end');
 				d3.selectAll(`[value='rect ${policyName}']`).style('fill', `url(#timeline-gradient-${gradientIndex})`);
-				d3.selectAll(`[value='recttext ${policyName}']`).style('fill', textColor);
+				d3.selectAll(`[value='recttext ${policyName}']`).style('fill', rectTextColor);
 			});
 		}
 
