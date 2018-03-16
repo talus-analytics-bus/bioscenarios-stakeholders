@@ -39,7 +39,7 @@
         }
 
 		function initGraphs() {
-			timeline = App.initTimeline('.timeline', timelineData, policyEventData);
+			// timeline = App.initTimeline('.timeline', timelineData, policyEventData);
 
 		}
 

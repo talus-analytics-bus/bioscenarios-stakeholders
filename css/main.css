@@ -719,6 +719,9 @@ light {
     font-weight: 600;
     text-align: center; }
 
+.pathways-img {
+  padding-bottom: 20px; }
+
 .timeline-label {
   display: inline-flex; }
 
