@@ -1,6 +1,6 @@
 (() => {
 	App.initTimeline = (selector, rawData, policyEventData, param = {}) => {
-		const margin = {top: 25, right: 25, bottom: 50, left: 0};
+		const margin = {top: 25, right: 25, bottom: 60, left: 0};
 		const width = param.width || 1125;
 		const height = width * 0.25;
 
@@ -174,10 +174,10 @@
 		chart.append('text')
 			.attr('transform', 'translate(20,' + String(height - 10) + ')rotate(-90)')
 			.attr('fill', textColor)
-			.attr('font-style', 'italic')
-			.style('font-weight', '600')
-			.attr('font-size', '10px')
-			.text('Number of cases');
+			//.attr('font-style', 'italic')
+			//.style('font-weight', '600')
+			.attr('font-size', '12px')
+			.text('NUMBER OF CASES');
 
 		// Upper left label
 		const title = chart.append('text')
@@ -330,21 +330,22 @@
 
 		// draw the policy graph
 		const scatterline = chart.append('g').attr('class', 'policy-tract-group')
-			.attr('transform', `translate(0, ${height + 5})`);
+			//.attr('transform', `translate(0, ${height + 5})`);
+        .attr('transform', `translate(0, ${height + 1})`);
 
 		scatterline.append('rect')
 			.attr('class', 'policy-tract-container')
 			.attr('width', width)
-			.attr('height', 45)
+			.attr('height', 60)
 			.attr('fill', 'url(#timeline-gradient)');
 
 		scatterline.append('text')
-			.attr('transform', 'translate(20, 42)rotate(-90)')
+			.attr('transform', 'translate(20, 56)rotate(-90)')
 			.attr('fill', textColor)
-			.attr('font-style', 'italic')
-			.attr('font-size', '10px')
-			.style('font-weight', '600')
-			.text('Policies');
+			//.attr('font-style', 'italic')
+			.attr('font-size', '12px')
+			//.style('font-weight', '600')
+			.text('POLICIES');
 
 		scatterline.append('g')
 			.attr('class', 'policy-tract-markers')
@@ -355,7 +356,7 @@
 			.attr('class', (d, i) => `policy-tract-${i}`)
 			.attr('x', d => x(d.eventName.toUpperCase()) - d.count)
 			.attr('width', d=> d.count*2)
-			.attr('height', 45)
+			.attr('height', 60)
 			.style('fill', scatterlineColor);
 
 
@@ -452,7 +453,7 @@
 
         const rectWidth = 120;
         // const rectHeight = 300;
-		const rectHeight = height + 10 + 45;
+		const rectHeight = height + 20 + 45;
         const markerWidth = 60;
         const markerHeight = 25;
 

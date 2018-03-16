@@ -728,4 +728,10 @@ light {
 .radio label {
   font-size: 1.1em; }
 
+body {
+  font-family: 'Open Sans', sans-serif; }
+
+h3 {
+  font-family: 'Raleway', sans-serif; }
+
 /*# sourceMappingURL=main.css.map */
