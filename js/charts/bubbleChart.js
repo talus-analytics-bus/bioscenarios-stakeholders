@@ -566,23 +566,30 @@
 				.attr('cx', d => d.x)
 				.attr('cy', d => d.y);
 
+			const yOffset = 1;
 			nodeGroup.selectAll('.bubble-label')
 				.attr('x', d => {
 					return d.x;
 				})
 				.attr('y', d => {
-					return d.y;
+					return d.y + yOffset;
 				})
 				.html(d => {
 					let newText;
 					if (d.size <= 3) {
 						newText = d.abbrev;
+					} else if (d.text.length > 30) {
+						if (d.size > 7) {
+							newText = d.text;
+						} else {
+							newText = d.abbrev;
+						}
 					} else {
 						newText = d.text;
 					}
 
 					if (newText.length >= 7) {
-						return wordWrap(newText, 17, d.x, d.y);
+						return wordWrap(newText, 17, d.x, d.y + yOffset, i => `${i * 1.25}em`);
 					} else {
 						return newText;
 					}

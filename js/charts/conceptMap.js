@@ -251,8 +251,7 @@
 			.style('font-size', '20px')
 			.style('font-weight', '600')
 			.style('fill', titleColor)
-			.text(eventName.toUpperCase())
-			.call(wrap, 340);
+			.text(eventName.toUpperCase());
 
 		titleGroup.append('text')
 			.attr('text-anchor', 'middle')
@@ -368,7 +367,7 @@
 				d3.select(`[value='icon ${d}'`).attr('xlink:href', '../../img/whitefile.png');
 			}
 			d3.select(`[value='recttext ${d}'`).style('fill', rectTextColor);
-			d3.select(`[value='recttext ${d}'`).style('font-weight', '300');
+			// d3.select(`[value='recttext ${d}'`).style('font-weight', '300');
 			d3.select(`[value='rect ${d}']`).style('fill', `url(#timeline-gradient-${gradientIndex})`);
 			d3.selectAll(`[end='${d}']`).style('stroke', lineColor);
 
