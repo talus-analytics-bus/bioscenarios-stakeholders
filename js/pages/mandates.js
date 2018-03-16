@@ -34,6 +34,9 @@
 
             initGraphs();
             initListeners();
+
+			$('.nav li').removeClass('active');
+			$('[value="policies"]').addClass('active');
         }
 
         function initGraphs() {

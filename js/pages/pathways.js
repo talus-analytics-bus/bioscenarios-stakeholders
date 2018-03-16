@@ -34,6 +34,8 @@
             stakeholderData = App.stakeholderData;
             initGraphs();
 
+			$('.nav li').removeClass('active');
+			$('[value="pathways"]').addClass('active');
         }
 
 		function initGraphs() {

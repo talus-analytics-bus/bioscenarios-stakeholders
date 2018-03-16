@@ -38,6 +38,9 @@
             stakeholderData = App.stakeholderData;
             initGraphs();
             initListeners();
+
+			$('.nav li').removeClass('active');
+			$('[value="roles"]').addClass('active');
         }
 
         function initGraphs() {
