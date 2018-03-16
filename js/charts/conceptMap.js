@@ -322,7 +322,7 @@
 			.attr('height', 24)
 			.attr('xlink:href', function (d) {
 				if (noLinks.includes(d) === false) {
-					return '../../img/whitefile.png';
+					return '../../img/white.svg';
 				}
 			})
 			.attr('value', d => `icon ${d}`)
@@ -354,7 +354,7 @@
 		function mouseoverRect(d) {
 			if (noLinks.includes(d) === false) {
 				// change doc icon to blue when hovered over
-				d3.select(`[value='icon ${d}'`).attr('xlink:href', '../../img/bluefile.png');
+				d3.select(`[value='icon ${d}'`).attr('xlink:href', '../../img/blue.svg');
 			}
 			d3.select(`[value='recttext ${d}'`).style('fill', 'black');
 			// when you mouse over a rectangle, make the font slightly more heavily weighted for emphasis
@@ -378,7 +378,7 @@
 
 		function mouseoutRect(d, i) {
 			if (noLinks.includes(d) === false) {
-				d3.select(`[value='icon ${d}'`).attr('xlink:href', '../../img/whitefile.png');
+				d3.select(`[value='icon ${d}'`).attr('xlink:href', '../../img/white.svg');
 			}
 			d3.select(`[value='recttext ${d}'`).style('fill', rectTextColor);
 			// d3.select(`[value='recttext ${d}'`).style('font-weight', '300');
