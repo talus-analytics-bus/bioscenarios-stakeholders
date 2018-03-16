@@ -1,7 +1,7 @@
 (() => {
 	App.initTimeline = (selector, rawData, policyEventData, param = {}) => {
 		const margin = {top: 25, right: 25, bottom: 60, left: 0};
-		const width = param.width || 1125;
+		const width = param.width || 1136;
 		const height = width * 0.25;
 
 		// How high should the y axis be?
@@ -260,7 +260,7 @@
 		// I've created a custom scaleband which will be used throughout the rest of the
 		// graphic
 		const xPadding = 110; // This is what controls the spacing between the circles
-		const xOffset = 60;
+		const xOffset = 80;
 		const xCoordinateList = [];
 		eventLabels.forEach( (d, i) => {
             // The padding is the spacing between the nodes. The offset is what moves across the xAxis.
@@ -442,14 +442,15 @@
 			.attr('class', 'event-label')
 			.attr('fill', (d, i) => (i === App.currentEventIndex) ? 'black' : textColor)
 			.attr('text-anchor', 'middle')
-			.style('font-size', (d, i) => (i === App.currentEventIndex) ? '1em' : '1em')
+			.style('font-size', (d, i) => (i === App.currentEventIndex) ? '0.9em' : '0.9em')
 			.style('font-weight', (d, i) => (i === App.currentEventIndex) ? 600 : '')
 			.html(function (d) {
 				return wordWrap(
 					d.eventName,
-					16,
+					17,
 					x(d.eventName.toUpperCase()),
-					y(d.numCases) - 30);
+					y(d.numCases) - 30,
+					i => `${i * 1.2}em`);
 			});
 
         // you need to remember the previous color so that you can reset it
@@ -481,7 +482,7 @@
 					.style('fill-opacity', 0);
 				d3.selectAll('.event-label')
 					.style('fill', textColor)
-					.style('font-size', '1em')
+					.style('font-size', '0.9em')
                     .style('font-weight', '');
 
                 // d3.selectAll('.event-marker-highlight-icon')
@@ -502,7 +503,7 @@
 				// now set text
 				const group = d3.select(`.event-group-${i}`);
 				group.selectAll('text')
-					.style('font-size', '1em')
+					.style('font-size', '0.9em')
 					.style('fill', 'black')
 					.style('font-weight', 600);
 				// now set rect
@@ -622,7 +623,7 @@
 					});
 				d3.selectAll('.event-label')
 					.style('fill', textColor)
-					.style('font-size', '1em')
+					.style('font-size', '0.9em')
 					.style('font-weight', '');
 
 				d3.selectAll('.policy-tract-markers rect')
@@ -638,7 +639,7 @@
 				// now set text
 				const group = d3.select(`.event-group-${App.currentEventIndex}`);
 				group.selectAll('text')
-					.style('font-size', '1em')
+					.style('font-size', '0.9em')
 					.style('fill', 'black')
 					.style('font-weight', 600);
 				// now set rect
