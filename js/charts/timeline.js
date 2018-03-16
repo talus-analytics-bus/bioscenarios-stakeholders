@@ -1,6 +1,11 @@
 (() => {
 	App.initTimeline = (selector, rawData, policyEventData, param = {}) => {
-		const margin = {top: 25, right: 25, bottom: 60, left: 0};
+		const margin = {
+			top: 30,
+			right: 25,
+			bottom: 60,
+			left: 0,
+		};
 		const width = param.width || 1136;
 		const height = width * 0.25;
 
@@ -210,7 +215,7 @@
 		// TODO @steph adjust text
 		// @Steph adjust legends here
 		const circleLabelGroup = chart.append('g')
-			.attr('transform', `translate(${width - 30}, 45)`)
+			.attr('transform', `translate(${2 * width / 3}, -5)`)
 			.style('text-anchor', 'end');
 
 		circleLabelGroup.append('text')
@@ -219,33 +224,33 @@
 			.text('Policy Trigger Always Occurs');
 
 		circleLabelGroup.append('text')
-			.attr('transform', 'translate(0, 12)')
+			.attr('transform', 'translate(200)')
 			.style('fill', textBoldColor)
 			.style('font-size', '0.8em')
 			.text('Policy Trigger Sometimes Occurs');
 
 		circleLabelGroup.append('text')
-			.attr('transform', 'translate(0, 24)')
+			.attr('transform', 'translate(255)')
 			.style('fill', textBoldColor)
 			.style('font-size', '0.8em')
 			.text('Tasks');
 
 		circleLabelGroup.append('circle')
-			.attr('transform', 'translate(7, -3)')
+			.attr('transform', 'translate(-155, -5)')
 			.attr('r', 4)
 			.style('stroke', noTimeEventColor)
 			.style('stroke-width', 0.75)
 			.style('fill', alwaysOccursPointColor);
 
 		circleLabelGroup.append('circle')
-			.attr('transform', 'translate(7, 9)')
+			.attr('transform', 'translate(22, -5)')
 			.attr('r', 4)
 			.style('stroke', noTimeEventColor)
 			.style('stroke-width', 0.75)
 			.style('fill', pointColor);
 
 		circleLabelGroup.append('circle')
-			.attr('transform', 'translate(7, 21)')
+			.attr('transform', 'translate(220, -5)')
 			.attr('r', 4)
 			.style('stroke', noTimeEventColor)
 			.style('stroke-width', 0.75)
