@@ -116,6 +116,7 @@
 		const rectHeight = 40;
 		const rectWidth = 400;
 		const columnTopSpacing = 50;
+		const innerNodeTextSize = '0.8em';
 
 		const timelineEvents = ['Case in humans', ...new Set(rawData.map(d => {
 			return d['Timeline Event'];
@@ -255,10 +256,10 @@
 
 		titleGroup.append('text')
 			.attr('text-anchor', 'middle')
-			.style('font-size', '20px')
+			.style('font-size', '17px')
 			.style('fill', titleColor)
 			.style('fill-opacity', 0.5)
-			.attr('transform', 'translate(0, -20)')
+			.attr('transform', 'translate(0, -22)')
 			.text('POLICIES ASSOCIATED WITH');
 
 		// Inner Nodes
@@ -286,18 +287,31 @@
 			.attr('y', d => innerNodesScale(d) + (rectHeight / 2))
 			.style('fill', rectTextColor)
 			.style('text-anchor', 'middle')
-			.style('font-size', '0.9em')
+			.style('font-size', innerNodeTextSize)
 			.attr('value', d => `recttext ${d}`)
 			.html(d => {
-				const wrapped = wordWrap(d, rectWidth / 8, 0, innerNodesScale(d) + (rectHeight / 2));
-				if (wrapped.split('tspan').length === 7) {  // if there are 3 lines of text, shift it lower
-					const newWrapped = wordWrap(d, rectWidth / 6, 0, innerNodesScale(d) + (rectHeight / 2) + 6);
-					return newWrapped;
-				} else {
-					return wrapped;
-				}
-			})
+				const textWidth = 50;
+				const wrapped = wordWrap(
+					d,
+					textWidth,
+					0,
+					innerNodesScale(d) + (rectHeight / 2) + 5,
+					i => `${i * 1.1}em`);
 
+				const numLines = wrapped.split('<tspan').length - 1;
+
+				if (numLines > 1) {
+					const newWrapped = wordWrap(
+						d,
+						textWidth,
+						0,
+						innerNodesScale(d) + (rectHeight / 2) - 2,
+						i => `${i * 1.1}em`);
+					return newWrapped;
+				}
+
+				return wrapped;
+			})
 			.on('mouseover', mouseoverRect)
 			.on('mouseout', mouseoutRect);
 
