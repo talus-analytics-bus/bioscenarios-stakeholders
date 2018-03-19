@@ -13,19 +13,27 @@
 
 .arrow-navigation {
 	@include flexbox();
+	//position: absolute;
+
 
 	// right-arrow-container flexbox details
 	.right-arrow-container {
-		@include flex(1);
+		//@include flex(1);
 		text-align: right;
-		margin-right: -99px;
+		//margin-right: -99px;
+		position: absolute;
+		top: 650px;
+		right: -80px;
 	}
 
 	.left-arrow-container {
-		@include flex(1);
+		//@include flex(1);
 		text-align: left;
-		flex-basis: 100%;
-		margin-left: -84px;
+		//flex-basis: 100%;
+		//margin-left: -84px;
+		position: absolute;
+		top: 650px;
+		left: -66px;
 	}
 
 	.arrow-container {

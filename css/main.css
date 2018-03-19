@@ -356,22 +356,15 @@
   	}
   */ }
   .arrow-navigation .right-arrow-container {
-    -webkit-box-flex: 1;
-    -moz-box-flex: 1;
-    -webkit-flex: 1;
-    -ms-flex: 1;
-    flex: 1;
     text-align: right;
-    margin-right: -99px; }
+    position: absolute;
+    top: 650px;
+    right: -80px; }
   .arrow-navigation .left-arrow-container {
-    -webkit-box-flex: 1;
-    -moz-box-flex: 1;
-    -webkit-flex: 1;
-    -ms-flex: 1;
-    flex: 1;
     text-align: left;
-    flex-basis: 100%;
-    margin-left: -84px; }
+    position: absolute;
+    top: 650px;
+    left: -66px; }
   .arrow-navigation .arrow-container {
     -webkit-box-flex: 1;
     -moz-box-flex: 1;

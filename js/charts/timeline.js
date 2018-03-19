@@ -177,7 +177,7 @@
 
 		// Labelling Rectangle contents
 		chart.append('text')
-			.attr('transform', 'translate(20,' + String(height - 10) + ')rotate(-90)')
+			.attr('transform', 'translate(18,' + String(height - 8) + ')rotate(-90)')
 			.attr('fill', textColor)
 			//.attr('font-style', 'italic')
 			//.style('font-weight', '600')
@@ -344,7 +344,7 @@
 			.attr('fill', 'url(#timeline-gradient)');
 
 		scatterline.append('text')
-			.attr('transform', 'translate(20, 56)rotate(-90)')
+			.attr('transform', 'translate(18, 56)rotate(-90)')
 			.attr('fill', textColor)
 			//.attr('font-style', 'italic')
 			.attr('font-size', '12px')
