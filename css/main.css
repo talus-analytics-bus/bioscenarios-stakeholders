@@ -715,6 +715,9 @@ light {
 .pathways-img {
   padding-bottom: 20px; }
 
+.pathways-timeline-img {
+  padding-top: 20px; }
+
 .timeline-label {
   display: inline-flex; }
 
