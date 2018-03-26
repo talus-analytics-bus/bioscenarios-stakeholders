@@ -321,11 +321,7 @@
 			.attr('y', d => innerNodesScale(d) + 8)
 			.attr('width', 20)
 			.attr('height', 24)
-			.attr('xlink:href', function (d) {
-				if (noLinks.includes(d) === false) {
-					return '../../img/white.svg';
-				}
-			})
+			.attr('xlink:href',  '../../img/white.svg')
 			.attr('value', d => `icon ${d}`)
 			.on('mouseover', mouseoverRect)
 			.on('mouseout', mouseoutRect)
@@ -349,14 +345,23 @@
 						interactive: true,
 						trackTooltip: true,
 					});
+				} else {
+					const content = `<h4 style=font-weight:600>${d}</h4>` +
+						`<br><div>${docs[d]}</div>`;
+					return $(this).tooltipster({
+						content: content,
+						contentAsHTML: true,
+						trigger: 'hover',
+						side: 'right',
+						interactive: true,
+						trackTooltip: true,
+					});
+
 				}
 			});
 
 		function mouseoverRect(d) {
-			if (noLinks.includes(d) === false) {
-				// change doc icon to blue when hovered over
-				d3.select(`[value='icon ${d}'`).attr('xlink:href', '../../img/blue.svg');
-			}
+			d3.select(`[value='icon ${d}'`).attr('xlink:href', '../../img/blue.svg');
 			d3.select(`[value='recttext ${d}'`).style('fill', 'black');
 			// when you mouse over a rectangle, make the font slightly more heavily weighted for emphasis
 			// d3.select(`[value='recttext ${d}'`).style('font-weight', '500');
@@ -378,9 +383,7 @@
 		}
 
 		function mouseoutRect(d, i) {
-			if (noLinks.includes(d) === false) {
-				d3.select(`[value='icon ${d}'`).attr('xlink:href', '../../img/white.svg');
-			}
+			d3.select(`[value='icon ${d}'`).attr('xlink:href', '../../img/white.svg');
 			d3.select(`[value='recttext ${d}'`).style('fill', rectTextColor);
 			// d3.select(`[value='recttext ${d}'`).style('font-weight', '300');
 			d3.select(`[value='rect ${d}']`).style('fill', `url(#timeline-gradient-${gradientIndex})`);
