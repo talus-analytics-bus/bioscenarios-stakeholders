@@ -65,6 +65,9 @@
 			{
 				category: 'Private Sector',
 			},
+			{
+				category: 'Public-Private Partnerships',
+			},
 		];
 		const allNonUNOrgs = allOrgs.concat(nonUNTitles)
 			.filter(d => !allUNOrgs.includes(d.abbrev))
