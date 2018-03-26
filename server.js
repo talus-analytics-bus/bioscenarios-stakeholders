@@ -3,7 +3,7 @@ const app = require('express')();
 const server = require('http').Server(app);
 const path = require('path');
 
-const useHTTPSRedirection = true;
+
 
 // grab config object
 const config = require('./server/config.json');
@@ -49,17 +49,18 @@ const noAuthScripts = [
 	'/img/favicon.ico',
 ];
 
+const useHTTPSRedirection = process.env.USE_HTTPS_REDIRECTION || 'false';
 
 // Set the useHTTPSRedirection to false if you don't want the auto-redirection from HTTP to HTTPS
-if (useHTTPSRedirection === true) {
-	// Redirect HTTP to HTTPS
-	app.use(function(req, res, next) {
-		if((!req.secure) && (req.get('X-Forwarded-Proto') !== 'https')) {
-			res.redirect('https://' + req.get('Host') + req.url);
-		}
-		else
-			next();
-	});
+if (useHTTPSRedirection === 'true') {
+    // Redirect HTTP to HTTPS
+    app.use(function(req, res, next) {
+        if((!req.secure) && (req.get('X-Forwarded-Proto') !== 'https')) {
+            res.redirect('https://' + req.get('Host') + req.url);
+        }
+        else
+            next();
+    });
 }
 
 // if no hash, send to index
