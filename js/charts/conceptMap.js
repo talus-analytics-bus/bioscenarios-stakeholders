@@ -1,5 +1,8 @@
 (() => {
 	App.initConceptMap = (selector, eventName, rawData, stakeholderData, policyData) => {
+		//set to false if you don't want to reorder the policy docs
+		var cluster = true;
+
 		function convertOrgName(s) {
 			/* Converts Org name to just it's abbreviation (if provided) */
 			const abbrev = s.match(/\(([A-Za-z0-9 ]+)\)/);
@@ -14,6 +17,14 @@
 		/* FORMAT DATA */
 		// get event data
 		const data = rawData.filter(d => d['Timeline Event'].toLowerCase() === eventName.toLowerCase());
+		var docStakeholder = {}
+		data.forEach(function (d) {
+			if (docStakeholder[d["Policy Document"]]) {
+				docStakeholder[d["Policy Document"]].push(d["Policy Stakeholder"]);
+			} else {
+				docStakeholder[d["Policy Document"]] = [d["Policy Stakeholder"]];
+			}
+		})
 		const allOrgs = stakeholderData.map(d => {
 			return {
 				name: d['Stakeholder Name'],
@@ -22,6 +33,11 @@
 				role: d['Overall Role'],
 			};
 		});
+
+		var orgCategories = {}
+		stakeholderData.forEach(function (d) {
+			orgCategories[d['Stakeholder Name']] = d['Organization Category'];
+		})
 
 		var docs = {};
 		policyData.forEach(function (element) {
@@ -37,6 +53,34 @@
 			.key(d => d['Policy Document'])
 			.entries(data)
 			.map(d => d.key);
+
+		var titles = ['Affected Member State','Non-affected Member States','Non-UN International Organizations','NGOs','Private Sector','Public-Private Partnerships'];
+		var reversedTitles = titles;
+		reversedTitles.reverse();
+
+		function order (doc) {
+			var val = 0;
+			docStakeholder[doc].forEach(function (d) {
+				val += reversedTitles.indexOf(orgCategories[d]);
+			})
+			//higher val means more stakeholders towards the bottom. This is just for stakeholders on the right side
+			console.log([doc, val]);
+			return val
+		}
+
+		if (cluster) {
+			allPolicies.sort(function (a,b) {
+				if (order(a) < order(b)) {
+					return -1;
+				} 
+				if (order(a) > order(b)) {
+					return 1;
+				}
+				else {
+					return 0;
+				}
+			})
+		}
 
 		const allUNOrgs = ['UN Organizations'].concat(
 			allOrgs
@@ -69,6 +113,7 @@
 				category: 'Public-Private Partnerships',
 			},
 		];
+
 		const allNonUNOrgs = allOrgs.concat(nonUNTitles)
 			.filter(d => !allUNOrgs.includes(d.abbrev))
 			.sort((a, b) => {
@@ -101,7 +146,7 @@
 				} else {
 					// if the categories are not the same, simply sort on that category
 					// (a < b) based on criteria
-					if (a.category.toLowerCase() < b.category.toLowerCase()) {
+					if (titles.indexOf(a.category) < titles.indexOf(b.category)) {
 						sortVal = aBeforeB;
 					} else {
 						sortVal = bBeforeA;
