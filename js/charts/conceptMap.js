@@ -54,18 +54,20 @@
 			.entries(data)
 			.map(d => d.key);
 
-		var titles = ['Affected Member State','Non-affected Member States','Non-UN International Organizations','NGOs','Private Sector','Public-Private Partnerships'];
-		var reversedTitles = titles;
+		var titles = ['Affected Member State','Non-affected Member States','Non-UN International Organizations','NGOs','Public-Private Partnerships','Private Sector'];
+		var reversedTitles = titles.slice();
 		reversedTitles.reverse();
 
 		function order (doc) {
 			var val = 0;
+			var count = 0;
 			docStakeholder[doc].forEach(function (d) {
 				val += reversedTitles.indexOf(orgCategories[d]);
+				count ++;
 			})
 			//higher val means more stakeholders towards the bottom. This is just for stakeholders on the right side
 			console.log([doc, val]);
-			return val
+			return val;
 		}
 
 		if (cluster) {
