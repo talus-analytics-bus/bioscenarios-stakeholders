@@ -60,7 +60,7 @@
 			];
 			allRoles = [
 				'Public Health and Medical',
-				'Humanitarian Aid',
+				'Humanitarian Assistance',
 				'Safety and Security',
 				'Governance and Policy',
 			];
@@ -73,7 +73,7 @@
 					x: width / 7,
 					y: height / 7,
 				},
-				'Humanitarian Aid': {
+				'Humanitarian Assistance': {
 					labelX: width - 20,
 					labelY: 30,
 					align: 'end',
