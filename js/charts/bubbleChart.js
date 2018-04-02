@@ -52,10 +52,11 @@
 		function parseData() {
 			allCategories = [
 				'UN Organizations',
-				'Non-UN International Organizations',
-				'NGOs',
 				'Non-affected Member States',
 				'Affected Member State',
+				'Non-UN International Organizations',
+				'NGOs',
+				'Public-Private Partnerships',
 				'Private Sector',
 			];
 			allRoles = [
@@ -386,12 +387,12 @@
 			.style('stroke-opacity', 1);
 
 		legendGroup.append('text')
-			.attr('transform', 'translate(0, 250)')
+			.attr('transform', 'translate(0, 275)')
 			.style('font-weight', 600)
 			.html(wordWrap('Policies per stakeholder', 30, 0, 0));
 
 		const legendCircleGroup = legendGroup.append('g')
-			.attr('transform', 'translate(55, 287)')
+			.attr('transform', 'translate(55, 300)')
 			.selectAll('g')
 			.data((eventName === null) ? [2, 6, 9] : [1, 2, 4])
 			.enter()
