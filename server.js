@@ -63,16 +63,19 @@ if (useHTTPSRedirection === 'true') {
     });
 }
 
+
+const useLoginProcess = false; // set useLoginProcess to false to disable the login process
+
 // if no hash, send to index
 app.get('/', (req, res) => {
-	if (!req.user) return res.redirect('/login.html');
+	if (useLoginProcess && !req.user) return res.redirect('/login.html');
 	res.sendFile(path.join(__dirname, '/', 'index.html'));
 });
 
 // send to requested resource (check for user auth if script is protected)
 app.get(/^(.+)$/, (req, res) => {
 	const scriptPath = req.params[0];
-	if (!req.user) {
+	if (useLoginProcess && !req.user) {
 		// user has not been authenticated; block scripts
 		if (scriptPath === '/index.html' || scriptPath === '/index.html/') {
 			return res.redirect('/login.html');
