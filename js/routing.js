@@ -16,6 +16,10 @@ const Routing = {};
 			loadPage('home', App.initHome);
 		});
 
+		crossroads.addRoute('/about', () => {
+            loadPage('about', App.initAbout);
+        });
+
         crossroads.addRoute('/pathways', () => {
             loadPage('pathways', App.initPathways);
         });
