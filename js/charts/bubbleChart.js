@@ -292,6 +292,7 @@
 				'#3b2f60',  // non affected states
 				'#c5443c',  // affected states
 				'#326921',  // Private sector
+				'#6ab3ba' 
 			]);
 
 		const genScale = (domain, range) => d3.scaleLinear().domain(domain.reverse()).range(range);
@@ -334,6 +335,14 @@
 					[
 						'#c91414',
 						'#C15757',
+					]),
+
+				// Private sector
+				genScale(
+					orgTypeSizes['Public-Private Partnerships'],
+					[
+						'#6ab3ba',
+						'#6ab3ba',
 					]),
 				// Private sector
 				genScale(
