@@ -287,12 +287,12 @@
 			.domain(allCategories)
 			.range([
 				'#082b84',  // UN Orgs
-				'#d7c333',  // International orgs
-				'#ef7733',  // NGOs
-				'#3b2f60',  // non affected states
-				'#c5443c',  // affected states
-				'#326921',  // Private sector
-				'#6ab3ba' 
+				'#d7c333',  // affected ms
+				'#ef7733',  // non-affected ms
+				'#3b2f60',  // non-un io
+				'#c5443c',  // ngo
+				'#326921',  // public-private
+				'#6ab3ba'  //private
 			]);
 
 		const genScale = (domain, range) => d3.scaleLinear().domain(domain.reverse()).range(range);
