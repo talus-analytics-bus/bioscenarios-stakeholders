@@ -39,6 +39,11 @@ const Routing = {};
         crossroads.addRoute('/main', () => {
             loadPage('main', App.initMain);
         });
+
+        crossroads.addRoute('/contact', () => {
+            loadPage('contact', () => {});
+        });
+
 		// setup hasher for subscribing to hash changes and browser history
 		hasher.prependHash = '';
 		hasher.initialized.add(parseHash);
