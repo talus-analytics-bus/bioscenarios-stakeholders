@@ -229,9 +229,6 @@
 			})
 				.filter(d => d !== undefined);
 
-			console.log(data);
-			console.log(data.filter(d => d.type.toLowerCase().startsWith('pr')));
-
 			orgTypeSizes = d3.nest()
 				.key(d => d.type)
 				.rollup(v => [d3.min(v, _ => _.size), d3.max(v, _ => _.size)])
