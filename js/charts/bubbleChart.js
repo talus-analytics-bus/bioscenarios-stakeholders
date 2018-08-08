@@ -622,6 +622,7 @@
 				.style('stroke-width', 2)
 				.style('stroke', 'black');
 		}).on('mouseout', function () {
+			$('g.tooltipstered').tooltipster('close');
 			d3.select(this)
 				.select('circle')
 				.style('stroke-width', 1)
