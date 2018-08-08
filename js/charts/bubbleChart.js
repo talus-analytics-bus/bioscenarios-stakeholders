@@ -261,19 +261,19 @@
 			minRadius = 10;
 			power = (x0, x1) => Math.exp(nodeScaling) * Math.pow(x0, 0.8);
 		}
-		// const getRadius = (size) => power(size, nodeScaling) * baseNodeSize + minRadius;
+		const getRadius = (size) => power(size, nodeScaling) * baseNodeSize + minRadius;
 
-		const maxSize = 15;
-		const sizeScale = d3.scaleLinear()
-			.domain([1, maxSize])
-			.range([35, 120]);
-		const getRadius = (x) => {
-			if (x === 0) {
-				return 10;
-			} else {
-				return sizeScale(x);
-			}
-		};
+		// const maxSize = 15;
+		// const sizeScale = d3.scaleLinear()
+		// 	.domain([1, maxSize])
+		// 	.range([35, 120]);
+		// const getRadius = (x) => {
+		// 	if (x === 0) {
+		// 		return 10;
+		// 	} else {
+		// 		return sizeScale(x);
+		// 	}
+		// };
 
 		let value;
 		let initial;
