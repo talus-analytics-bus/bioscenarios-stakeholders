@@ -19,6 +19,7 @@ const App = {};
                 App.policyData = rawPolicyData;
                 App.roleData = rawRoleData;
 
+                // console.log(App.roleData.filter(d => d['Stakeholder'].startsWith('National')));
                 if (callback) {
                 	callback();
 				}

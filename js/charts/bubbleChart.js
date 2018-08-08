@@ -629,12 +629,17 @@
 		});
 
 		nodeGroup.each(function (d, i) {
-			const splitRoles = d.cluster.map(r => r.split(' ').map(Util.capitalize).join(' ')).join(', ');
-			const splitSecondaryRoles = d.cluster2.map(r => r.split(' ').map(Util.capitalize).join(' ')).join(', ');
+			// const splitRoles = d.cluster.map(r => r.split(' ').map(Util.capitalize).join(' ')).join(', ');
+			// const splitSecondaryRoles = d.cluster2.map(r => r.split(' ').map(Util.capitalize).join(' ')).join(', ');
+			// const content = `<b>${d.text}</b>` +
+			// 	`<br><i>${d.type}</i>` +
+			// 	`<br><br><b>Roles: </b>${splitRoles}` +
+			// 	`<br><b>Secondary Roles: </b>${splitSecondaryRoles}` +
+			// 	`<br><br><b>Number of Mandates:</b> ${d.size}`;
+			const splitRoles = d.cluster.concat(d.cluster2).map(r => r.split(' ').map(Util.capitalize).join(' ')).join(', ');
 			const content = `<b>${d.text}</b>` +
 				`<br><i>${d.type}</i>` +
 				`<br><br><b>Roles: </b>${splitRoles}` +
-				`<br><b>Secondary Roles: </b>${splitSecondaryRoles}` +
 				`<br><br><b>Number of Mandates:</b> ${d.size}`;
 			return $(this).tooltipster({
 				content: content,
