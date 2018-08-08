@@ -101,6 +101,7 @@
 			});
 
 			const getEventNum = (name) => {
+				console.log(name)
 				const num = parseInt(
 					rawTimelineData
 						.filter(e => {
@@ -173,6 +174,7 @@
 				// need to filter to every event *up until this one*
 				filteredPolicyData = rawPolicyData
 					.filter(d => {
+						console.log(d);
 						const policyEventNum = getEventNum(d['Timeline Event']);
 						// a policy is 'happening' if it's specified event number in policyevents
 						// is the event currently selected
