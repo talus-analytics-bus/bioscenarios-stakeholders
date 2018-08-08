@@ -238,6 +238,7 @@
 					return acc;
 				}, {});
 
+
 			allCategories.forEach(c => {
 				const includedOrgs = Object.keys(orgTypeSizes);
 				if (!includedOrgs.includes(c)) {
@@ -295,53 +296,55 @@
 
 		var sizeSum = 0;
 		var nodeCount = 0;
-		const nodes = data.map((d, i) => {
-			sizeSum += d.size;
-			nodeCount += 1;
-			return {
-				index: i,
-				type: d.type,
-				cluster: d.roles,
-				cluster2: d.secondaryRoles,
-				radius: getRadius(d.size),
-				text: d.name,
-				abbrev: getShortName(d.name),
-				size: d.size,
-			};
-		}).map(d => {
-			const doLabel = d.size >= (sizeSum / nodeCount);
-			return Object.assign(d, {
-				// x: forceCluster(d, 'x') + Math.random() * 100 - 50,
-				x: (forceCluster(
-					Object.assign(
-						Object.assign({}, d),
-						{
-							cluster: d.cluster.concat(d.cluster2),
-						}), 'x') || 0) + Math.random() * 100 - 50,
-				// y: forceCluster(d, 'y') + Math.random() * 100 - 50,
-				y: (forceCluster(
-					Object.assign(
-						Object.assign({}, d),
-						{
-							cluster: d.cluster.concat(d.cluster2),
-						}), 'y') || 0) + Math.random() * 100 - 50,
-				forceX: forceCluster(d, 'x'),
-				forceY: forceCluster(d, 'y'),
-				secondaryForceX: forceCluster(
-					Object.assign(
-						Object.assign({}, d),
-						{
-							cluster: d.cluster2,
-						}), 'x') || 0,
-				secondaryForceY: forceCluster(
-					Object.assign(
-						Object.assign({}, d),
-						{
-							cluster: d.cluster2,
-						}), 'y') || 0,
-				doLabel: doLabel,
+		const nodes = data
+			.filter(d => d.name !== '')
+			.map((d, i) => {
+				sizeSum += d.size;
+				nodeCount += 1;
+				return {
+					index: i,
+					type: d.type,
+					cluster: d.roles,
+					cluster2: d.secondaryRoles,
+					radius: getRadius(d.size),
+					text: d.name,
+					abbrev: getShortName(d.name),
+					size: d.size,
+				};
+			}).map(d => {
+				const doLabel = d.size >= (sizeSum / nodeCount);
+				return Object.assign(d, {
+					// x: forceCluster(d, 'x') + Math.random() * 100 - 50,
+					x: (forceCluster(
+						Object.assign(
+							Object.assign({}, d),
+							{
+								cluster: d.cluster.concat(d.cluster2),
+							}), 'x') || 0) + Math.random() * 100 - 50,
+					// y: forceCluster(d, 'y') + Math.random() * 100 - 50,
+					y: (forceCluster(
+						Object.assign(
+							Object.assign({}, d),
+							{
+								cluster: d.cluster.concat(d.cluster2),
+							}), 'y') || 0) + Math.random() * 100 - 50,
+					forceX: forceCluster(d, 'x'),
+					forceY: forceCluster(d, 'y'),
+					secondaryForceX: forceCluster(
+						Object.assign(
+							Object.assign({}, d),
+							{
+								cluster: d.cluster2,
+							}), 'x') || 0,
+					secondaryForceY: forceCluster(
+						Object.assign(
+							Object.assign({}, d),
+							{
+								cluster: d.cluster2,
+							}), 'y') || 0,
+					doLabel: doLabel,
+				});
 			});
-		});
 
 		// these are colouring *just* the borders
 		const nodeColors = d3.scaleOrdinal()
@@ -364,22 +367,25 @@
 					orgTypeSizes['UN Organizations'],
 					[
 						'#667EAE',
-						'#7C99C5',
-						'#96AACF',
-						'#AEBEDE',
+						'#667EAE',
+						// '#7C99C5',
+						// '#96AACF',
+						// '#AEBEDE',
 					]),
 				// International orgs
 				genScale(
 					orgTypeSizes['Non-UN International Organizations'],
 					[
 						'#DBD195',
-						'#E2DEC7',
+						'#DBD195',
+						// '#E2DEC7',
 					]),
 				// NGOs
 				genScale(
 					orgTypeSizes['NGOs'],
 					[
-						'#E89372',
+						// '#E89372',
+						'#EFB9A0',
 						'#EFB9A0',
 					]),
 				// non affected states
@@ -387,20 +393,23 @@
 					orgTypeSizes['Non-affected Member States'],
 					[
 						'#8E87B6',
-						'#8C89A5',
+						'#8E87B6',
+						// '#8C89A5',
 					]),
 				// affected states
 				genScale(
 					orgTypeSizes['Affected Member State'],
 					[
-						'#c91414',
+						// '#c91414',
+						'#C15757',
 						'#C15757',
 					]),
 				// Private sector
 				genScale(
 					orgTypeSizes['Private Sector'],
 					[
-						'#99C2A9',
+						// '#99C2A9',
+						'#ADC6BC',
 						'#ADC6BC',
 					]),
 			]);
@@ -575,13 +584,15 @@
 			.selectAll('g')
 			.data(nodes)
 			.enter()
-			.append('g');
+			.append('g')
+			.attr('name', d => d.text);
 
 		nodeGroup.append('circle')
 			.transition()
 			.duration(1200)
 			.attr('r', d => d.radius)
 			.style('fill', d => nodeGradients(d.type)(d.size))
+			// .style('fill', d => nodeColors(d.type))
 			.style('fill-opacity', 0.7)
 			.style('stroke', d => nodeColors(d.type))
 			.style('stroke-opacity', 1);
