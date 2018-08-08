@@ -265,7 +265,7 @@
 		const maxSize = 15;
 		const sizeScale = d3.scaleLinear()
 			.domain([1, maxSize])
-			.range([30, 120]);
+			.range([35, 120]);
 		const getRadius = (x) => {
 			if (x === 0) {
 				return 10;
@@ -558,13 +558,13 @@
 		const simulation = d3.forceSimulation(nodes)
 			.force('collide', d3.forceCollide(d => d.radius - (d.radius / 20)).strength(1)) // dynamic collision n%
 			.force('x', d3.forceX(d => d.forceX)
-				.strength(0.01))
+				.strength(0.015))
 			.force('y', d3.forceY(d => d.forceY)
-				.strength(0.01))
+				.strength(0.015))
 			.force('secondary-x', d3.forceX(d => d.secondaryForceX)
-				.strength(d => (d.secondaryForceX === 0) ? 0 : 0.009))
+				.strength(d => (d.secondaryForceX === 0) ? 0 : 0.001))
 			.force('secondary-y', d3.forceY(d => d.secondaryForceY)
-				.strength(d => (d.secondaryForceY === 0) ? 0 : 0.009))
+				.strength(d => (d.secondaryForceY === 0) ? 0 : 0.001))
 			.force('edge-collision', edgeCollision())
 			.alphaMin(0.0001);
 
