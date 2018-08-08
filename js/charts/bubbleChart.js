@@ -573,9 +573,9 @@
 			.force('y', d3.forceY(d => d.forceY)
 				.strength(0.02))
 			.force('secondary-x', d3.forceX(d => d.secondaryForceX)
-				.strength(d => (d.secondaryForceX === 0) ? 0 : 0.001))
+				.strength(d => (d.secondaryForceX === 0) ? 0 : 0.0015))
 			.force('secondary-y', d3.forceY(d => d.secondaryForceY)
-				.strength(d => (d.secondaryForceY === 0) ? 0 : 0.001))
+				.strength(d => (d.secondaryForceY === 0) ? 0 : 0.0015))
 			.force('edge-collision', edgeCollision())
 			.alphaMin(0.0001);
 
