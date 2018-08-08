@@ -111,33 +111,58 @@
 			};
 
 			const getRoles = (roleStr) => {
-				return roleStr.split(';').map(r => r.trim());
+				return roleStr.split(';').map(r => r.trim()).filter(r => r !== '');
 			};
 
 			// If we're not passed an eventName, plot all data
 			let filteredData;
 			let filteredPolicyData;
+			var seenDocs = [];
+			const uniqueFields = ['Policy Document', 'Policy Stakeholder'];
 			if (eventName === null) {
 				// so there was a bug that on the 'show all' view, multiple nodes were being generated for
 				// a single org. This is because a single org could be (and probably will be) involved in
 				// several events. We need to prune this list of duplicates and concat the roles together
 				filteredData = d3.nest()
 					.key(d => d['Stakeholder']) // group by name
-					.rollup(v => Util.unique(
-						v.reduce(
-							(acc, cval) => acc.concat(getRoles(cval['Stakeholder Role'])),
-							[]
-						)
-					))
+					.rollup(v => {
+						return {
+							primaryRoles: Util.unique(
+								v.reduce(
+									(acc, cval) => acc.concat(getRoles(cval['Stakeholder Role'])),
+									[]
+								)
+							),
+							secondaryRoles: Util.unique(
+								v.reduce(
+									(acc, cval) => acc.concat(getRoles(cval['Secondary Role'])),
+									[]
+								)
+							),
+						};
+					})
 					.entries(rawData)
 					.map(d => {
 						return {
 							'Stakeholder': d.key,
-							'Stakeholder Role': d.value.join(';'),
+							'Stakeholder Role': d.value.primaryRoles.join(';'),
+							'Secondary Role': d.value.secondaryRoles.join(';'),
 							'Timeline Event': 'all',
 						};
 					});
-				filteredPolicyData = rawPolicyData;
+				filteredPolicyData = rawPolicyData
+					.filter(d => {
+						// need to filter again to just use unique docs
+						const isSeen = seenDocs.filter(s => {
+							return uniqueFields.reduce((acc, k) => acc && (s[k] === d[k]), true);
+						}).length > 0;
+						if (isSeen) {
+							return false;
+						} else {
+							seenDocs.push(d);
+							return true;
+						}
+					});
 			} else {
 				// Determine which event num this one is
 				const eventNum = getEventNum(eventName);
@@ -145,8 +170,6 @@
 				// Otherwise initially filter our roles to just orgs involved in event
 				filteredData = rawData
 					.filter(d => d['Timeline Event'].toLowerCase() === eventName.toLowerCase());
-				var seenDocs = [];
-				const uniqueFields = ['Policy Document', 'Policy Stakeholder'];
 				// need to filter to every event *up until this one*
 				filteredPolicyData = rawPolicyData
 					.filter(d => {
@@ -161,7 +184,7 @@
 						const isPersistent = ((policyEventNum <= eventNum) && (d['Persistent'] === 'TRUE'));
 						return happening || isPersistent;
 					})
-					.sort((a, b) => getEventNum(a['Timeline Event']) < getEventNum(b['Timeline Event']))
+					.sort((a, b) => d3.ascending(getEventNum(a['Timeline Event']), getEventNum(b['Timeline Event'])))
 					.filter(d => {
 						// need to filter again to just use unique docs
 						const isSeen = seenDocs.filter(s => {
@@ -183,6 +206,7 @@
 				d.name = d['Stakeholder'];
 				// set roles
 				d.roles = getRoles(d['Stakeholder Role']);
+				d.secondaryRoles = getRoles(d['Secondary Role']).filter(r => !d.roles.includes(r));
 				// get the org
 				const orgName = d['Stakeholder'].toLowerCase();
 				// pull the org row
@@ -203,13 +227,16 @@
 				d.policies = policyRows;
 				return d;
 			})
-			.filter(d => d !== undefined);
+				.filter(d => d !== undefined);
+
+			console.log(data);
+			console.log(data.filter(d => d.type.toLowerCase().startsWith('pr')));
 
 			orgTypeSizes = d3.nest()
 				.key(d => d.type)
 				.rollup(v => [d3.min(v, _ => _.size), d3.max(v, _ => _.size)])
 				.entries(data)
-				.reduce((acc, cval) =>{
+				.reduce((acc, cval) => {
 					acc[cval.key] = cval.value;
 					return acc;
 				}, {});
@@ -218,7 +245,8 @@
 				const includedOrgs = Object.keys(orgTypeSizes);
 				if (!includedOrgs.includes(c)) {
 					orgTypeSizes[c] = [0, 1];
-				};
+				}
+				;
 			});
 
 		}
@@ -235,7 +263,19 @@
 			minRadius = 10;
 			power = (x0, x1) => Math.exp(nodeScaling) * Math.pow(x0, 0.8);
 		}
-		const getRadius = (size) => power(size, nodeScaling) * baseNodeSize + minRadius;
+		// const getRadius = (size) => power(size, nodeScaling) * baseNodeSize + minRadius;
+
+		const maxSize = 15;
+		const sizeScale = d3.scaleLinear()
+			.domain([1, maxSize])
+			.range([30, 120]);
+		const getRadius = (x) => {
+			if (x === 0) {
+				return 10;
+			} else {
+				return sizeScale(x);
+			}
+		};
 
 		let value;
 		let initial;
@@ -265,6 +305,7 @@
 				index: i,
 				type: d.type,
 				cluster: d.roles,
+				cluster2: d.secondaryRoles,
 				radius: getRadius(d.size),
 				text: d.name,
 				abbrev: getShortName(d.name),
@@ -273,10 +314,34 @@
 		}).map(d => {
 			const doLabel = d.size >= (sizeSum / nodeCount);
 			return Object.assign(d, {
-				x: forceCluster(d, 'x') + Math.random() * 100 - 50,
-				y: forceCluster(d, 'y') + Math.random() * 100 - 50,
+				// x: forceCluster(d, 'x') + Math.random() * 100 - 50,
+				x: (forceCluster(
+					Object.assign(
+						Object.assign({}, d),
+						{
+							cluster: d.cluster.concat(d.cluster2),
+						}), 'x') || 0) + Math.random() * 100 - 50,
+				// y: forceCluster(d, 'y') + Math.random() * 100 - 50,
+				y: (forceCluster(
+					Object.assign(
+						Object.assign({}, d),
+						{
+							cluster: d.cluster.concat(d.cluster2),
+						}), 'y') || 0) + Math.random() * 100 - 50,
 				forceX: forceCluster(d, 'x'),
 				forceY: forceCluster(d, 'y'),
+				secondaryForceX: forceCluster(
+					Object.assign(
+						Object.assign({}, d),
+						{
+							cluster: d.cluster2,
+						}), 'x') || 0,
+				secondaryForceY: forceCluster(
+					Object.assign(
+						Object.assign({}, d),
+						{
+							cluster: d.cluster2,
+						}), 'y') || 0,
 				doLabel: doLabel,
 			});
 		});
@@ -499,6 +564,10 @@
 				.strength(0.01))
 			.force('y', d3.forceY(d => d.forceY)
 				.strength(0.01))
+			.force('secondary-x', d3.forceX(d => d.secondaryForceX)
+				.strength(d => (d.secondaryForceX === 0) ? 0 : 0.009))
+			.force('secondary-y', d3.forceY(d => d.secondaryForceY)
+				.strength(d => (d.secondaryForceY === 0) ? 0 : 0.009))
 			.force('edge-collision', edgeCollision())
 			.alphaMin(0.0001);
 
@@ -536,12 +605,12 @@
 				}
 			});
 
-		nodeGroup.on('mouseover', function() {
+		nodeGroup.on('mouseover', function () {
 			d3.select(this)
 				.select('circle')
 				.style('stroke-width', 2)
 				.style('stroke', 'black');
-		}).on('mouseout', function() {
+		}).on('mouseout', function () {
 			d3.select(this)
 				.select('circle')
 				.style('stroke-width', 1)
@@ -549,11 +618,13 @@
 		});
 
 		nodeGroup.each(function (d, i) {
-			const splitRoles = d.cluster.join(', ');
+			const splitRoles = d.cluster.map(r => r.split(' ').map(Util.capitalize).join(' ')).join(', ');
+			const splitSecondaryRoles = d.cluster2.map(r => r.split(' ').map(Util.capitalize).join(' ')).join(', ');
 			const content = `<b>${d.text}</b>` +
 				`<br><i>${d.type}</i>` +
 				`<br><br><b>Roles: </b>${splitRoles}` +
-				`<br><b>Number of Mandates:</b> ${d.size}`;
+				`<br><b>Secondary Roles: </b>${splitSecondaryRoles}` +
+				`<br><br><b>Number of Mandates:</b> ${d.size}`;
 			return $(this).tooltipster({
 				content: content,
 				trigger: 'hover',
