@@ -558,9 +558,9 @@
 		const simulation = d3.forceSimulation(nodes)
 			.force('collide', d3.forceCollide(d => d.radius - (d.radius / 20)).strength(1)) // dynamic collision n%
 			.force('x', d3.forceX(d => d.forceX)
-				.strength(0.015))
+				.strength(0.02))
 			.force('y', d3.forceY(d => d.forceY)
-				.strength(0.015))
+				.strength(0.02))
 			.force('secondary-x', d3.forceX(d => d.secondaryForceX)
 				.strength(d => (d.secondaryForceX === 0) ? 0 : 0.001))
 			.force('secondary-y', d3.forceY(d => d.secondaryForceY)
