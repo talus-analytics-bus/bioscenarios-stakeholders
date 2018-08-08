@@ -255,10 +255,12 @@
 		let shift;
 		let power;
 		if (eventName === null) {
-			minRadius = 7;
+			// minRadius = 7;
+			minRadius = 15;
 			power = (x0, x1) => Math.exp(nodeScaling) * Math.pow(x0, 0.8);
 		} else {
-			minRadius = 10;
+			// minRadius = 10;
+			minRadius = 15;
 			power = (x0, x1) => Math.exp(nodeScaling) * Math.pow(x0, 0.8);
 		}
 		const getRadius = (size) => power(size, nodeScaling) * baseNodeSize + minRadius;

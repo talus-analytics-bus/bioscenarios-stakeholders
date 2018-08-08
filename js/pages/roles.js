@@ -11,7 +11,8 @@
 
         $('body').unbind(); // unbind any event listeners
 
-        const bubbleScale = 3;
+        // const bubbleScale = 2.45;
+		const bubbleScale = 2.75;
         if (!timelineData) {
             App.initialize(loadData); // initialize the application first!
 
@@ -105,7 +106,8 @@
                         roleData,
                         stakeholderData,
                         timelineData,
-						2.45,
+						// 2.45,
+						2.75,
                     );
                 } else {
                     d3.select('.donut-chart').select('svg').remove();
