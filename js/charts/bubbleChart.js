@@ -466,7 +466,8 @@
 		const legendCircleGroup = legendGroup.append('g')
 			.attr('transform', 'translate(55, 287)')
 			.selectAll('g')
-			.data((eventName === null) ? [2, 6, 9] : [1, 2, 4])
+			// .data((eventName === null) ? [2, 6, 9] : [1, 2, 4])
+			.data([1, 3, 6])
 			.enter()
 			.append('g')
 			.attr('transform', d => 'translate(50)');
