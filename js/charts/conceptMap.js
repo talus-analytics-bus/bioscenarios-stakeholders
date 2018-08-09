@@ -422,11 +422,29 @@
 				if (d === 'UN Organizations') {
 					return;
 				}
-				const content = `<b>${d.name}</b> <br> Overall Role: ${d.role}`;
+				// const content = `<b>${d.name}</b> <br> Overall Role: ${d.role}`;
+				const content = `
+				<div class="tooltip-contents">
+					<div class="tooltip-header">
+						<div class="tooltip-primary-header">
+						${d.name}
+						</div>
+					</div>
+					<div class="tooltip-section">
+						<div class="tooltip-section-header">
+							Overall Role
+						</div>
+						<div class="tooltip-section-contents">
+							${d.role}
+						</div>
+					</div>
+				</div>
+				`;
 				return $(this).tooltipster({
 					content: content,
 					trigger: 'hover',
 					side: 'left',
+					theme: ['tooltipster-shadow', 'tooltipster-talus'],
 				});
 			});
 
@@ -470,11 +488,29 @@
 				if (nonUNTitles.includes(d)) {
 					return;
 				}
-				const content = `<b>${d.name} </b><br> Overall Role: ${d.role}`;
+				// const content = `<b>${d.name} </b><br> Overall Role: ${d.role}`;
+				const content = `
+				<div class="tooltip-contents">
+					<div class="tooltip-header">
+						<div class="tooltip-primary-header">
+						${d.name}
+						</div>
+					</div>
+					<div class="tooltip-section">
+						<div class="tooltip-section-header">
+							Overall Role
+						</div>
+						<div class="tooltip-section-contents">
+							${d.role}
+						</div>
+					</div>
+				</div>
+				`;
 				return $(this).tooltipster({
 					content: content,
 					trigger: 'hover',
 					side: 'right',
+					theme: ['tooltipster-shadow', 'tooltipster-talus'],
 				});
 			});
 
