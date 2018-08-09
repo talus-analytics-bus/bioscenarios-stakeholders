@@ -460,11 +460,12 @@
 			.style('font-weight', 600)
 			.html(wordWrap('Policies per stakeholder', 30, 0, 0));
 
+		const labels = ['Fewer', '', 'More'];
 		const legendCircleGroup = legendGroup.append('g')
 			.attr('transform', 'translate(55, 287)')
 			.selectAll('g')
 			// .data((eventName === null) ? [2, 6, 9] : [1, 2, 4])
-			.data([1, 3, 6])
+			.data([1, 3, 7])
 			.enter()
 			.append('g')
 			.attr('transform', d => 'translate(50)');
@@ -478,10 +479,17 @@
 			.style('stroke-dasharray', ('3, 3'));
 
 		legendCircleGroup.append('text')
-			.attr('dy', d => getRadius(d) * 2 - 5)
 			.style('text-anchor', 'middle')
-			.style('font-size', '1.15em')
-			.text(d => d);
+			.style('font-size', '1em')
+			.html((d, i) => {
+				if (i !== 1) {
+					const offset = getRadius(d) * 2 - 30;
+					return `
+						<tspan x="0" y="0" dy="${offset}">${labels[i]}</tspan>
+						<tspan x="0" y="0" dy="${offset + 15}">Policies</tspan>
+					`;
+				}
+			});
 
 		/* BUBBLES */
 		const bubbleGroup = chart.append('g')
@@ -616,12 +624,12 @@
 			});
 
 		nodeGroup.on('mouseover', function () {
+			// $('g.tooltipstered').tooltipster('close');
 			d3.select(this)
 				.select('circle')
 				.style('stroke-width', 2)
 				.style('stroke', 'black');
 		}).on('mouseout', function () {
-			$('g.tooltipstered').tooltipster('close');
 			d3.select(this)
 				.select('circle')
 				.style('stroke-width', 1)
@@ -631,6 +639,18 @@
 		nodeGroup.each(function (d, i) {
 			const splitRoles = d.cluster.map(r => r.split(' ').map(Util.capitalize).join(' ')).join(', ');
 			const splitSecondaryRoles = d.cluster2.map(r => r.split(' ').map(Util.capitalize).join(' ')).join(', ');
+
+			const primaryTooltip = `
+				<img class="info-tooltip"
+					src="img/info.png"
+					data-contents="<b>Primary roles</b> describe the area(s) in which a stakeholder is mandated to play a central role in coordination or response operations. A stakeholder may have one or more primary role." />
+			`;
+
+			const secondaryTooltip = `
+				<img class="info-tooltip"
+					src="img/info.png"
+					data-contents="<b>Secondary roles</b> describe the area(s), if any, that a stakeholder is mandated to support in a non-primary role, for instance, by providing governance and oversight, or by supporting partnerships." />
+			`;
 
 			let orgtype = d.type;
 			if (d.type.endsWith('s')){
@@ -657,6 +677,7 @@
 						</div>
 						<div class="tooltip-section-contents">
 							Secondary Role${(d.cluster2.length > 1) ? 's' : ''}
+							${secondaryTooltip}
 						</div>
 					</div>
 				`;
@@ -679,6 +700,7 @@
 						</div>
 						<div class="tooltip-section-contents">
 							Primary Role${(d.cluster.length > 1) ? 's' : ''}
+							${primaryTooltip}
 						</div>
 					</div>
 					
@@ -710,8 +732,19 @@
 				content: content,
 				trigger: 'hover',
 				side: 'right',
-				delay: 0,
+				delay: [0, 300],
 				theme: ['tooltipster-shadow', 'tooltipster-talus'],
+				interactive: true,
+				functionReady: () => {
+					$('.tooltip-contents .info-tooltip')
+						.each(function() {
+							$(this).tooltipster({
+								content: $(this).data('contents'),
+								delay: 0,
+								trigger: 'hover',
+							});
+						});
+				},
 			});
 		});
 
