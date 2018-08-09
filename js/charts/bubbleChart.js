@@ -310,7 +310,11 @@
 					policies: d.policies,
 				};
 			}).map(d => {
-				const doLabel = d.size >= (sizeSum / nodeCount);
+				// const doLabel = d.size >= (sizeSum / nodeCount);
+				let doLabel = true;
+				if ((d.size === 1) && (d.text === d.abbrev)) {
+					doLabel = false;
+				}
 				return Object.assign(d, {
 					// x: forceCluster(d, 'x') + Math.random() * 100 - 50,
 					x: (forceCluster(
@@ -344,6 +348,8 @@
 				});
 			})
 			.filter(d => d.size !== 0);    // NOTE: remove this to include zero-mandate nodes
+
+		console.log(nodes);
 
 		// these are colouring *just* the borders
 		const nodeColors = d3.scaleOrdinal()
@@ -594,7 +600,7 @@
 			.enter()
 			.append('g')
 			.style('cursor', 'default')
-			.attr('name', d => d.text);
+			.attr('name', d => d.abbrev);
 
 		nodeGroup.append('circle')
 			.transition()
