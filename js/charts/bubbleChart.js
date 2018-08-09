@@ -597,6 +597,7 @@
 			.data(nodes)
 			.enter()
 			.append('g')
+			.classed('org-bubble', true)
 			.style('cursor', 'default')
 			.attr('name', d => d.abbrev);
 
@@ -736,10 +737,11 @@
 				content: content,
 				trigger: 'hover',
 				side: 'right',
-				delay: [0, 100],
+				delay: [0, 300],
 				animationDuration: [350, 0],
 				theme: ['tooltipster-shadow', 'tooltipster-talus'],
 				interactive: true,
+				distance: 0,
 				functionReady: () => {
 					$('.tooltip-contents .info-tooltip')
 						.each(function() {
@@ -749,6 +751,9 @@
 								trigger: 'hover',
 							});
 						});
+					setTimeout(() => {
+						$(`g.org-bubble:not([name="${d.abbrev}"])`).tooltipster('close');
+					}, 100);
 				},
 			});
 		});
