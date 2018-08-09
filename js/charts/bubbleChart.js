@@ -345,8 +345,6 @@
 			})
 			.filter(d => d.size !== 0);    // NOTE: remove this to include zero-mandate nodes
 
-		console.log(nodes);
-
 		// these are colouring *just* the borders
 		const nodeColors = d3.scaleOrdinal()
 			.domain(allCategories)
@@ -658,7 +656,7 @@
 							${splitSecondaryRoles}
 						</div>
 						<div class="tooltip-section-contents">
-							Secondary Role
+							Secondary Role${(d.cluster2.length > 1) ? 's' : ''}
 						</div>
 					</div>
 				`;
@@ -680,7 +678,7 @@
 							${splitRoles}
 						</div>
 						<div class="tooltip-section-contents">
-							Primary Role
+							Primary Role${(d.cluster.length > 1) ? 's' : ''}
 						</div>
 					</div>
 					
