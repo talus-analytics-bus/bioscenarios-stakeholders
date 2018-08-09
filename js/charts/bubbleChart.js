@@ -312,7 +312,7 @@
 			}).map(d => {
 				// const doLabel = d.size >= (sizeSum / nodeCount);
 				let doLabel = true;
-				if ((d.size === 1) && (d.text === d.abbrev)) {
+				if ((d.size === 1) && (d.abbrev.length > 25)) {
 					doLabel = false;
 				}
 				return Object.assign(d, {
@@ -348,8 +348,6 @@
 				});
 			})
 			.filter(d => d.size !== 0);    // NOTE: remove this to include zero-mandate nodes
-
-		console.log(nodes);
 
 		// these are colouring *just* the borders
 		const nodeColors = d3.scaleOrdinal()
@@ -738,7 +736,7 @@
 				content: content,
 				trigger: 'hover',
 				side: 'right',
-				delay: [0, 300],
+				delay: [0, 100],
 				theme: ['tooltipster-shadow', 'tooltipster-talus'],
 				interactive: true,
 				functionReady: () => {
