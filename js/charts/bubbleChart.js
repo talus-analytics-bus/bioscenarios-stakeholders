@@ -263,7 +263,7 @@
 		const maxSize = 15;
 		const sizeScale = d3.scaleLinear()
 			.domain([1, maxSize])
-			.range([35, 120]);
+			.range([35, 130]);
 		const getRadius = (x) => {
 			if (x === 0) {
 				return 10;
@@ -312,9 +312,9 @@
 			}).map(d => {
 				// const doLabel = d.size >= (sizeSum / nodeCount);
 				let doLabel = true;
-				if ((d.size === 1) && (d.abbrev.length > 25)) {
-					doLabel = false;
-				}
+				// if ((d.size === 1) && (d.abbrev.length > 25)) {
+				// 	doLabel = false;
+				// }
 				return Object.assign(d, {
 					// x: forceCluster(d, 'x') + Math.random() * 100 - 50,
 					x: (forceCluster(
@@ -678,11 +678,11 @@
 				splitSecondaryRolesText = `
 					<div class="tooltip-section">
 						<div class="tooltip-section-header">
-							${splitSecondaryRoles}
-						</div>
-						<div class="tooltip-section-contents">
 							Secondary Role${(d.cluster2.length > 1) ? 's' : ''}
 							${secondaryTooltip}
+						</div>
+						<div class="tooltip-section-contents">
+							${splitSecondaryRoles}
 						</div>
 					</div>
 				`;
@@ -701,11 +701,11 @@
 					
 					<div class="tooltip-section">
 						<div class="tooltip-section-header">
-							${splitRoles}
-						</div>
-						<div class="tooltip-section-contents">
 							Primary Role${(d.cluster.length > 1) ? 's' : ''}
 							${primaryTooltip}
+						</div>
+						<div class="tooltip-section-contents">
+							${splitRoles}
 						</div>
 					</div>
 					

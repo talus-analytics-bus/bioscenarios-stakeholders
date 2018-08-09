@@ -743,7 +743,7 @@ light {
       .tooltipster-sidetip.tooltipster-shadow.tooltipster-talus .tooltipster-content .tooltip-contents .tooltip-list ul.dashed > li {
         margin-left: 20px; }
       .tooltipster-sidetip.tooltipster-shadow.tooltipster-talus .tooltipster-content .tooltip-contents .tooltip-list ul.dashed > li::before {
-        content: "- ";
+        content: "";
         margin-left: -10px; }
       .tooltipster-sidetip.tooltipster-shadow.tooltipster-talus .tooltipster-content .tooltip-contents .tooltip-list .tooltip-list-item {
         -webkit-box-flex: 1;

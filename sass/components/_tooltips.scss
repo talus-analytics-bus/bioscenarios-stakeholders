@@ -107,7 +107,7 @@
 
 			/* Prevent nested li's from getting messed up */
 			ul.dashed > li::before {
-				content: "- ";
+				content: "";
 				margin-left: -10px;
 			}
 
