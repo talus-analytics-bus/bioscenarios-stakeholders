@@ -20,3 +20,128 @@
 	margin-top: 10px;
 	text-align: center;
 }
+
+
+// custom tooltipster styling for Talus
+.tooltipster-sidetip.tooltipster-shadow.tooltipster-talus .tooltipster-box {
+	padding: 0;
+}
+
+.tooltipster-sidetip.tooltipster-shadow.tooltipster-talus .tooltipster-content {
+	padding: 0;
+
+	.tooltip-contents {
+		@include flexbox();
+		flex-flow: column nowrap;
+		justify-content: space-between;
+		align-items: flex-start;
+
+		.tooltip-header {
+			@include flex(1);
+			width: 100%;
+			padding: 15px;
+			background-color: #eee;
+
+			margin-bottom: 5px;
+
+			.tooltip-primary-header {
+				font-family: 'Raleway', sans-serif;
+				font-size: 18px;
+				font-weight: 600;
+			}
+			.tooltip-sub-header {
+				font-size: 12px;
+				font-weight: 400;
+                //font-style: italic;
+			}
+		}
+
+		.tooltip-section {
+            @include flex(2);
+
+			padding-top: 5px;
+			padding-right: 15px;
+			padding-left: 15px;
+			padding-bottom: 5px;
+
+			&:last-of-type {
+				padding-bottom: 15px;
+			}
+
+			@include flexbox();
+			flex-flow: column nowrap;
+			justify-content: space-between;
+			align-items: flex-start;
+
+			.tooltip-section-header {
+				font-family: 'Raleway', sans-serif;
+				font-size: 14px;
+				font-weight: 600;
+			}
+
+			.tooltip-section-contents {
+				font-size: 12px;
+				font-weight: 400;
+			}
+		}
+
+		.tooltip-list {
+			@include flex(2);
+
+			@include flexbox();
+			flex-flow: column nowrap;
+			justify-content: space-between;
+			align-items: flex-start;
+
+			white-space: normal;
+
+			ul.dashed {
+				list-style: none;
+				padding: 0;
+				margin: 0;
+			}
+
+			ul.dashed > li {
+				margin-left: 20px;
+			}
+
+			/* Prevent nested li's from getting messed up */
+			ul.dashed > li::before {
+				content: "- ";
+				margin-left: -10px;
+			}
+
+			.tooltip-list-item {
+				@include flex(1);
+				width: 100%;
+				padding: 5px 5px 5px 10px;
+
+				.tooltip-list-item-title {
+					width: 100%;
+					font-size: 12px;
+					font-weight: 400;
+				}
+
+				.tooltip-list-item-detail {
+					width: 100%;
+					font-size: 12px;
+					font-weight: 300;
+				}
+			}
+		}
+
+		.tooltip-button {
+			align-self: flex-end;
+			margin-top: 10px;
+			//border-radius: 5px;
+			//background-color: #4264a0;
+			//color: white;
+			//padding: 5px;
+			//cursor: pointer;
+
+			//&:hover {
+			//  @include drop-shadow(0 0 3px #888);
+			//}
+		}
+	}
+}

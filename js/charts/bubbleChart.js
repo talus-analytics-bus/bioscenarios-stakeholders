@@ -244,7 +244,6 @@
 				if (!includedOrgs.includes(c)) {
 					orgTypeSizes[c] = [0, 1];
 				}
-				;
 			});
 
 		}
@@ -308,6 +307,7 @@
 					text: d.name,
 					abbrev: getShortName(d.name),
 					size: d.size,
+					policies: d.policies,
 				};
 			}).map(d => {
 				const doLabel = d.size >= (sizeSum / nodeCount);
@@ -344,6 +344,8 @@
 				});
 			})
 			.filter(d => d.size !== 0);    // NOTE: remove this to include zero-mandate nodes
+
+		console.log(nodes);
 
 		// these are colouring *just* the borders
 		const nodeColors = d3.scaleOrdinal()
@@ -585,6 +587,7 @@
 			.data(nodes)
 			.enter()
 			.append('g')
+			.style('cursor', 'default')
 			.attr('name', d => d.text);
 
 		nodeGroup.append('circle')
@@ -600,6 +603,7 @@
 		nodeGroup.append('text')
 			.style('fill', 'white')
 			.style('text-anchor', 'middle')
+			.style('pointer-events', 'none')
 			.attr('class', d => {
 				if (d.doLabel) {
 					return 'bubble-label';
@@ -627,22 +631,89 @@
 		});
 
 		nodeGroup.each(function (d, i) {
-			// const splitRoles = d.cluster.map(r => r.split(' ').map(Util.capitalize).join(' ')).join(', ');
-			// const splitSecondaryRoles = d.cluster2.map(r => r.split(' ').map(Util.capitalize).join(' ')).join(', ');
+			const splitRoles = d.cluster.map(r => r.split(' ').map(Util.capitalize).join(' ')).join(', ');
+			const splitSecondaryRoles = d.cluster2.map(r => r.split(' ').map(Util.capitalize).join(' ')).join(', ');
+
+			let orgtype = d.type;
+			if (d.type.endsWith('s')){
+				orgtype = orgtype.slice(0, -1);
+			}
+
+			const mandateList = d.policies
+				.sort((a, b) => d3.ascending(a['Policy Document'], b['Policy Document']))
+				.map(p => {
+					return `
+						<ul class="dashed">
+							<li>${p['Policy Document']}</li>
+						</ul>
+					`;
+				}).join('');
+			let splitSecondaryRolesText;
+			if (d.cluster2.length === 0) {
+				splitSecondaryRolesText = '';
+			} else {
+				splitSecondaryRolesText = `
+					<div class="tooltip-section">
+						<div class="tooltip-section-header">
+							${splitSecondaryRoles}
+						</div>
+						<div class="tooltip-section-contents">
+							Secondary Role
+						</div>
+					</div>
+				`;
+			}
+
+			const content = `
+				<div class="tooltip-contents">
+					<div class="tooltip-header">
+						<div class="tooltip-primary-header">
+						${d.text}
+						</div>
+						<div class="tooltip-sub-header">
+						${orgtype}
+						</div>
+					</div>
+					
+					<div class="tooltip-section">
+						<div class="tooltip-section-header">
+							${splitRoles}
+						</div>
+						<div class="tooltip-section-contents">
+							Primary Role
+						</div>
+					</div>
+					
+					${splitSecondaryRolesText}
+					
+					<div class="tooltip-section">
+						<div class="tooltip-section-header">
+							Mandates
+						</div>
+						<div class="tooltip-section-contents">
+							<div class="tooltip-list">
+								${mandateList}
+							</div>
+						</div>
+					</div>
+				</div>
+			`;
+			// const content = `<b>${d.text}</b>
+			// 	<br><i>${d.type}</i>
+			// 	<br><br><b>Roles: </b>${splitRoles}
+			// 	${splitSecondaryRolesText}
+			// 	<br><br><b>Mandates: </b>${d.size}`;
+			// const splitRoles = d.cluster.concat(d.cluster2).map(r => r.split(' ').map(Util.capitalize).join(' ')).join(', ');
 			// const content = `<b>${d.text}</b>` +
 			// 	`<br><i>${d.type}</i>` +
 			// 	`<br><br><b>Roles: </b>${splitRoles}` +
-			// 	`<br><b>Secondary Roles: </b>${splitSecondaryRoles}` +
 			// 	`<br><br><b>Number of Mandates:</b> ${d.size}`;
-			const splitRoles = d.cluster.concat(d.cluster2).map(r => r.split(' ').map(Util.capitalize).join(' ')).join(', ');
-			const content = `<b>${d.text}</b>` +
-				`<br><i>${d.type}</i>` +
-				`<br><br><b>Roles: </b>${splitRoles}` +
-				`<br><br><b>Number of Mandates:</b> ${d.size}`;
 			return $(this).tooltipster({
 				content: content,
 				trigger: 'hover',
 				side: 'right',
+				delay: 0,
+				theme: ['tooltipster-shadow', 'tooltipster-talus'],
 			});
 		});
 
