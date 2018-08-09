@@ -577,7 +577,7 @@
 		};
 
 		const simulation = d3.forceSimulation(nodes)
-			.force('collide', d3.forceCollide(d => d.radius - (d.radius / 20)).strength(1)) // dynamic collision n%
+			.force('collide', d3.forceCollide(d => d.radius - (d.radius / 20)).strength(0.75)) // dynamic collision n%
 			.force('x', d3.forceX(d => d.forceX)
 				.strength(0.06))
 			.force('y', d3.forceY(d => d.forceY)
@@ -606,7 +606,7 @@
 			.attr('r', d => d.radius)
 			.style('fill', d => nodeGradients(d.type)(d.size))
 			// .style('fill', d => nodeColors(d.type))
-			.style('fill-opacity', 0.8)
+			.style('fill-opacity', 0.9)
 			.style('stroke', d => nodeColors(d.type))
 			.style('stroke-opacity', 1);
 
