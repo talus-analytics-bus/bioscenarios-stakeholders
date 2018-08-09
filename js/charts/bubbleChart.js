@@ -737,6 +737,7 @@
 				trigger: 'hover',
 				side: 'right',
 				delay: [0, 100],
+				animationDuration: [350, 0],
 				theme: ['tooltipster-shadow', 'tooltipster-talus'],
 				interactive: true,
 				functionReady: () => {
