@@ -251,31 +251,27 @@
 
 		parseData();
 
-		let minRadius;
+		let minRadius = 20;
 		let shift;
 		let power;
 		if (eventName === null) {
-			// minRadius = 7;
-			minRadius = 15;
 			power = (x0, x1) => Math.exp(nodeScaling) * Math.pow(x0, 0.8);
 		} else {
-			// minRadius = 10;
-			minRadius = 15;
 			power = (x0, x1) => Math.exp(nodeScaling) * Math.pow(x0, 0.8);
 		}
-		const getRadius = (size) => power(size, nodeScaling) * baseNodeSize + minRadius;
+		// const getRadius = (size) => power(size, nodeScaling) * baseNodeSize + minRadius;
 
-		// const maxSize = 15;
-		// const sizeScale = d3.scaleLinear()
-		// 	.domain([1, maxSize])
-		// 	.range([35, 120]);
-		// const getRadius = (x) => {
-		// 	if (x === 0) {
-		// 		return 10;
-		// 	} else {
-		// 		return sizeScale(x);
-		// 	}
-		// };
+		const maxSize = 15;
+		const sizeScale = d3.scaleLinear()
+			.domain([1, maxSize])
+			.range([35, 120]);
+		const getRadius = (x) => {
+			if (x === 0) {
+				return 10;
+			} else {
+				return sizeScale(x);
+			}
+		};
 
 		let value;
 		let initial;
@@ -346,7 +342,8 @@
 							}), 'y') || 0,
 					doLabel: doLabel,
 				});
-			});
+			})
+			.filter(d => d.size !== 0);    // NOTE: remove this to include zero-mandate nodes
 
 		// these are colouring *just* the borders
 		const nodeColors = d3.scaleOrdinal()
@@ -596,7 +593,7 @@
 			.attr('r', d => d.radius)
 			.style('fill', d => nodeGradients(d.type)(d.size))
 			// .style('fill', d => nodeColors(d.type))
-			.style('fill-opacity', 0.7)
+			.style('fill-opacity', 0.8)
 			.style('stroke', d => nodeColors(d.type))
 			.style('stroke-opacity', 1);
 
