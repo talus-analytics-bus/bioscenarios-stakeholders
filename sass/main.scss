@@ -36,13 +36,21 @@ h2,
 h3 {
   font-family: "Raleway", sans-serif;
   font-weight: 700;
+  margin-top: 30px;
+  margin-bottom: 20px;
 }
 
 h1 {
   font-size: 28px;
 }
+h2 {
+  font-size: 22px;
+}
 p {
   max-width: 600px;
+  &.wide {
+    max-width: 700px;
+  }
 }
 
 .legend-div {
