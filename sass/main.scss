@@ -1,34 +1,49 @@
-@import 'helpers/borders';
-@import 'helpers/classes';
-@import 'helpers/colors';
-@import 'helpers/mixins';
+@import "helpers/borders";
+@import "helpers/classes";
+@import "helpers/colors";
+@import "helpers/mixins";
 
-@import 'components/blocks';
-@import 'components/buttons';
-@import 'components/containers';
-@import 'components/dropdowns';
-@import 'components/footer';
-@import 'components/maps';
-@import 'components/navbar';
-@import 'components/network';
-@import 'components/sankey';
-@import 'components/sections';
-@import 'components/sliders';
-@import 'components/tabs';
-@import 'components/tables';
-@import 'components/text';
-@import 'components/tooltips';
+@import "components/blocks";
+@import "components/buttons";
+@import "components/containers";
+@import "components/dropdowns";
+@import "components/footer";
+@import "components/maps";
+@import "components/navbar";
+@import "components/network";
+@import "components/sankey";
+@import "components/sections";
+@import "components/sliders";
+@import "components/tabs";
+@import "components/tables";
+@import "components/text";
+@import "components/tooltips";
 
+@import "pages/login";
+@import "pages/home";
 
-@import 'pages/login';
-@import 'pages/home';
+@import "charts/conceptMap";
+@import "charts/timeline";
+@import "charts/bubbleChart";
 
-@import 'charts/conceptMap';
-@import 'charts/timeline';
-@import 'charts/bubbleChart';
+body {
+  font-family: "Open Sans", sans-serif;
+  color: $black;
+  font-size: 16px;
+}
+h1,
+h2,
+h3 {
+  font-family: "Raleway", sans-serif;
+  font-weight: 700;
+}
 
-body { font-family: 'Open Sans', sans-serif; }
-h3 { font-family: 'Raleway', sans-serif;}
+h1 {
+  font-size: 28px;
+}
+p {
+  max-width: 600px;
+}
 
 .legend-div {
   position: absolute;
@@ -41,4 +56,3 @@ h3 { font-family: 'Raleway', sans-serif;}
   width: 12px;
   height: 12px;
 }
-
