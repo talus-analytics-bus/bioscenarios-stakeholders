@@ -53,6 +53,50 @@ p {
   }
 }
 
+.btn {
+  border: 2px solid #023f88;
+  border-radius: 5px;
+  font-family: "Open Sans", sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: $primary-dark-blue;
+  padding: 10px 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  display: inline-block;
+  &:hover {
+    background-color: #f4f4f4;
+  }
+  &:active,
+  &:hover:active {
+    box-shadow: 5px 5px 15px 0 #b3b3b3;
+    -webkit-box-shadow: 5px 5px 15px 0 #b3b3b3;
+    background-color: white;
+    color: $primary-dark-blue;
+    border-color: $primary-dark-blue;
+  }
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: linear-gradient(180deg, rgba(2, 63, 136, 0.85) 0%, #023f88 100%);
+  color: white;
+  &:hover {
+    background: white;
+    color: $primary-dark-blue;
+  }
+}
+
+.login-button-container {
+  text-align: left;
+  .btn {
+    text-align: left;
+    margin-top: 20px;
+  }
+}
+
 .legend-div {
   position: absolute;
   height: 25px;
