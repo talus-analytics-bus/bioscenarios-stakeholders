@@ -51,6 +51,7 @@ p {
   &.wide {
     max-width: 700px;
   }
+  margin-bottom: 20px;
 }
 
 .header-centered {
@@ -120,4 +121,10 @@ p {
 .info-tooltip {
   width: 12px;
   height: 12px;
+}
+
+.citation {
+  font-style: italic;
+  margin-left: 40px;
+  max-width: 560px;
 }
