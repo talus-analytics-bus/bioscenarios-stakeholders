@@ -10,6 +10,10 @@
   }
 }
 
+.container {
+  min-height: calc(100vh - 300px);
+}
+
 // https://stackoverflow.com/questions/16265123/resize-svg-when-window-is-resized-in-d3-js?lq=1
 .svg-container {
   display: inline-block;
